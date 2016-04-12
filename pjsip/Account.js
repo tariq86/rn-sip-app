@@ -7,6 +7,7 @@ import React, {
 } from 'react-native'
 import {EventEmitter} from 'events'
 import AccountRegistration from './AccountRegistration'
+import Call from './Call'
 
 /**
  * Class that represent pj_sip_account.
@@ -82,7 +83,18 @@ export default class Account extends EventEmitter {
      * @param headers {Object[]} Optional list of headers to be sent with outgoing INVITE.
      */
     makeCall(destination, headers = []) {
+        let id = this._id;
+        let self = this;
 
+        return new Promise(function(resolve, reject) {
+            NativeModules.PjSipModule.makeCall(id, destination, (successful, data) => {
+                if (successful) {
+                    resolve(new Call(self, data));
+                } else {
+                    reject(data);
+                }
+            });
+        });
     }
 
     /**
@@ -124,6 +136,15 @@ export default class Account extends EventEmitter {
 
     _onCallReceived(event) {
         console.log("_onCallReceived", arguments);
+    }
+
+
+    toJson() {
+        return {
+            id: this._id,
+            uri: this._uri,
+            registration: this._registration ? this._registration.toJson() : null
+        }
     }
 
 }

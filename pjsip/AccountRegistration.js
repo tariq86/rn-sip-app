@@ -53,4 +53,13 @@ export default class AccountRegistration {
     getReason() {
         return this._reason;
     }
+
+    toJson() {
+        return  {
+            status: this._status,
+            statusText: this._statusText,
+            active: this._active,
+            reason: this._reason
+        }
+    }
 }

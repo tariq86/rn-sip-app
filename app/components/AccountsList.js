@@ -33,25 +33,32 @@ export default class AccountsList extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("componentWillReceiveProps", nextProps);
+
+        console.log("componentWillReceiveProps", nextProps.accounts);
 
         if (nextProps.accounts !== this.props.accounts) {
             this.setState({
-                ds: (new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})).cloneWithRows(nextProps.accounts)
+                ds: this.state.ds.cloneWithRows(nextProps.accounts)
             })
         }
     }
 
     renderRow(account, _, id) {
+        let registration = account.get('registration');
+
         return (
             <TouchableHighlight onPress={() => this._pressRow(account)} onLongPress={() => this._longPressRow(account)}>
                 <View style={s.row}>
                     <View style={s.rowCircle}>
-                        <Text style={s.rowCircleText}>{account.getId()}</Text>
+                        <Text style={s.rowCircleText}>{account.get('id')}</Text>
                     </View>
                     <View style={s.rowDescription}>
-                        <Text style={s.rowURIText}>{account.getURI()}</Text>
-                        <Text style={s.rowRegistrationText}>{account.getRegistration().getStatusText()}</Text>
+                        <Text style={s.rowURIText}>{account.get('uri')}</Text>
+                        <Text style={s.rowRegistrationText}>
+                            {
+                                registration ? registration['statusText'] : 'Undefined'
+                            }
+                        </Text>
                     </View>
                 </View>
             </TouchableHighlight>

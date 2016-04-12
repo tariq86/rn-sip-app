@@ -22,7 +22,7 @@ public class PjSipBroadcastEmiter {
         this.context = context;
     }
 
-    public void fireStarted(Intent original, List<PjSipAccount> accounts) {
+    public void fireStarted(Intent original, List<PjSipAccount> accounts, List<PjSipCall> calls) {
         Log.d(TAG, "fireStarted");
 
         try {
@@ -32,7 +32,9 @@ public class PjSipBroadcastEmiter {
             }
 
             JSONArray dataCalls = new JSONArray();
-            // TODO: Pass also calls object.
+            for (PjSipCall call : calls) {
+                dataCalls.put(call.toJson());
+            }
 
             JSONObject data = new JSONObject();
             data.put("accounts", dataAccounts);
@@ -57,20 +59,20 @@ public class PjSipBroadcastEmiter {
         context.sendBroadcast(intent);
     }
 
+    public void fireIntentHandled(Intent original, Exception e) {
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_HANDLED);
+        intent.putExtra("callback_id", original.getIntExtra("callback_id", -1));
+        intent.putExtra("exception", e.getMessage());
+
+        context.sendBroadcast(intent);
+    }
+
     public void fireAccountCreated(Intent original, PjSipAccount account) {
         Intent intent = new Intent();
         intent.setAction(PjActions.EVENT_ACCOUNT_CREATED);
         intent.putExtra("callback_id", original.getIntExtra("callback_id", -1));
         intent.putExtra("data", account.toJsonString());
-
-        context.sendBroadcast(intent);
-    }
-
-    public void fireAccountCreated(Intent original, Exception e) {
-        Intent intent = new Intent();
-        intent.setAction(PjActions.EVENT_ACCOUNT_CREATED);
-        intent.putExtra("callback_id", original.getIntExtra("callback_id", -1));
-        intent.putExtra("exception", e.getMessage());
 
         context.sendBroadcast(intent);
     }
@@ -83,10 +85,35 @@ public class PjSipBroadcastEmiter {
         context.sendBroadcast(intent);
     }
 
+    public void fireCallCreated(Intent original, PjSipCall call) {
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_CALL_CREATED);
+        intent.putExtra("callback_id", original.getIntExtra("callback_id", -1));
+        intent.putExtra("data", call.toJsonString());
+
+        context.sendBroadcast(intent);
+    }
+
     public void fireCallReceivedEvent(PjSipCall call) {
         Intent intent = new Intent();
         intent.setAction(PjActions.EVENT_CALL_RECEIVED);
-        intent.putExtra("data", "call intent data");
+        intent.putExtra("data", call.toJsonString());
+
+        context.sendBroadcast(intent);
+    }
+
+    public void fireCallChanged(PjSipCall call) {
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_CALL_CHANGED);
+        intent.putExtra("data", call.toJsonString());
+
+        context.sendBroadcast(intent);
+    }
+
+    public void fireCallTerminated(PjSipCall call) {
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_CALL_TERMINATED);
+        intent.putExtra("data", call.toJsonString());
 
         context.sendBroadcast(intent);
     }

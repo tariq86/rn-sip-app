@@ -67,4 +67,55 @@ public class PjSipModule extends ReactContextBaseJavaModule {
         Intent intent = PjActions.createAccountDeleteIntent(callbackId, accountId, getReactApplicationContext());
         getReactApplicationContext().startService(intent);
     }
+
+    @ReactMethod
+    public void makeCall(int accountId, String destination, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createMakeCallIntent(callbackId, accountId, destination, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void hangupCall(int callId, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createHangupCallIntent(callbackId, callId, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void answerCall(int callId, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createAnswerCallIntent(callbackId, callId, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void holdCall(int callId, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createHoldCallIntent(callbackId, callId, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void unholdCall(int callId, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createUnholdCallIntent(callbackId, callId, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void xferCall(int callId, String destination, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createXFerCallIntent(callbackId, callId, destination, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+    @ReactMethod
+    public void dtmfCall(int callId, String digits, Callback callback) {
+        int callbackId = receiver.register(callback);
+        Intent intent = PjActions.createDtmfCallIntent(callbackId, callId, digits, getReactApplicationContext());
+        getReactApplicationContext().startService(intent);
+    }
+
+
 }

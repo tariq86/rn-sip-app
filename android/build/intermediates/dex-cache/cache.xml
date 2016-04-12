@@ -2,25 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp/0.8.1/jars/classes.jar"
+        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="0d5d69b03cb7d68b81543f6483ed04ccb0e2235b">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-8a6c7f17deeec48ea4892326a466686bf1b8baef.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho/1.2.0/1d6cdb8ce8185b8b23213fad48a83987fb6d2d67/stetho-1.2.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1d6cdb8ce8185b8b23213fad48a83987fb6d2d67">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/stetho-1.2.0-6316ea594023d0a223f6b6d68fa83fb77ebf8b35.jar" />
-    </item>
-    <item
-        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.8.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3836ecca4e31e18ea8fbae8e822d49777b0db4f7">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-4a77fba376da184560164bee3ad2dc531ee496a9.jar" />
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-eeb7ae91a4b22b6a5228ea125d63e0e271561896.jar" />
     </item>
     <item
         jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.8.1/jars/classes.jar"
@@ -30,39 +16,11 @@
         <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-7f1c58971d3d35af9dceb7ac43bad923d32e7c4a.jar" />
     </item>
     <item
-        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.8.1/jars/classes.jar"
+        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="845a5b3a624946b2068963ba656c117fc453701c">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-161f2deba8d0565167064b2719bc2ee20e4796f1.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/gson-2.6.2-a236d92008582097715679b01b47478ee91f22d7.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2bf96b7aa8b611c177d329452af1dc933e14501c">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/commons-cli-1.2-122663538f0e86e94a2385d6c4996105bb68f74c.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-04f7d826e0fb0355756127cdb88e724940873200.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-cc2547d9628898981ccf44019ca2db2d3d26c620.jar" />
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-b364ab2b1cedd3bdeca06110e65d9424b63bd233.jar" />
     </item>
     <item
         jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.22.2/jars/classes.jar"
@@ -72,18 +30,11 @@
         <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-e20bd924fdc12f459e9224e990b16f5c6b2e27eb.jar" />
     </item>
     <item
-        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-b364ab2b1cedd3bdeca06110e65d9424b63bd233.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-8fabbda188f446bc8b2650342a9cf8d441199500.jar" />
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-04f7d826e0fb0355756127cdb88e724940873200.jar" />
     </item>
     <item
         jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.22.2/jars/libs/infer-annotations-1.5.jar"
@@ -93,25 +44,11 @@
         <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-e8d88c9e8831ec91dc5cda5023f749ac8f3ee534.jar" />
     </item>
     <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-dd186782a68af4fc3cdcdace32cd2888f109c303.jar" />
-    </item>
-    <item
-        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-eeb7ae91a4b22b6a5228ea125d63e0e271561896.jar" />
-    </item>
-    <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="129874135e6081269ace2312092031558865de12">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-b401cb0476080fd16076a7d515e111059ba25501.jar" />
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-8fabbda188f446bc8b2650342a9cf8d441199500.jar" />
     </item>
     <item
         jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.8.1/jars/classes.jar"
@@ -128,11 +65,39 @@
         <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/okhttp-ws-2.5.0-a43f57c755c803655f997985ebde9445abbfa807.jar" />
     </item>
     <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/okio-1.6.0-f9eb874aa55b5d84a685d62aa899e8ca5cf2737f.jar" />
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-b401cb0476080fd16076a7d515e111059ba25501.jar" />
+    </item>
+    <item
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-dd186782a68af4fc3cdcdace32cd2888f109c303.jar" />
+    </item>
+    <item
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho-okhttp/1.2.0/6c5c9380e245c4ff5be2b2a49dcbb0200c39798e/stetho-okhttp-1.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6c5c9380e245c4ff5be2b2a49dcbb0200c39798e">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/stetho-okhttp-1.2.0-7e98772247a5d117290dbebcd266025df75dc187.jar" />
+    </item>
+    <item
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/gson-2.6.2-a236d92008582097715679b01b47478ee91f22d7.jar" />
+    </item>
+    <item
+        jar="/usr/local/opt/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-83cbd8867bbfafb64844edcdc4bcc0a8099d3359.jar" />
     </item>
     <item
         jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
@@ -149,18 +114,53 @@
         <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-ffc542852c53d3e6e059334ffe5efb75bd28ce33.jar" />
     </item>
     <item
-        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho-okhttp/1.2.0/6c5c9380e245c4ff5be2b2a49dcbb0200c39798e/stetho-okhttp-1.2.0.jar"
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="6c5c9380e245c4ff5be2b2a49dcbb0200c39798e">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/stetho-okhttp-1.2.0-7e98772247a5d117290dbebcd266025df75dc187.jar" />
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/okio-1.6.0-f9eb874aa55b5d84a685d62aa899e8ca5cf2737f.jar" />
     </item>
     <item
-        jar="/usr/local/opt/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-83cbd8867bbfafb64844edcdc4bcc0a8099d3359.jar" />
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-cc2547d9628898981ccf44019ca2db2d3d26c620.jar" />
+    </item>
+    <item
+        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.8.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="845a5b3a624946b2068963ba656c117fc453701c">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-161f2deba8d0565167064b2719bc2ee20e4796f1.jar" />
+    </item>
+    <item
+        jar="/Users/datso/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho/1.2.0/1d6cdb8ce8185b8b23213fad48a83987fb6d2d67/stetho-1.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1d6cdb8ce8185b8b23213fad48a83987fb6d2d67">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/stetho-1.2.0-6316ea594023d0a223f6b6d68fa83fb77ebf8b35.jar" />
+    </item>
+    <item
+        jar="/Users/datso/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2bf96b7aa8b611c177d329452af1dc933e14501c">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/commons-cli-1.2-122663538f0e86e94a2385d6c4996105bb68f74c.jar" />
+    </item>
+    <item
+        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp/0.8.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0d5d69b03cb7d68b81543f6483ed04ccb0e2235b">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-8a6c7f17deeec48ea4892326a466686bf1b8baef.jar" />
+    </item>
+    <item
+        jar="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.8.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3836ecca4e31e18ea8fbae8e822d49777b0db4f7">
+        <dex dex="/Users/datso/Projects/CarustoConnect/android/app/build/intermediates/pre-dexed/debug/classes-4a77fba376da184560164bee3ad2dc531ee496a9.jar" />
     </item>
 
 </items>

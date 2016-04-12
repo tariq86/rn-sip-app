@@ -1,7 +1,11 @@
 import {NetInfo, AppState} from 'react-native'
 import * as Navigation from './navigation'
 import {Endpoint} from '../../pjsip'
-import _ from 'lodash'
+import {
+    OrderedMap,
+    Record
+} from 'immutable'
+
 
 export const ACCOUNTS_INIT = 'accounts/INIT';
 export const ACCOUNT_CREATED = 'accounts/ACCOUNT_CREATED';
@@ -26,8 +30,8 @@ export function createAccount(configuration) {
     return async function(dispatch, getState) {
         // -----
         let account = await Endpoint.createAccount({
-            ...configuration,
-            transport: "TCP"
+            ...configuration // ,
+            // transport: "TCP"
         });
 
         // -----
@@ -38,8 +42,16 @@ export function createAccount(configuration) {
     };
 }
 
-export function deleteAccount(account) {
+/**
+ * Action to delete account.
+ *
+ * @param {AccountRecord} record
+ * @returns {Function}
+ */
+export function deleteAccount(record) {
     return async function(dispatch, getState) {
+        let account = record.get('ref');
+
         // -----
         await Endpoint.deleteAccount(account);
 
@@ -64,44 +76,51 @@ function subscribe(account, dispatch) {
  * Reducer
  */
 
+var AccountRecord = Record({
+    id: -1,
+    uri: null,
+    registration: null,
+    ref: null // Original link to account
+});
+
+
 const initialState = {
     isLoading: true,
-    map: {}
+    map: new OrderedMap()
 };
 
 export default function app(state = initialState, action) {
     switch (action.type) {
         case ACCOUNTS_INIT:
-            let map = action.accounts.reduce(
-                (result, account) => {result[account.getId()] = account; return result;},
-                {}
-            );
-
             return {
                 ...state,
                 isLoading: false,
-                map: map
+                map: action.accounts.reduce(
+                    (result, account) => {
+                        return result.set(account.getId(), new AccountRecord({
+                            ...account.toJson(),
+                            ref: account
+                        }));
+                    },
+                    state.map
+                )
             };
 
         case ACCOUNT_CREATED:
         case ACCOUNT_CHANGED:
         case ACCOUNT_REGISTRATION_CHANGED:
-            if (action.type == ACCOUNT_REGISTRATION_CHANGED) {
-                console.log("fasdfasdfasdfasdf", action.account);
-            }
-
             return {
                 ...state,
-                map: {
-                    ...state.map,
-                    [action.account.getId()]: action.account
-                }
+                map: state.map.set(action.account.getId(), new AccountRecord({
+                    ...action.account.toJson(),
+                    ref: action.account
+                }))
             };
 
         case ACCOUNT_DELETED:
             return {
                 ...state,
-                map: _.omit(state.map, action.account.getId())
+                map: state.map.delete(action.account.getId())
             };
 
         default:

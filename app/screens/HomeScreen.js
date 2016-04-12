@@ -18,13 +18,48 @@ import AccountsList from '../components/AccountsList'
  */
 class HomeScreen extends Component {
 
+
+    renderCalls(dispatch, calls) {
+        let views = [];
+
+        for (let call of calls) {
+            views.push((
+                <TouchableHighlight key={call.get('id')} onPress={() => dispatch(Navigation.goTo({name: 'call', call}))}>
+                    <View style={{borderRadius: 16, backgroundColor: "#CCC", paddingTop: 4, paddingBottom: 4, paddingLeft: 8, paddingRight: 8, justifyContent: 'center'}}>
+                        <Text style={{color: "#424242"}}>Call #{call.get('id')}</Text>
+                    </View>
+                </TouchableHighlight>
+            ));
+        }
+
+        return views;
+    }
+
     render() {
-        const {dispatch, accounts} = this.props;
+        const {dispatch, accounts, calls} = this.props;
         
-        if (accounts.length > 0) {
+        if (accounts.length > 0 || calls.length > 0) {
             return (
                 <View style={s.listContainer}>
-                    <AccountsList accounts={accounts} onPress={(account) => dispatch(Navigation.goTo({name: 'account', account, title: account.getURI()}))} />
+                    <AccountsList accounts={accounts} onPress={(account) => dispatch(Navigation.goTo({name: 'account', account, title: account.get('uri')}))} />
+
+                    <View style={{bottom: 15, right: 15, alignSelf: 'flex-end', alignItems: 'flex-end', flex: 0}}>
+                        {
+                            this.renderCalls(dispatch, calls)
+                        }
+                        <View style={{flexDirection: 'row'}}>
+                            <TouchableHighlight onPress={() => dispatch(Navigation.goTo({name: 'dailer'}))}>
+                                <View style={{borderRadius: 52, backgroundColor: "#1898e7", width: 52, height: 52, justifyContent: 'center'}}>
+                                    <Text style={{alignSelf: 'center', color: "#FFF"}}>Call</Text>
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight onPress={() => dispatch(Navigation.goTo({name: 'new_account'}))}>
+                                <View style={{borderRadius: 52, backgroundColor: "#e76618", width: 52, height: 52, justifyContent: 'center'}}>
+                                    <Text style={{alignSelf: 'center', color: "#FFF"}}>Acc</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
                 </View>
             );
         } else {
@@ -50,10 +85,9 @@ HomeScreen.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const {accounts} = state;
-
     return {
-        accounts: _.values(accounts.map)
+        accounts: state.accounts.map.toArray(),
+        calls: state.calls.map.toArray()
     }
 }
 

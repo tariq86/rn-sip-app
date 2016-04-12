@@ -4,14 +4,9 @@ import android.util.Log;
 import org.json.JSONObject;
 import org.pjsip.pjsua2.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PjSipAccount extends Account {
 
     private static String TAG = "PjSipAccount";
-
-    private List<PjSipCall> calls = new ArrayList<>();
 
     /**
      * Last registration reason.
@@ -20,12 +15,19 @@ public class PjSipAccount extends Account {
 
     private PjSipService service;
 
-    public PjSipAccount(PjSipService service) {
+    private int transportId;
+
+    public PjSipAccount(PjSipService service, int transportId) {
         this.service = service;
+        this.transportId = transportId;
     }
 
     public PjSipService getService() {
         return service;
+    }
+
+    public int getTransportId() {
+        return transportId;
     }
 
     @Override
@@ -52,7 +54,6 @@ public class PjSipAccount extends Account {
         Log.d(TAG, "onIncomingCall getSrcAddress: " + prm.getRdata().getSrcAddress());
 
         PjSipCall call = new PjSipCall(this, prm.getCallId());
-        calls.add(call);
 
         service.getEmitter().fireCallReceivedEvent(call);
     }

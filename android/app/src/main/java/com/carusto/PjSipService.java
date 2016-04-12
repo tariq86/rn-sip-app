@@ -2,10 +2,10 @@ package com.carusto;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.*;
 import android.os.Process;
 import android.util.Log;
-import com.facebook.stetho.common.StringUtil;
 import org.pjsip.pjsua2.*;
 
 import java.util.*;
@@ -26,7 +26,11 @@ public class PjSipService extends Service {
 
     private List<PjSipAccount> mAccounts = new ArrayList<>();
 
+    private List<PjSipCall> mCalls = new ArrayList<>();
+
     private List<Object> mTrash = new LinkedList<>();
+
+    private AudioManager mAudioManager;
 
     public PjSipBroadcastEmiter getEmitter() {
         return mEmitter;
@@ -50,6 +54,8 @@ public class PjSipService extends Service {
 
         mEmitter = new PjSipBroadcastEmiter(this);
 
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
 //        new Timer().scheduleAtFixedRate(new TimerTask() {
 //            @Override
 //            public void run(){
@@ -72,7 +78,7 @@ public class PjSipService extends Service {
 //                loadNativeLibraries();
 //
 //                mRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(SipService.this, RingtoneManager.TYPE_RINGTONE);
-//                mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
 //                mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 //
 //                mBroadcastEmitter = new BroadcastEventEmitter(SipService.this);
@@ -157,36 +163,108 @@ public class PjSipService extends Service {
         super.onDestroy();
     }
 
+    private void job(Runnable job) {
+        mHandler.post(job);
+    }
+
+    protected synchronized AudDevManager getAudDevManager() {
+        return mEndpoint.audDevManager();
+    }
+
+    public void evict(final PjSipAccount account) {
+        if (mHandler.getLooper().getThread() != Thread.currentThread()) {
+            job(new Runnable() {
+                @Override
+                public void run() {
+                    evict(account);
+                }
+            });
+            return;
+        }
+
+        // Remove link to account
+        mAccounts.remove(account);
+
+        // Remove transport
+        try {
+            mEndpoint.transportClose(account.getTransportId());
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to close transport for account", e);
+        }
+
+        // Remove account in PjSip
+        account.delete();
+
+    }
+
+    public void evict(final PjSipCall call) {
+        if (mHandler.getLooper().getThread() != Thread.currentThread()) {
+            job(new Runnable() {
+                @Override
+                public void run() {
+                    evict(call);
+                }
+            });
+            return;
+        }
+
+        // Remove link to call
+        mCalls.remove(call);
+
+        // Remove call in PjSip
+        call.delete();
+    }
+
+
     private void handle(Intent intent) {
         if (intent == null || intent.getAction() == null) {
             return;
         }
 
         switch (intent.getAction()) {
-            // Account actions
+            // General actions
             case PjActions.ACTION_START:
                 handleStart(intent);
                 break;
-            case PjActions.ACTION_ACCOUNT_CREATE:
+
+            // Account actions
+            case PjActions.ACTION_CREATE_ACCOUNT:
                 handleAccountCreate(intent);
                 break;
-            case PjActions.ACTION_ACCOUNT_DELETE:
+            case PjActions.ACTION_DELETE_ACCOUNT:
                 handleAccountDelete(intent);
                 break;
 
-            // TODO: Call actions
+            // Call actions
+            case PjActions.ACTION_MAKE_CALL:
+                handleCallMake(intent);
+                break;
+            case PjActions.ACTION_HANGUP_CALL:
+                handleCallHangup(intent);
+                break;
+            case PjActions.ACTION_ANSWER_CALL:
+                // TODO: handleCallAnswer(intent);
+                break;
+            case PjActions.ACTION_HOLD_CALL:
+                // TODO: handleCallSetOnHold(intent);
+                break;
+            case PjActions.ACTION_UNHOLD_CALL:
+                // TODO: handleCallReleaseFromHold(intent);
+                break;
+            case PjActions.ACTION_XFER_CALL:
+                // TODO: handleCallXFer(intent);
+                break;
+            case PjActions.ACTION_DTMF_CALL:
+                // TODO: handleCallDtmf(intent);
+                break;
         }
-    }
-
-    private void job(Runnable job) {
-        mHandler.post(job);
     }
 
     /**
      * @param intent
      */
     private void handleStart(Intent intent) {
-        mEmitter.fireStarted(intent, mAccounts);
+        mEmitter.fireStarted(intent, mAccounts, mCalls);
     }
 
     /**
@@ -233,8 +311,10 @@ public class PjSipService extends Service {
             cfg.getSipConfig().setTransportId(transportId);
             cfg.getMediaConfig().getTransportConfig().setQosType(pj_qos_type.PJ_QOS_TYPE_VOICE);
             cfg.getRegConfig().setRegisterOnAdd(true);
+            cfg.getVideoConfig().setAutoTransmitOutgoing(true);
 
-            PjSipAccount account = new PjSipAccount(this);
+            // TODO: Pass username, password, host, realm into Account object for further retrieval
+            PjSipAccount account = new PjSipAccount(this, transportId);
             account.create(cfg);
 
             mTrash.add(cfg);
@@ -244,8 +324,7 @@ public class PjSipService extends Service {
             mAccounts.add(account);
             mEmitter.fireAccountCreated(intent, account);
         } catch (Exception e) {
-            Log.e(TAG, "Failed to create account", e);
-            mEmitter.fireAccountCreated(intent, e);
+            mEmitter.fireIntentHandled(intent, e);
         }
     }
 
@@ -265,17 +344,75 @@ public class PjSipService extends Service {
                 throw new Exception("Account with \""+ accountId +"\" id not found");
             }
 
-            // Remove link to account
-            mAccounts.remove(account);
-
-            // Remove account in PjSip
-            account.delete();
+            evict(account);
 
             // -----
             mEmitter.fireIntentHandled(intent);
         } catch (Exception e) {
-            Log.e(TAG, "Failed to delete account", e);
-            mEmitter.fireAccountCreated(intent, e);
+            mEmitter.fireIntentHandled(intent, e);
         }
+    }
+
+    private void handleCallMake(Intent intent) {
+        try {
+            Log.d(TAG, "handleCallMake start");
+
+            int accountId = intent.getIntExtra("account_id", -1);
+            String destination = intent.getStringExtra("destination");
+
+            // -----
+            PjSipAccount account = findAccount(accountId);
+
+            // -----
+            CallOpParam prm = new CallOpParam(true);
+            // TODO: Allow to send also headers and other information
+
+            // -----
+            PjSipCall call = new PjSipCall(account);
+            call.makeCall(destination, prm);
+
+            mCalls.add(call);
+            mEmitter.fireCallCreated(intent, call);
+
+            Log.d(TAG, "handleCallMake end");
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallHangup(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            call.hangup(new CallOpParam(true));
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+
+
+    private PjSipAccount findAccount(int id) throws Exception {
+        for (PjSipAccount account : mAccounts) {
+            if (account.getId() == id) {
+                return account;
+            }
+        }
+
+        throw new Exception("Account with specified \""+ id +"\" id not found");
+    }
+
+    private PjSipCall findCall(int id) throws Exception {
+        for (PjSipCall call : mCalls) {
+            if (call.getId() == id) {
+                return call;
+            }
+        }
+
+        throw new Exception("Call with specified \""+ id +"\" id not found");
     }
 }

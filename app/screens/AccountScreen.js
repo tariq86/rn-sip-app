@@ -8,9 +8,7 @@ import React, {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
-import * as Navigation from '../modules/navigation'
 import ButtonStyles from '../styles/common/ButtonStyles'
-import TextInputStyles from '../styles/common/TextInputStyles'
 import {deleteAccount} from '../modules/accounts'
 
 

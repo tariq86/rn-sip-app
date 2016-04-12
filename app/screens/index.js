@@ -15,6 +15,8 @@ import LaunchScreen from './LaunchScreen'
 import AccountScreen from './AccountScreen'
 import NewAccountScreen from './NewAccountScreen'
 import HomeScreen from './HomeScreen'
+import DailerScreen from './DailerScreen'
+import CallScreen from './CallScreen'
 import NavigationStyles from '../styles/common/NavigationStyles'
 
 //import SearchScreen from './SearchScreen'
@@ -86,6 +88,10 @@ class App extends Component {
                 return (<AccountScreen />);
             case 'new_account':
                 return (<NewAccountScreen />);
+            case 'dailer':
+                return (<DailerScreen />);
+            case 'call':
+                return (<CallScreen />);
             default:
                 return (
                     <View>
@@ -103,20 +109,32 @@ class App extends Component {
 
         console.log("render", this.props);
 
-        return (
-            <Navigator
+        if (navigation.current && navigation.current.name == 'call') {
+            return (
+                <Navigator
+                    style={{flex: 1}}
+                    ref={ref => nav = ref}
+                    initialRoute={navigation.init}
+                    configureScene={this.configureScene}
+                    renderScene={this.renderScene.bind(this)}
+                />
+            )
+        } else {
+            return (
+                <Navigator
                     style={{flex: 1, paddingTop: 56}}
                     ref={ref => nav = ref}
                     initialRoute={navigation.init}
                     configureScene={this.configureScene}
                     renderScene={this.renderScene.bind(this)}
                     navigationBar={
-                        <Navigator.NavigationBar
-                          routeMapper={NavigationBarRouteMapper}
-                          style={NavigationStyles.navBar}
-                        />
-                    } />
-        )
+                    <Navigator.NavigationBar
+                      routeMapper={NavigationBarRouteMapper}
+                      style={NavigationStyles.navBar}
+                    />
+                } />
+            )
+        }
     }
 }
 

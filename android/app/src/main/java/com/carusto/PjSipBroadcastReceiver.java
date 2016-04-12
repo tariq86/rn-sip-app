@@ -42,8 +42,10 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
         filter.addAction(PjActions.EVENT_STARTED);
         filter.addAction(PjActions.EVENT_ACCOUNT_CREATED);
         filter.addAction(PjActions.EVENT_REGISTRATION_CHANGED);
-        filter.addAction(PjActions.EVENT_CALL_CHANGED);
         filter.addAction(PjActions.EVENT_CALL_RECEIVED);
+        filter.addAction(PjActions.EVENT_CALL_CREATED);
+        filter.addAction(PjActions.EVENT_CALL_CHANGED);
+        filter.addAction(PjActions.EVENT_CALL_TERMINATED);
         filter.addAction(PjActions.EVENT_HANDLED);
 
         return filter;
@@ -69,7 +71,10 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
                 onCallReceived(intent);
                 break;
             case PjActions.EVENT_CALL_CHANGED:
-                // TODO
+                onCallChanged(intent);
+                break;
+            case PjActions.EVENT_CALL_TERMINATED:
+                onCallTerminated(intent);
                 break;
             default:
                 onCallback(intent);
@@ -78,8 +83,6 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void onRegistrationChanged(Intent intent) {
-        Log.d(TAG, "onRegistrationChanged (context: " + context.hashCode() + ")");
-
         String json = intent.getStringExtra("data");
         Object params = ArgumentUtils.fromJson(json);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("pjSipRegistrationChanged", params);
@@ -89,6 +92,18 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
         String json = intent.getStringExtra("data");
         Object params = ArgumentUtils.fromJson(json);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("pjSipCallReceived", params);
+    }
+
+    private void onCallChanged(Intent intent) {
+        String json = intent.getStringExtra("data");
+        Object params = ArgumentUtils.fromJson(json);
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("pjSipCallChanged", params);
+    }
+
+    private void onCallTerminated(Intent intent) {
+        String json = intent.getStringExtra("data");
+        Object params = ArgumentUtils.fromJson(json);
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("pjSipCallTerminated", params);
     }
 
     private void onCallback(Intent intent) {
@@ -110,6 +125,7 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
 
         // -----
         if (intent.hasExtra("exception")) {
+            Log.w(TAG, "Callback executed with exception state: " + intent.getStringExtra("exception"));
             callback.invoke(false, intent.getStringExtra("exception"));
         } else if (intent.hasExtra("data")) {
             Object params = ArgumentUtils.fromJson(intent.getStringExtra("data"));

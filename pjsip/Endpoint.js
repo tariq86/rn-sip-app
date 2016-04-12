@@ -1,10 +1,11 @@
 'use strict';
 
-import Account from './Account'
 import React, {
     DeviceEventEmitter,
     NativeModules,
 } from 'react-native';
+import Call from './Call'
+import Account from './Account'
 
 export default class Endpoint {
     id;
@@ -26,6 +27,16 @@ export default class Endpoint {
                     if (data.hasOwnProperty('accounts')) {
                         for (let d of data['accounts']) {
                             accounts.push(new Account(d));
+                        }
+                    }
+                    if (data.hasOwnProperty('calls')) {
+                        for (let d of data['calls']) {
+                            for (let account of accounts) {
+                                if (account.getId() == d['accountId']) {
+                                    calls.push(new Call(account, d));
+                                    break;
+                                }
+                            }
                         }
                     }
 
