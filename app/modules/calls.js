@@ -55,6 +55,83 @@ export function makeCall(destination, account = null) {
     };
 }
 
+export function hangupCall(callRecord) {
+    return async function(dispatch, getState) {
+        let call = callRecord.get('ref');
+        let result = await call.hangup();
+
+        console.log("Action hangupCall", result);
+    };
+}
+
+export function answerCall(callRecord) {
+    return async function(dispatch, getState) {
+        let call = callRecord.get('ref');
+        let result = await call.answer();
+
+        console.log("Action answerCall", result);
+    };
+}
+
+export function muteCall(callRecord) {
+    return async function(dispatch, getState) {
+        let call = callRecord.get('ref');
+        let result = await call.mute();
+
+        console.log("Action muteCall", result);
+    };
+}
+
+export function unmuteCall(call) {
+
+}
+
+export function holdCall(call) {
+    return async function(dispatch, getState) {
+        let call = callRecord.get('ref');
+        let result = await call.hold();
+
+        console.log("Action holdCall", result);
+    };
+}
+
+export function unholdCall(call) {
+    return async function(dispatch, getState) {
+        let call = callRecord.get('ref');
+        let result = await call.unhold();
+
+        console.log("Action unholdCall", result);
+    };
+}
+
+export function enableSpeaker(call) {
+
+}
+
+export function disableSpeaker(call) {
+
+}
+
+export function enableVideo(call) {
+
+}
+
+export function disableVideo(call) {
+
+}
+
+export function makeTransfer(destination, call) {
+
+}
+
+export function sendDTMF(key, call) {
+
+}
+
+
+
+
+
 function subscribe(call, dispatch) {
     call.addListener("changed", (c) => dispatch({type: CALL_CHANGED, call: c}));
     call.addListener("terminated", (c) => dispatch({type: CALL_TERMINATED, call: c}));

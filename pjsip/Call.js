@@ -51,7 +51,6 @@ export default class Call extends EventEmitter {
         return this._callId;
     }
 
-
     /**
      * Returns a duration of call in seconds.
      *
@@ -61,7 +60,10 @@ export default class Call extends EventEmitter {
     getDuration() {
         var time = Math.round(new Date().getTime() / 1000);
         var offset = time - this._updateTime;
-        return this._duration + offset;
+
+        console.log("getDuration", this._totalDuration, offset);
+
+        return this._totalDuration + offset;
     };
 
     /**
@@ -88,9 +90,80 @@ export default class Call extends EventEmitter {
         return result;
     };
 
-
     getAccount() {
         return this._account;
+    }
+
+    answer() {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.answerCall(this._id, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
+    }
+
+    hangup() {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.hangupCall(this._id, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
+    }
+
+    hold() {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.holdCall(this._id, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
+    }
+
+    unhold() {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.unholdCall(this._id, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
+    }
+
+    xfer(destination) {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.xferCall(this._id, destination, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
+    }
+
+    dtmf(digits) {
+        return new Promise((resolve, reject) => {
+            NativeModules.PjSipModule.dtmfCall(this._id, digits, (successful, data) => {
+                if (successful) {
+                    resolve(data);
+                } else {
+                    reject(data);
+                }
+            });
+        });
     }
 
     /**
@@ -253,11 +326,17 @@ export default class Call extends EventEmitter {
 
     // public void answer(CallOpParam prm) throws java.lang.Exception {
     // public void hangup(CallOpParam prm) throws java.lang.Exception {
-    // public void setHold(CallOpParam prm) throws java.lang.Exception {
+    // public void hold(CallOpParam prm) throws java.lang.Exception {
+    // public void unhold(CallOpParam prm) throws java.lang.Exception {
+
+    // public void mute(CallOpParam prm) throws java.lang.Exception {
+    // public void unmute(CallOpParam prm) throws java.lang.Exception {
+
     // public void reinvite(CallOpParam prm) throws java.lang.Exception {
     // public void update(CallOpParam prm) throws java.lang.Exception {
+
     // public void xfer(String dest, CallOpParam prm) throws java.lang.Exception {
-    // public void dialDtmf(String digits) throws java.lang.Exception {
+    // public void dtmf(String digits) throws java.lang.Exception {
 
     // public void dump(String digits) throws java.lang.Exception {
 

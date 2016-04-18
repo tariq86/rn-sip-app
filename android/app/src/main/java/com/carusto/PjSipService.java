@@ -243,13 +243,13 @@ public class PjSipService extends Service {
                 handleCallHangup(intent);
                 break;
             case PjActions.ACTION_ANSWER_CALL:
-                // TODO: handleCallAnswer(intent);
+                handleCallAnswer(intent);
                 break;
             case PjActions.ACTION_HOLD_CALL:
-                // TODO: handleCallSetOnHold(intent);
+                handleCallSetOnHold(intent);
                 break;
             case PjActions.ACTION_UNHOLD_CALL:
-                // TODO: handleCallReleaseFromHold(intent);
+                handleCallReleaseFromHold(intent);
                 break;
             case PjActions.ACTION_XFER_CALL:
                 // TODO: handleCallXFer(intent);
@@ -387,6 +387,48 @@ public class PjSipService extends Service {
             // -----
             PjSipCall call = findCall(callId);
             call.hangup(new CallOpParam(true));
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallAnswer(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            call.answer(new CallOpParam(true));
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallSetOnHold(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            call.putOnHold();
+
+            mEmitter.fireIntentHandled(intent);
+        } catch (Exception e) {
+            mEmitter.fireIntentHandled(intent, e);
+        }
+    }
+
+    private void handleCallReleaseFromHold(Intent intent) {
+        try {
+            int callId = intent.getIntExtra("call_id", -1);
+
+            // -----
+            PjSipCall call = findCall(callId);
+            call.releaseFromHold();
 
             mEmitter.fireIntentHandled(intent);
         } catch (Exception e) {

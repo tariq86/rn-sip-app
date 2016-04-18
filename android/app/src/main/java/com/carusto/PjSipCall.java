@@ -24,6 +24,20 @@ public class PjSipCall extends Call {
         return account.getService();
     }
 
+    public void putOnHold() throws Exception {
+        setHold(new CallOpParam(true));
+    }
+
+    public void releaseFromHold() throws Exception {
+        CallOpParam prm = new CallOpParam();
+        prm.setOptions(pjsua_call_flag.PJSUA_CALL_UNHOLD.swigValue());
+
+//        CallSetting opt = param.getOpt();
+//         opt.setFlag(pjsua_call_flag.PJSUA_CALL_UNHOLD.swigValue());  
+
+        reinvite(prm);
+    }
+
     @Override
     public void onCallState(OnCallStateParam prm) {
         try {
@@ -204,8 +218,8 @@ public class PjSipCall extends Call {
             // -----
             json.put("state", getInfo().getState());
             json.put("stateText", getInfo().getStateText());
-            json.put("connectDuration", getInfo().getConnectDuration());
-            json.put("totalDuration", getInfo().getTotalDuration());
+            json.put("connectDuration", getInfo().getConnectDuration().getSec());
+            json.put("totalDuration", getInfo().getTotalDuration().getSec());
 
             /**
             try {
