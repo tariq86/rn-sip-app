@@ -1,6 +1,5 @@
 import {NetInfo, AppState} from 'react-native'
 import * as Navigation from './navigation'
-import {Endpoint} from '../../pjsip'
 import {
     OrderedMap,
     Record
@@ -14,28 +13,41 @@ export const ACCOUNT_REGISTRATION_CHANGED = 'accounts/ACCOUNT_REGISTRATION_CHANG
 export const ACCOUNT_DELETED = 'accounts/ACCOUNT_DELETED';
 
 /**
- * Actions
+ * Handles initialization event.
+ *
+ * @param {Account[]} accounts
+ * @returns {Function}
  */
-
 export function initAccounts(accounts) {
     return async function(dispatch, getState) {
-        // -----
-        accounts.forEach((account) => subscribe(account, dispatch));
-
-        // -----
         dispatch({type: ACCOUNTS_INIT, accounts});
     };
 }
+
+/**
+ * Handle account change event.
+ *
+ * @param {Account} account
+ * @returns {Function}
+ */
+export function changeAccount(account) {
+    return async function(dispatch, getState) {
+        dispatch({type: ACCOUNT_CHANGED, account});
+    };
+}
+
+/**
+ * Creates new account based on provided configuration.
+ *
+ * @param {Object} configuration
+ * @returns {Function}
+ */
 export function createAccount(configuration) {
     return async function(dispatch, getState) {
-        // -----
-        let account = await Endpoint.createAccount({
-            ...configuration // ,
-            // transport: "TCP"
+        let endpoint = getState()['app']['endpoint'];
+        let account = await endpoint.createAccount({
+            ...configuration
         });
-
-        // -----
-        subscribe(account, dispatch);
 
         dispatch({type: ACCOUNT_CREATED, account});
         dispatch(Navigation.goTo({name: 'home'}));
@@ -45,44 +57,33 @@ export function createAccount(configuration) {
 /**
  * Action to delete account.
  *
- * @param {AccountRecord} record
+ * @param {Account} account
  * @returns {Function}
  */
-export function deleteAccount(record) {
+export function deleteAccount(account) {
     return async function(dispatch, getState) {
-        let account = record.get('ref');
-
-        // -----
-        await Endpoint.deleteAccount(account);
+        let endpoint = getState()['app']['endpoint'];
+        await endpoint.deleteAccount(account);
 
         // -----
         // TODO: Unsubscribe
-
         dispatch({type: ACCOUNT_DELETED, account});
         dispatch(Navigation.goTo({name: 'home'}));
     };
 }
 
-function subscribe(account, dispatch) {
-    account.addListener(
-        "registration_changed",
-        (account, registration) => {
-            dispatch({type: ACCOUNT_REGISTRATION_CHANGED, account, registration})
-        }
-    );
-}
+//function subscribe(account, dispatch) {
+//    account.addListener(
+//        "registration_changed",
+//        (account, registration) => {
+//            dispatch({type: ACCOUNT_REGISTRATION_CHANGED, account, registration})
+//        }
+//    );
+//}
 
 /**
  * Reducer
  */
-
-var AccountRecord = Record({
-    id: -1,
-    uri: null,
-    registration: null,
-    ref: null // Original link to account
-});
-
 
 const initialState = {
     isLoading: true,
@@ -97,10 +98,7 @@ export default function app(state = initialState, action) {
                 isLoading: false,
                 map: action.accounts.reduce(
                     (result, account) => {
-                        return result.set(account.getId(), new AccountRecord({
-                            ...account.toJson(),
-                            ref: account
-                        }));
+                        return result.set(account.getId(), account);
                     },
                     state.map
                 )
@@ -111,10 +109,7 @@ export default function app(state = initialState, action) {
         case ACCOUNT_REGISTRATION_CHANGED:
             return {
                 ...state,
-                map: state.map.set(action.account.getId(), new AccountRecord({
-                    ...action.account.toJson(),
-                    ref: action.account
-                }))
+                map: state.map.set(action.account.getId(), action.account)
             };
 
         case ACCOUNT_DELETED:

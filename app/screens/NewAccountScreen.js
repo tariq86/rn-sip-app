@@ -22,7 +22,7 @@ class NewAccountScreen extends Component {
             configuration: {
                 username: '100',
                 password: 'test',
-                host: '192.168.31.85',
+                host: '192.168.1.250',
                 realm: 'local.carusto.com'
             },
             configurationValid: true

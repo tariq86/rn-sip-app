@@ -5,7 +5,11 @@ import React, {
     NativeModules,
     AppState,
 } from 'react-native'
-import {EventEmitter} from 'events'
+
+import {
+    Record
+} from 'immutable'
+
 import AccountRegistration from './AccountRegistration'
 import Call from './Call'
 
@@ -45,35 +49,27 @@ import Call from './Call'
  * public void onMwiInfo(OnMwiInfoParam prm) {
  *
  */
-export default class Account extends EventEmitter {
-    _id;
-    _uri;
-    _registration;
+export default class Account extends Record({
+    id: -1,
+    uri: null,
+    registration: null
+}) {
 
-    constructor(data) {
-        super();
-        this._update(data);
-
-        // Register for PjSip service events.
-        DeviceEventEmitter.addListener('pjSipRegistrationChanged', this._onRegistrationChanged.bind(this));
-        DeviceEventEmitter.addListener('pjSipCallReceived', this._onCallReceived.bind(this));
-    }
-
-    // TODO: Save & Get initial configuration
+    // this._registration = new AccountRegistration(registration);
 
     getId() {
-        return this._id;
+        return this.get('id');
     }
 
     getURI() {
-        return this._uri;
+        return this.get('uri');
     }
 
     /**
      * @returns {AccountRegistration}
      */
     getRegistration() {
-        return this._registration;
+        return this.get('registration');
     }
 
     /**
@@ -83,68 +79,17 @@ export default class Account extends EventEmitter {
      * @param headers {Object[]} Optional list of headers to be sent with outgoing INVITE.
      */
     makeCall(destination, headers = []) {
-        let id = this._id;
+        let id = this.getId();
         let self = this;
 
         return new Promise(function(resolve, reject) {
             NativeModules.PjSipModule.makeCall(id, destination, (successful, data) => {
                 if (successful) {
-                    resolve(new Call(self, data));
+                    resolve(new Call(data));
                 } else {
                     reject(data);
                 }
             });
         });
     }
-
-    /**
-     * Silently updates account with actual data from PjSip service.
-     *
-     * @param id {number}
-     * @param uri {string}
-     * @param registration {Object}
-     * @private
-     */
-    _update({id, uri, registration}) {
-        this._id = id;
-        this._uri = uri;
-        this._registration = new AccountRegistration(registration);
-    }
-
-    /**
-     * @fires Account#registration_changed
-     * @private
-     * @param data {Object}
-     */
-    _onRegistrationChanged(data) {
-        // Ignore events from different account
-        if (data['id'] !== this._id) {
-            return;
-        }
-
-        this._update(data);
-
-        /**
-         * Fires when registration status has changed.
-         *
-         * @event Account#registration_changed
-         * @property {Account} account - Account instance.
-         * @property {AccountRegistration} registration
-         */
-        this.emit("registration_changed", this, this._registration);
-    }
-
-    _onCallReceived(event) {
-        console.log("_onCallReceived", arguments);
-    }
-
-
-    toJson() {
-        return {
-            id: this._id,
-            uri: this._uri,
-            registration: this._registration ? this._registration.toJson() : null
-        }
-    }
-
 }

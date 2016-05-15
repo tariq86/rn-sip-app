@@ -29,7 +29,7 @@ class CallScreen extends Component {
         super(props);
 
         this.state = {
-            duration: props.call.get('ref').getFormattedDuration()
+            duration: props.call.getFormattedDuration()
         }
     }
 
@@ -43,14 +43,8 @@ class CallScreen extends Component {
 
     tick() {
         this.setState({
-            duration: this.props.call.get('ref').getFormattedDuration()
+            duration: this.props.call.getFormattedDuration()
         });
-        // console.log("setNativeProps before");
-        // this.refs["durationText"].setNativeProps({
-        //     text: this.props.call.get('ref').getFormattedDuration(),
-        //     fontSize: 24
-        // });
-        // console.log("setNativeProps after");
     }
 
     render() {

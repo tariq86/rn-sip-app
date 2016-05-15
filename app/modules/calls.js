@@ -1,34 +1,73 @@
 import {NetInfo, AppState} from 'react-native'
 import * as Navigation from './navigation'
-import {Endpoint} from '../../pjsip'
 import {OrderedMap, Record} from 'immutable';
 
 export const CALLS_INIT = 'calls/INIT';
-export const CALL_CREATED = 'calls/CALL_CREATED';
+export const CALL_INITIATED = 'calls/CALL_INITIATED';
+export const CALL_RECEIVED = 'calls/CALL_RECEIVED';
 export const CALL_CHANGED = 'calls/CALL_CHANGED';
 export const CALL_TERMINATED = 'calls/CALL_TERMINATED';
 
 /**
- * Action Creators
+ * Handles initialization event.
+ *
+ * @param {Call[]} calls
+ * @returns {Function}
  */
 export function initCalls(calls) {
     return async function(dispatch, getState) {
-        // -----
-        calls.forEach((call) => subscribe(call, dispatch));
-
-        // -----
         dispatch({type: CALLS_INIT, calls});
     };
 }
 
+/**
+ * Handles incoming call event.
+ *
+ * @param {Call} call
+ * @returns {Function}
+ */
+export function receiveCall(call) {
+    return async function(dispatch, getState) {
+        dispatch({type: CALL_RECEIVED, call});
+    };
+}
+
+/**
+ * Handles call change event.
+ *
+ * @param {Call} call
+ * @returns {Function}
+ */
+export function changeCall(call) {
+    return async function(dispatch, getState) {
+        dispatch({type: CALL_CHANGED, call});
+    };
+}
+
+/**
+ * Handles call change event.
+ *
+ * @param {Call} call
+ * @returns {Function}
+ */
+export function terminateCall(call) {
+    return async function(dispatch, getState) {
+        dispatch({type: CALL_TERMINATED, call});
+    };
+}
+
+/**
+ * Initiate new outgoing call.
+ *
+ * @param {String} destination
+ * @param {Account} account
+ * @returns {Function}
+ */
 export function makeCall(destination, account = null) {
     return async function(dispatch, getState) {
         // Use "default" account if none provided
         if (account == null) {
             account = getState().accounts.map.first();
-            if (account) {
-                account = account.get('ref');
-            }
         }
 
         if (!account) {
@@ -37,47 +76,40 @@ export function makeCall(destination, account = null) {
 
         // -----
         // TODO: Use account getHost property (not realm)!
-        console.log("Before account.makeCall");
-        let call = await account.makeCall("sip:" + destination + "@192.168.31.85");
-        console.log("After account.makeCall");
+        // let call = await account.makeCall("sip:" + destination + "@192.168.31.85");
+        let call = await account.makeCall("sip:" + destination + "@192.168.1.250");
 
         // -----
-        subscribe(call, dispatch);
+        dispatch({type: CALL_INITIATED, call});
 
         // -----
-        dispatch({type: CALL_CREATED, call});
-
-        // -----
-        var record = getState().calls.map.get(call.getId());
-        dispatch(Navigation.goTo({name: 'call', call: record}));
-
-        console.log("End account.makeCall");
+        dispatch(Navigation.goTo({name: 'call', call}));
     };
 }
 
-export function hangupCall(callRecord) {
+/**
+ * Hangups active call.
+ *
+ * @param {Call} call
+ * @returns {Function}
+ */
+export function hangupCall(call) {
     return async function(dispatch, getState) {
-        let call = callRecord.get('ref');
         let result = await call.hangup();
-
         console.log("Action hangupCall", result);
     };
 }
 
-export function answerCall(callRecord) {
+export function answerCall(call) {
     return async function(dispatch, getState) {
-        let call = callRecord.get('ref');
         let result = await call.answer();
-
         console.log("Action answerCall", result);
     };
 }
 
-export function muteCall(callRecord) {
+export function muteCall(call) {
     return async function(dispatch, getState) {
-        let call = callRecord.get('ref');
         let result = await call.mute();
-
         console.log("Action muteCall", result);
     };
 }
@@ -88,18 +120,14 @@ export function unmuteCall(call) {
 
 export function holdCall(call) {
     return async function(dispatch, getState) {
-        let call = callRecord.get('ref');
         let result = await call.hold();
-
         console.log("Action holdCall", result);
     };
 }
 
 export function unholdCall(call) {
     return async function(dispatch, getState) {
-        let call = callRecord.get('ref');
         let result = await call.unhold();
-
         console.log("Action unholdCall", result);
     };
 }
@@ -128,41 +156,6 @@ export function sendDTMF(key, call) {
 
 }
 
-
-
-
-
-function subscribe(call, dispatch) {
-    call.addListener("changed", (c) => dispatch({type: CALL_CHANGED, call: c}));
-    call.addListener("terminated", (c) => dispatch({type: CALL_TERMINATED, call: c}));
-}
-
-/**
- * Records
- */
-
-var CallRecord = Record({
-    id: -1,
-    callId: null,
-    localContact: null,
-    localUri: null,
-    remoteContact: null,
-    remoteUri: null,
-
-    state: null,
-    stateText: null,
-
-    connectDuration: 0,
-    totalDuration: 0,
-
-    remoteOfferer: false,
-    remoteAudioCount: 0,
-    remoteVideoCount: 0,
-    audioCount: 0,
-    videoCount: 0,
-    ref: null
-});
-
 /**
  * Reducer
  */
@@ -180,22 +173,17 @@ export default function app(state = initialState, action) {
                 isLoading: false,
                 map: action.calls.reduce(
                     (result, call) => {
-                        return result.set(call.getId(), new CallRecord({
-                            ...call.toJson(),
-                            ref: call
-                        }));
+                        return result.set(call.getId(), call);
                     },
                     state.map
                 )
             };
-        case CALL_CREATED:
+        case CALL_INITIATED:
+        case CALL_RECEIVED:
         case CALL_CHANGED:
             return {
                 ...state,
-                map: state.map.set(action.call.getId(), new CallRecord({
-                    ...action.call.toJson(),
-                    ref: action.call
-                }))
+                map: state.map.set(action.call.getId(), action.call)
             };
 
         case CALL_TERMINATED:

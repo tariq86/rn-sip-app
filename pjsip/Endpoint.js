@@ -4,39 +4,47 @@ import React, {
     DeviceEventEmitter,
     NativeModules,
 } from 'react-native';
+import {EventEmitter} from 'events'
+
 import Call from './Call'
 import Account from './Account'
 
-export default class Endpoint {
-    id;
+export default class Endpoint extends EventEmitter {
 
     constructor() {
-        // TODO: Maybe put here initialization ?
+        super();
+
+        // Subscribe to Accounts events
+        DeviceEventEmitter.addListener('pjSipRegistrationChanged', this._onRegistrationChanged.bind(this));
+
+        // Subscribe to Calls events
+        DeviceEventEmitter.addListener('pjSipCallReceived', this._onCallReceived.bind(this));
+        DeviceEventEmitter.addListener('pjSipCallChanged', this._onCallChanged.bind(this));
+        DeviceEventEmitter.addListener('pjSipCallTerminated', this._onCallTerminated.bind(this));
     }
 
     /**
+     * Returns a Promise that will be resolved once PjSip module is initialized.
+     * Do not call any function while library is not initialized.
+     *
      * @returns {Promise}
      */
-    static start() {
+    start() {
         return new Promise(function(resolve, reject) {
             NativeModules.PjSipModule.start((successful, data) => {
                 if (successful) {
                     let accounts = [];
-                    let calls = []; // TODO: Calls
+                    let calls = [];
 
                     if (data.hasOwnProperty('accounts')) {
                         for (let d of data['accounts']) {
                             accounts.push(new Account(d));
                         }
                     }
+
                     if (data.hasOwnProperty('calls')) {
                         for (let d of data['calls']) {
-                            for (let account of accounts) {
-                                if (account.getId() == d['accountId']) {
-                                    calls.push(new Call(account, d));
-                                    break;
-                                }
-                            }
+                            calls.push(new Call(d));
                         }
                     }
 
@@ -55,7 +63,7 @@ export default class Endpoint {
      * @param {AccountConfig|Object} configuration
      * @returns {Promise}
      */
-    static createAccount(configuration) {
+    createAccount(configuration) {
         return new Promise(function(resolve, reject) {
             NativeModules.PjSipModule.createAccount(configuration, (successful, data) => {
                 if (successful) {
@@ -71,8 +79,12 @@ export default class Endpoint {
      * @param {Account} account
      * @returns {Promise}
      */
-    static deleteAccount(account) {
+    deleteAccount(account) {
         return new Promise(function(resolve, reject) {
+
+
+            console.log("NativeModules.PjSipModule.deleteAccount", account.getId());
+
             NativeModules.PjSipModule.deleteAccount(account.getId(), (successful, data) => {
                 if (successful) {
                     resolve(data);
@@ -83,8 +95,66 @@ export default class Endpoint {
         });
     }
 
-    static changeCodecs() {
-        throw new Error("Not implemeneted");
+    /**
+     * @fires Endpoint#registration_changed
+     * @private
+     * @param data {Object}
+     */
+    _onRegistrationChanged(data) {
+        /**
+         * Fires when registration status has changed.
+         *
+         * @event Endpoint#registration_changed
+         * @property {Account} account
+         */
+        this.emit("registration_changed", new Account(data));
+    }
+
+    /**
+     * @fires Endpoint#call_received
+     * @private
+     * @param data {Object}
+     */
+    _onCallReceived(data) {
+
+
+        /**
+         * TODO
+         *
+         * @event Endpoint#call_received
+         * @property {Call} call
+         */
+        this.emit("call_received", new Call(data));
+    }
+
+    /**
+     * @fires Endpoint#call_changed
+     * @private
+     * @param data {Object}
+     */
+    _onCallChanged(data) {
+        /**
+         * TODO
+         *
+         * @event Endpoint#call_changed
+         * @property {Call} call
+         */
+        this.emit("call_received", new Call(data));
+    }
+
+    /**
+     * @fires Endpoint#call_terminated
+     * @private
+     * @param data {Object}
+     */
+    _onCallTerminated(data) {
+        /**
+         * TODO
+         *
+         * @event Endpoint#call_terminated
+         * @property {Call} call
+         */
+        this.emit("call_received", new Call(data));
     }
 
     // setUaConfig(UaConfig value)
@@ -94,6 +164,4 @@ export default class Endpoint {
 
     // setLogConfig(LogConfig value)
     // setLevel
-
-    //
 }

@@ -5,50 +5,52 @@ import React, {
     NativeModules,
     AppState,
 } from 'react-native'
-import {EventEmitter} from 'events'
+import {
+    Record
+} from 'immutable'
 
+export default class Call extends Record({
+    id: -1,
+    callId: -1,
+    accountId: -1,
 
-export default class Call extends EventEmitter {
-    _id;
-    _callId;
-    _localContact;
-    _localUri;
-    _remoteContact;
-    _remoteUri;
-    _state;
-    _stateText;
+    localContact: null,
+    localUri: null,
+    remoteContact: null,
+    remoteUri: null,
+    state: null,
+    stateText: null,
 
-    _connectDuration;
-    _totalDuration;
+    connectDuration: 0,
+    totalDuration: 0,
 
-    _remoteOfferer;
-    _remoteAudioCount;
-    _remoteVideoCount;
-    _audioCount;
-    _videoCount;
+    remoteOfferer: null,
+    remoteAudioCount: 0,
+    remoteVideoCount: 0,
+    audioCount: 0,
+    videoCount: 0
+}) {
 
-    _updateTime;
+    constructor(data) {
+        super(data);
+        this._updateTime = Math.round(new Date().getTime() / 1000);
+    }
 
-    _account;
-
-    constructor(account, data) {
-        super();
-
-        console.log("Create call", data);
-
-        this._account = account;
-        this._update(data);
-
-        DeviceEventEmitter.addListener('pjSipCallChanged', this._onChanged.bind(this));
-        DeviceEventEmitter.addListener('pjSipCallTerminated', this._onTerminated.bind(this));
+    update(data) {
+        this._updateTime = Math.round(new Date().getTime() / 1000);
+        super.update(data);
     }
 
     getId() {
-        return this._id;
+        return this.get('id');
     }
 
     getCallId() {
-        return this._callId;
+        return this.get('callId');
+    }
+
+    getAccountId() {
+        return this.get('accountId');
     }
 
     /**
@@ -58,12 +60,10 @@ export default class Call extends EventEmitter {
      * @returns {int}
      */
     getDuration() {
-        var time = Math.round(new Date().getTime() / 1000);
-        var offset = time - this._updateTime;
+        let time = Math.round(new Date().getTime() / 1000);
+        let offset = time - this._updateTime;
 
-        console.log("getDuration", this._totalDuration, offset);
-
-        return this._totalDuration + offset;
+        return this.get('totalDuration') + offset;
     };
 
     /**
@@ -90,13 +90,10 @@ export default class Call extends EventEmitter {
         return result;
     };
 
-    getAccount() {
-        return this._account;
-    }
 
     answer() {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.answerCall(this._id, (successful, data) => {
+            NativeModules.PjSipModule.answerCall(this.getId(), (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -108,7 +105,7 @@ export default class Call extends EventEmitter {
 
     hangup() {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.hangupCall(this._id, (successful, data) => {
+            NativeModules.PjSipModule.hangupCall(this.getId(), (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -120,7 +117,7 @@ export default class Call extends EventEmitter {
 
     hold() {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.holdCall(this._id, (successful, data) => {
+            NativeModules.PjSipModule.holdCall(this.getId(), (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -132,7 +129,7 @@ export default class Call extends EventEmitter {
 
     unhold() {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.unholdCall(this._id, (successful, data) => {
+            NativeModules.PjSipModule.unholdCall(this.getId(), (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -144,7 +141,7 @@ export default class Call extends EventEmitter {
 
     xfer(destination) {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.xferCall(this._id, destination, (successful, data) => {
+            NativeModules.PjSipModule.xferCall(this.getId(), destination, (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -156,7 +153,7 @@ export default class Call extends EventEmitter {
 
     dtmf(digits) {
         return new Promise((resolve, reject) => {
-            NativeModules.PjSipModule.dtmfCall(this._id, digits, (successful, data) => {
+            NativeModules.PjSipModule.dtmfCall(this.getId(), digits, (successful, data) => {
                 if (successful) {
                     resolve(data);
                 } else {
@@ -165,103 +162,6 @@ export default class Call extends EventEmitter {
             });
         });
     }
-
-    /**
-     * Silently updates call with actual data from PjSip service.
-     *
-     * @private
-     */
-    _update({id, callId, localContact, localUri, remoteContact, remoteUri,
-            state, stateText, connectDuration, totalDuration,
-            remoteOfferer, remoteAudioCount, remoteVideoCount, audioCount, videoCount}) {
-        this._updateTime = Math.round(new Date().getTime() / 1000);
-
-        this._id = id;
-        this._callId = callId;
-        this._localContact = localContact;
-        this._localUri = localUri;
-        this._remoteContact = remoteContact;
-        this._remoteUri= remoteUri;
-        this._state = state;
-        this._stateText = stateText;
-        this._connectDuration = connectDuration;
-        this._totalDuration = totalDuration;
-        this._remoteOfferer = remoteOfferer;
-        this._remoteAudioCount = remoteAudioCount;
-        this._remoteVideoCount = remoteVideoCount;
-        this._audioCount = audioCount;
-        this._videoCount = videoCount;
-    }
-
-    /**
-     * @fires Call#changed
-     * @private
-     * @param data {Object}
-     */
-    _onChanged(data) {
-        // Ignore events from different call
-        if (data['id'] !== this._id) {
-            return;
-        }
-
-        this._update(data);
-
-        /**
-         * Fires when registration status has changed.
-         *
-         * @event Account#registration_changed
-         * @property {Account} account - Account instance.
-         * @property {AccountRegistration} registration
-         */
-        this.emit("changed", this);
-    }
-
-    /**
-     * @fires Call#terminated
-     * @private
-     * @param data {Object}
-     */
-    _onTerminated(data) {
-        // Ignore events from different call
-        if (data['id'] !== this._id) {
-            return;
-        }
-
-        this._update(data);
-
-        /**
-         * Fires when call no longer available.
-         *
-         * @event Account#terminated
-         * @property {Call} call - Call instance.
-         */
-        this.emit("terminated", this);
-    }
-
-
-    toJson() {
-        return {
-            id: this._id,
-            callId: this._callId,
-            localContact: this._localContact,
-            localUri: this._localUri,
-            remoteContact: this._remoteContact,
-            remoteUri: this._remoteUri,
-            state: this._state,
-            stateText: this._stateText,
-
-            connectDuration: this._connectDuration,
-            totalDuration: this._totalDuration,
-
-            remoteOfferer: this._remoteOfferer,
-            remoteAudioCount: this._remoteAudioCount,
-            remoteVideoCount: this._remoteVideoCount,
-            audioCount: this._audioCount,
-            videoCount: this._videoCount
-        }
-    }
-
-
 
     // getInfo
     // ... getId
