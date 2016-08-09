@@ -1,24 +1,23 @@
 {
-  "name": "CarustoConnect",
+  "name": "PjApp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "react-native start"
   },
   "dependencies": {
-    "events": "^1.1.0",
-    "immutable": "^3.7.6",
-    "lodash": "^4.2.1",
-    "moment": "^2.11.2",
-    "react": "^0.14.7",
-    "react-native": "^0.22.2",
-    "react-redux": "^4.4.1",
-    "redux": "^3.3.1",
-    "redux-devtools": "^3.1.1",
+    "lodash": "^4.14.2",
+    "moment": "^2.14.1",
+    "react": "15.2.1",
+    "react-native": "^0.31.0",
+    "react-native-pjsip": "^0.1.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-devtools": "^3.3.1",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.0.1"
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
-    "remote-redux-devtools": "^0.1.5"
+    "remote-redux-devtools": "^0.4.1"
   }
 }

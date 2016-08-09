@@ -1,6 +1,5 @@
-import React, {
-    Component,
-    PropTypes,
+import React, { Component, PropTypes } from 'react';
+import {
     ListView,
     InvertibleScrollView,
     TouchableHighlight,

@@ -2,7 +2,7 @@ import {NetInfo, AppState} from 'react-native'
 import * as Navigation from './navigation'
 import {initAccounts, changeAccount} from './accounts'
 import {initCalls, receiveCall, changeCall, terminateCall} from './calls'
-import {Endpoint} from '../../pjsip'
+import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
 

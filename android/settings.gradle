@@ -1,3 +1,4 @@
-rootProject.name = 'CarustoConnect'
+rootProject.name = 'PjApp'
 
-include ':app'
+include ':PJSIPModule', ':app'
+project(':PJSIPModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pjsip/android')
