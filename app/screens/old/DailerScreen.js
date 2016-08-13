@@ -7,8 +7,8 @@ import {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
-import ButtonStyles from '../styles/common/ButtonStyles'
-import {makeCall} from '../modules/calls'
+import ButtonStyles from '../../styles/common/ButtonStyles'
+import {makeCall} from '../../modules/calls'
 
 class DailerScreen extends Component {
 
@@ -83,8 +83,8 @@ class DailerScreen extends Component {
                 </View>
 
                 <TouchableHighlight style={{marginTop: 15}} onPress={() => this.onCallPress()}>
-                    <View style={ButtonStyles.actionButtonWithPadding}>
-                        <Text style={ButtonStyles.text}>
+                    <View>
+                        <Text>
                             Call
                         </Text>
                     </View>

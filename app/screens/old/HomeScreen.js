@@ -4,13 +4,15 @@ import {
     StatusBar,
     Text,
     Image,
-    View
+    View,
+    Platform
 } from 'react-native'
 import {connect} from 'react-redux'
-import * as Navigation from '../modules/navigation'
-import ButtonStyles from '../styles/common/ButtonStyles'
-import s from '../styles/screens/HomeScreenStyles'
-import AccountsList from '../components/AccountsList'
+import * as Navigation from '../../modules/navigation'
+import ButtonStyles from '../../styles/common/ButtonStyles'
+import s from '../../styles/screens/HomeScreenStyles'
+import AccountsList from '../../components/AccountsList'
+import Header from '../../components/Header'
 
 /**
  * Represent a view that shows available accounts to User.
@@ -36,7 +38,37 @@ class HomeScreen extends Component {
 
     render() {
         const {dispatch, accounts, calls} = this.props;
-        
+
+        // TEST CODE START
+
+        if (true) {
+
+            const content = (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <Header title="John Doe" />
+                    <View style={{alignItems: 'stretch', flex: 1}}>
+                        <Text style={s.empty}>Main Screen</Text>
+                    </View>
+                </View>
+            );
+
+            if (Platform.OS === 'ios') {
+                return content;
+            }
+
+            //return (
+            //    <AppDrawerLayout
+            //        ref={(drawer) => { this._drawer = drawer; }}
+            //        drawerWidth={300}
+            //        drawerPosition="right"
+            //        renderNavigationView={this.renderNavigationView}>
+            //        {content}
+            //    </AppDrawerLayout>
+            //);
+        }
+
+        // TEST CODE END
+
         if (accounts.length > 0 || calls.length > 0) {
             return (
                 <View style={s.listContainer}>

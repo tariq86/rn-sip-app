@@ -7,8 +7,8 @@ import {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
-import ButtonStyles from '../styles/common/ButtonStyles'
-import {deleteAccount} from '../modules/accounts'
+import ButtonStyles from '../../styles/common/ButtonStyles'
+import {deleteAccount} from '../../modules/accounts'
 
 
 class AccountScreen extends Component {

@@ -7,7 +7,7 @@ import {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
-import ButtonStyles from '../styles/common/ButtonStyles'
+import ButtonStyles from '../../styles/common/ButtonStyles'
 import {
     hangupCall,
     muteCall,
@@ -20,7 +20,7 @@ import {
     disableVideo,
     makeTransfer,
     sendDTMF
-} from '../modules/calls'
+} from '../../modules/calls'
 
 class CallScreen extends Component {
 

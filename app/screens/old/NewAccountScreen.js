@@ -7,10 +7,10 @@ import {
     View
 } from 'react-native'
 import {connect} from 'react-redux'
-import * as Navigation from '../modules/navigation'
-import ButtonStyles from '../styles/common/ButtonStyles'
-import AccountConfiguration from '../components/AccountConfiguration'
-import {createAccount} from '../modules/accounts'
+import * as Navigation from '../../modules/navigation'
+import ButtonStyles from '../../styles/common/ButtonStyles'
+import AccountConfiguration from '../../components/AccountConfiguration'
+import {createAccount} from '../../modules/accounts'
 
 class NewAccountScreen extends Component {
 

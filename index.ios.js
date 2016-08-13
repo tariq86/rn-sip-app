@@ -1,4 +1,5 @@
 import React, {AppRegistry} from 'react-native'
-import CarustoConnect from './app'
+import App from './app'
 
-AppRegistry.registerComponent('CarustoConnect', () => CarustoConnect);
+
+AppRegistry.registerComponent('PjApp', () => App);

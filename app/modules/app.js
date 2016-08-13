@@ -18,8 +18,11 @@ export function init() {
         // (because Javascript state is not persistent when User close application, e.g. application goes to background state)
 
         let endpoint = new Endpoint();
-        let state = await endpoint.start();
-        let {accounts, calls} = state;
+        // let state = await endpoint.start();
+        // let {accounts, calls} = state;
+
+        let accounts = [];
+        let calls = [];
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
@@ -39,7 +42,7 @@ export function init() {
         dispatch(initCalls(calls));
         dispatch({type: INITIALIZED, payload: endpoint});
 
-        dispatch(Navigation.goAndReplace({name: 'home'}))
+        dispatch(Navigation.goAndReplace({name: 'conversations'}))
     }
 }
 
