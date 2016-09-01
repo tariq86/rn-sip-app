@@ -13,6 +13,7 @@ import * as Navigation from '../modules/navigation'
 
 import CallScreen from './calls/CallScreen'
 import DialerScreen from './dialer/DialerScreen'
+import TestScreen from './TestScreen'
 import LaunchScreen from './LaunchScreen'
 
 import Viewport from '../components/Viewport'
@@ -49,6 +50,8 @@ class App extends Component {
                 );
             case 'call':
                 return (<CallScreen />);
+            case 'test':
+                return (<TestScreen />);
             default:
                 return (
                     <View>

@@ -7,6 +7,9 @@ import {
     StyleSheet
 } from 'react-native'
 import ItemWrapper from './header/ItemWrapper'
+import styles from '../styles/components/HeaderStyles';
+
+console.log("styles", styles);
 
 export class Header extends Component {
     render() {
@@ -47,54 +50,5 @@ Header.propTypes = {
     style: PropTypes.any,
     children: PropTypes.any
 };
-
-
-
-var STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 25;
-var HEADER_HEIGHT = Platform.OS === 'ios' ? 44 + STATUS_BAR_HEIGHT : 56 + STATUS_BAR_HEIGHT;
-
-var styles = StyleSheet.create({
-    toolbarContainer: {
-        paddingTop: STATUS_BAR_HEIGHT,
-    },
-    toolbar: {
-        height: HEADER_HEIGHT - STATUS_BAR_HEIGHT,
-    },
-    header: {
-        backgroundColor: '#3f5057',
-        paddingTop: STATUS_BAR_HEIGHT,
-        height: HEADER_HEIGHT,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    titleText: {
-        color: 'white',
-        fontSize: 14,
-    },
-    leftItem: {
-        flex: 1,
-        alignItems: 'flex-start',
-    },
-    centerItem: {
-        flex: 2,
-        alignItems: 'center',
-    },
-    rightItem: {
-        flex: 1,
-        alignItems: 'flex-end',
-    },
-    itemWrapper: {
-        padding: 11,
-    },
-    itemText: {
-        letterSpacing: 1,
-        fontSize: 12,
-        color: 'white',
-    },
-});
-
-// const Header = Platform.OS === 'ios' ? F8HeaderIOS : F8HeaderAndroid;
-Header.height = HEADER_HEIGHT;
 
 export default Header;

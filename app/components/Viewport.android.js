@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import {
     TouchableHighlight,
+    Image,
     View,
     Text,
     Platform,
@@ -11,6 +12,7 @@ import {
 } from 'react-native'
 
 import {connect} from 'react-redux'
+import {closeDrawer} from '../modules/navigation'
 
 import Header from './Header'
 import * as Navigation from '../modules/navigation'
@@ -23,13 +25,63 @@ import SettingsScreen from '../screens/settings/SettingsScreen'
 
 class Viewport extends React.Component {
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.drawer == "VISIBLE") {
+            this._drawer.openDrawer();
+        } else {
+            this._drawer.closeDrawer();
+        }
+    }
+
+    onTabSelect(tab) {
+        if (this.props.tab !== tab) {
+            this.props.onTabSelect(tab);
+        } else {
+            this.props.onDrawerClose();
+        }
+    }
 
     renderNavigationView() {
+
+        let selectedStyles = {
+
+        }
+
         return (
-            <View>
-                <Text>
-                    Navigation view
-                </Text>
+            <View style={{flex: 1, flexDirection: 'column'}}>
+
+                <View style={{flex: 0.3, backgroundColor: "#E7ECEF"}} />
+
+                <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'conversations')}>
+                    <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
+                        <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/conversations-icon.png')} />
+                        <Text style={{fontSize: 16, color: "#939A9F", marginLeft: 16}}>Conversations</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'contacts')}>
+                    <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
+                        <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/contacts-icon.png')} />
+                        <Text style={{fontSize: 16, color: "#939A9F", marginLeft: 16}}>Contacts</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'history')}>
+                    <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
+                        <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/history-icon.png')} />
+                        <Text style={{fontSize: 16, color: "#939A9F", marginLeft: 16}}>History</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'settings')}>
+                    <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
+                        <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/account-icon.png')} />
+                        <Text style={{fontSize: 16, color: "#939A9F", marginLeft: 16}}>Settings</Text>
+                    </View>
+                </TouchableHighlight>
+
+
+                <View style={{flex: 0.6}} />
             </View>
         )
     }
@@ -50,13 +102,9 @@ class Viewport extends React.Component {
     }
 
     render() {
-        setTimeout(() => {
-            this._drawer.openDrawer();
-        }, 3000)
-
         return (
-            <DrawerLayoutAndroid ref={(drawer) => { this._drawer = drawer; }} renderNavigationView={this.renderNavigationView}>
-                <View key={this.props.tab}>
+            <DrawerLayoutAndroid drawerWidth={320} ref={(drawer) => { this._drawer = drawer; }} onDrawerClose={this.props.onDrawerClose} style={{flex: 1}} renderNavigationView={this.renderNavigationView.bind(this)}>
+                <View key={this.props.tab} style={{flex: 1}}>
                     {this.renderContent()}
                 </View>
             </DrawerLayoutAndroid>
@@ -65,23 +113,25 @@ class Viewport extends React.Component {
 }
 
 Viewport.props = {
-    navigator: PropTypes.object
+    navigator: PropTypes.object,
+    onTabSelect: PropTypes.func,
+    onDrawerClose: PropTypes.func
 }
 
 function select(store) {
     return {
-        tab: store.navigation.current.name
+        tab: store.navigation.current.name,
+        drawer: store.navigation.drawer
     };
 }
 
 function actions(dispatch) {
     return {
         onTabSelect: (tab) => {
-            if (tab == 'dialer') {
-                dispatch(Navigation.goTo({name: tab}))
-            } else {
-                dispatch(Navigation.goAndReplace({name: tab}))
-            }
+            dispatch(Navigation.goAndReplace({name: tab}));
+        },
+        onDrawerClose: () => {
+            dispatch(Navigation.closeDrawer());
         }
     };
 }

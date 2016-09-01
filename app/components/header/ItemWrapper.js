@@ -5,6 +5,7 @@ import {
     Text,
     Image
 } from 'react-native'
+import styles from '../../styles/components/HeaderStyles';
 
 export default class ItemWrapper extends React.Component {
     render() {

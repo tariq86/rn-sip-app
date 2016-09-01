@@ -1,4 +1,5 @@
 rootProject.name = 'PjApp'
 
-include ':PJSIPModule', ':app'
+include ':react-native-linear-gradient', ':PJSIPModule', ':app'
 project(':PJSIPModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pjsip/android')
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')

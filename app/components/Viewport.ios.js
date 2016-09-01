@@ -31,53 +31,63 @@ class Viewport extends React.Component {
 
     render() {
         return (
-            <TabBarIOS tintColor="#032250">
+            <TabBarIOS tintColor="#3F5057" barTintColor="#f8f9fa" translucent={false}>
                 <TabBarIOS.Item
                     title="Conversations"
+                    renderAsOriginal={true}
                     selected={this.props.tab === 'conversations'}
                     onPress={this.onTabSelect.bind(this, 'conversations')}
-                    icon={require('../assets/images/schedule-icon-1.png')}
-                    selectedIcon={require('../assets/images/schedule-icon-1-active.png')}>
+                    onLayout={(event) => {}}
+                    icon={require('../assets/images/toolbar/conversations-icon.png')}
+                    selectedIcon={require('../assets/images/toolbar/conversations-active-icon.png')}>
 
                     <ConversationsScreen />
 
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     title="Contacts"
+                    renderAsOriginal={true}
                     selected={this.props.tab === 'contacts'}
                     onPress={this.onTabSelect.bind(this, 'contacts')}
-                    icon={require('../assets/images/my-schedule-icon.png')}
-                    selectedIcon={require('../assets/images/my-schedule-icon-active.png')}>
+                    onLayout={(event) => {}}
+                    icon={require('../assets/images/toolbar/contacts-icon.png')}
+                    selectedIcon={require('../assets/images/toolbar/contacts-active-icon.png')}>
 
                     <ContactsScreen />
 
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     title="Keypad"
+                    renderAsOriginal={true}
                     selected={this.props.tab === 'dialer'}
                     onPress={this.onTabSelect.bind(this, 'dialer')}
-                    icon={require('../assets/images/maps-icon.png')}
-                    selectedIcon={require('../assets/images/maps-icon-active.png')}>
+                    onLayout={(event) => {}}
+                    icon={require('../assets/images/toolbar/call-icon.png')}
+                    selectedIcon={require('../assets/images/toolbar/call-active-icon.png')}>
 
                     <DialerScreen />
 
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     title="History"
+                    renderAsOriginal={true}
                     selected={this.props.tab === 'history'}
                     onPress={this.onTabSelect.bind(this, 'history')}
-                    icon={require('../assets/images/notifications-icon.png')}
-                    selectedIcon={require('../assets/images/notifications-icon-active.png')}>
+                    onLayout={(event) => {}}
+                    icon={require('../assets/images/toolbar/history-icon.png')}
+                    selectedIcon={require('../assets/images/toolbar/history-active-icon.png')}>
 
                     <HistoryScreen />
 
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     title="Settings"
+                    renderAsOriginal={true}
                     selected={this.props.tab === 'settings'}
                     onPress={this.onTabSelect.bind(this, 'settings')}
-                    icon={require('../assets/images/info-icon.png')}
-                    selectedIcon={require('../assets/images/info-icon-active.png')}>
+                    onLayout={(event) => {}}
+                    icon={require('../assets/images/toolbar/settings-icon.png')}
+                    selectedIcon={require('../assets/images/toolbar/settings-active-icon.png')}>
 
                     <SettingsScreen />
 

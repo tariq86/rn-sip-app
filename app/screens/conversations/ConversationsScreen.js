@@ -4,6 +4,8 @@ import React, { Component, PropTypes } from 'react';
 import {
     TouchableHighlight,
     View,
+    Modal,
+    Image,
     Text,
     Platform,
     StyleSheet,
@@ -11,16 +13,75 @@ import {
 } from 'react-native'
 
 import {connect} from 'react-redux'
+import * as Navigation from '../../modules/navigation'
 
 import Header from '../../components/Header'
+import KeypadWithActions from '../../components/call/KeypadWithActions'
+import ActionButton from 'react-native-action-button';
 
 class ConversationsScreen extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {dialerVisible: false};
+    }
+
+    setDialerVisible(visible) {
+        this.setState({dialerVisible: visible});
+    }
+
+    onKeypadPress() {
+        this.setState({dialerVisible: true});
+    }
+
     render() {
+        let platformHeaderProps = {};
+
+        if (Platform.OS === 'ios') {
+
+        } else {
+            platformHeaderProps['leftItem'] = {
+                title: 'Menu',
+                icon: require('../../assets/images/header/hamburger.png'),
+                layout: 'icon',
+                onPress: this.props.onHamburgerPress
+            };
+        }
+
         return (
             <View style={{flex: 1}}>
-                <Header title="Conversations" />
-                <Text>I'll be back</Text>
+                <Header title="Conversations" {...platformHeaderProps} />
+                <View style={{flex: 1, alignItems: 'center', backgroundColor: "#ECEFF1", justifyContent: 'center', paddingBottom: (Platform.OS === 'ios' ? 50 : 0)}}>
+                    <Text style={{fontSize: 42, marginTop: 26, color: "#666"}}>Вітаю!</Text>
+                    <Image resizeMode="contain" style={{width: 250}} source={require('../../assets/demo/tyrannosaurus-rex.png')} />
+                </View>
+
+                {
+                    Platform.OS === 'ios' ? null :
+                        <Modal
+                            animationType={"slide"}
+                            transparent={false}
+                            visible={this.state.dialerVisible}
+                            onRequestClose={() => {alert("Modal has been closed.")}}
+                        >
+                            <KeypadWithActions style={{flex: 1}}/>
+
+                            <TouchableHighlight
+                                style={{height: 46, backgroundColor:"#E7ECEF", borderTopWidth: 1, borderColor: "#E0E7EA", alignItems: 'center', justifyContent: 'center'}}
+                                onPress={() => { this.setDialerVisible(!this.state.dialerVisible) }}>
+                                <Text style={{fontSize: 14}}>Отмена</Text>
+                            </TouchableHighlight>
+
+                        </Modal>
+                }
+
+                {
+                    Platform.OS === 'ios' ? null :
+                    <ActionButton
+                        buttonColor="rgba(231,76,60,1)"
+                        onPress={this.onKeypadPress.bind(this)}
+                    />
+                }
             </View>
         );
     }
@@ -28,7 +89,8 @@ class ConversationsScreen extends React.Component {
 }
 
 ConversationsScreen.props = {
-
+    onHamburgerPress: PropTypes.func,
+    onKeypadPress: PropTypes.func
 }
 
 function select(store) {
@@ -39,7 +101,9 @@ function select(store) {
 
 function actions(dispatch) {
     return {
-
+        onHamburgerPress: () => {
+            dispatch(Navigation.openDrawer());
+        }
     };
 }
 

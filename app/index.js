@@ -7,13 +7,17 @@ import App from './screens'
 
 const store = configureStore();
 
+// TODO: Hide Status bar when App is full screen!
+
 class Root extends Component {
     render() {
         return (
             <Provider store={store}>
                 <View style={{flex: 1}}>
                     <StatusBar
-                        backgroundColor="#CCCCCC" />
+                        backgroundColor="#CCCCCC"
+                        barStyle="light-content"
+                        hidden={false} />
                     <App />
                 </View>
             </Provider>
