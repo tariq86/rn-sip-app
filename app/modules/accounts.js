@@ -50,7 +50,7 @@ export function createAccount(configuration) {
         });
 
         dispatch({type: ACCOUNT_CREATED, account});
-        dispatch(Navigation.goTo({name: 'home'}));
+        dispatch(Navigation.goTo({name: 'settings'}));
     };
 }
 

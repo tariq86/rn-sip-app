@@ -119,8 +119,15 @@ Viewport.props = {
 }
 
 function select(store) {
+    // Do not track tabs other then 'conversations', 'contacts', 'history' and 'settings'
+    let tab = store.navigation.current.name;
+
+    if (['conversations', 'contacts', 'history', 'settings'].indexOf(tab) == -1) {
+        tab = store.navigation.prevision.name;
+    }
+
     return {
-        tab: store.navigation.current.name,
+        tab: tab,
         drawer: store.navigation.drawer
     };
 }

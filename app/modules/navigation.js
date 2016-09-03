@@ -58,7 +58,7 @@ export function closeDrawer() {
 const initialState = {
     init: {name: 'launch'},
     current: {},
-    prevision: {},
+    prevision: {}, // TODO: Rename may be to previous ?
     history: [],
     drawer: false
 };

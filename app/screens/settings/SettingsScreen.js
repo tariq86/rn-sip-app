@@ -21,6 +21,23 @@ import Header from '../../components/Header'
 
 class SettingsScreen extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    renderAccounts(accounts) {
+        let list = accounts.toArray();
+        let result = [];
+
+        for (let acc of list) {
+            result.push((
+                <LinedAccountInfo key={acc.getId()} account={acc} onAccountPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
+            ))
+        }
+
+        return result;
+    }
+
     render() {
         let platformHeaderProps = {};
 
@@ -35,19 +52,21 @@ class SettingsScreen extends React.Component {
             };
         }
 
+
+        platformHeaderProps['rightItem'] = {
+            title: 'Create',
+            icon: require('../../assets/images/header/add_white.png'),
+            layout: 'icon',
+            onPress: this.props.onNewAccountPress
+        };
+
         return (
             <View style={{flex: 1}}>
                 <Header title="Settings" {...platformHeaderProps} />
 
                 <LinedSection title="Accounts" />
 
-                <LinedAccountInfo />
-                <LinedAccountInfo />
-
-                <View style={{  }}>
-
-                </View>
-
+                {this.renderAccounts(this.props.accounts)}
 
                 { /**
                 <View style={{height: 40, alignItems:'center', justifyContent: 'center'}}>
@@ -66,12 +85,15 @@ class SettingsScreen extends React.Component {
 }
 
 SettingsScreen.props = {
-    onHamburgerPress: PropTypes.func
+    accounts: PropTypes.object,
+    onHamburgerPress: PropTypes.func,
+    onAccountPress: PropTypes.func,
+    onNewAccountPress: PropTypes.func
 }
 
 function select(store) {
     return {
-
+        accounts: store.accounts.map
     };
 }
 
@@ -79,6 +101,9 @@ function actions(dispatch) {
     return {
         onHamburgerPress: () => {
             dispatch(Navigation.openDrawer());
+        },
+        onNewAccountPress: () => {
+            dispatch(Navigation.goTo({name: 'account'}));
         }
     };
 }

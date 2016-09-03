@@ -34,6 +34,9 @@ export default class LinedAccountInfo extends Component {
     }
 
     render() {
+        let acc = this.props.account;
+        let registration = acc.getRegistration();
+
         return (
             <View style={[{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#E0E7EA', padding: 10}, this.props.style]}>
 
@@ -43,8 +46,16 @@ export default class LinedAccountInfo extends Component {
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
-                    <Text style={{fontSize: 16, marginBottom: 2}}>1000@carusto.com</Text>
-                    <Text style={{fontSize: 9, color: "#979797", marginTop: 2}}>Disabled</Text>
+                    <Text style={{fontSize: 16, marginBottom: 2}}>
+                        {
+                            acc.getURI()
+                        }
+                    </Text>
+                    <Text style={{fontSize: 9, color: "#979797", marginTop: 2}}>
+                        {
+                            registration.getStatusText()
+                        }
+                    </Text>
                 </View>
 
                 <View style={{justifyContent: 'center'}}>
@@ -59,5 +70,6 @@ export default class LinedAccountInfo extends Component {
 
 LinedAccountInfo.propTypes = {
     style: View.propTypes.style,
+    account: PropTypes.object,
     onPress: PropTypes.func
 };

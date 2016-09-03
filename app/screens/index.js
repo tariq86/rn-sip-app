@@ -16,6 +16,8 @@ import DialerScreen from './dialer/DialerScreen'
 import TestScreen from './TestScreen'
 import LaunchScreen from './LaunchScreen'
 
+import AccountScreen from './settings/AccountScreen'
+
 import Viewport from '../components/Viewport'
 
 // this need for passing navigator instance to navigation module
@@ -50,6 +52,8 @@ class App extends Component {
                 );
             case 'call':
                 return (<CallScreen />);
+            case 'account':
+                return (<AccountScreen />);
             case 'test':
                 return (<TestScreen />);
             default:
