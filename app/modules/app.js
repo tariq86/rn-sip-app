@@ -1,7 +1,7 @@
 import {NetInfo, AppState, NativeModules} from 'react-native'
 import * as Navigation from './navigation'
-import {initAccounts, changeAccount} from './accounts'
-import {initCalls, receiveCall, changeCall, terminateCall} from './calls'
+import {initAccounts, onAccountChanged} from './accounts'
+import {initCalls, onCallReceived, onCallChanged, onCallTerminated} from './calls'
 import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
@@ -21,16 +21,16 @@ export function init() {
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
-            dispatch(changeAccount(account));
+            dispatch(onAccountChanged(account));
         });
         endpoint.on("call_received", (call) => {
-            dispatch(receiveCall(call));
+            dispatch(onCallReceived(call));
         });
         endpoint.on("call_changed", (call) => {
-            dispatch(changeCall(call));
+            dispatch(onCallChanged(call));
         });
         endpoint.on("call_terminated", (call) => {
-            dispatch(terminateCall(call));
+            dispatch(onCallTerminated(call));
         });
 
         dispatch(initAccounts(accounts));

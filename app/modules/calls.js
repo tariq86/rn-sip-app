@@ -26,7 +26,7 @@ export function initCalls(calls) {
  * @param {Call} call
  * @returns {Function}
  */
-export function receiveCall(call) {
+export function onCallReceived(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_RECEIVED, call});
     };
@@ -38,7 +38,7 @@ export function receiveCall(call) {
  * @param {Call} call
  * @returns {Function}
  */
-export function changeCall(call) {
+export function onCallChanged(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_CHANGED, call});
     };
@@ -50,7 +50,7 @@ export function changeCall(call) {
  * @param {Call} call
  * @returns {Function}
  */
-export function terminateCall(call) {
+export function onCallTerminated(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_TERMINATED, call});
     };

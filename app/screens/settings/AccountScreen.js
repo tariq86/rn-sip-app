@@ -14,11 +14,11 @@ import {
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
-import {createAccount, deleteAccount} from '../../modules/accounts'
+import {createAccount, replaceAccount, deleteAccount} from '../../modules/accounts'
 
-import LinedTextInput from '../../components/common/LinedTextInput';
 import LinedSection from '../../components/common/LinedSection';
 import LinedDialogInput from '../../components/common/LinedDialogInput';
+import LinedDialogSelection from '../../components/common/LinedDialogSelection';
 
 import Header from '../../components/Header'
 
@@ -29,6 +29,8 @@ class AccountScreen extends React.Component {
 
         if (this.props.account) {
             this.state = {
+                addable: true,
+
                 name: this.props.account.getName(),
                 username: this.props.account.getUsername(),
                 domain: this.props.account.getDomain(),
@@ -41,6 +43,8 @@ class AccountScreen extends React.Component {
             }
         } else {
             this.state = {
+                addable: false,
+
                 name: "",
                 username: "",
                 domain: "",
@@ -53,24 +57,29 @@ class AccountScreen extends React.Component {
             }
         }
 
-
-        
         this._onNameChanged = this.onFieldChanged.bind(this, "name");
         this._onUsernameChanged = this.onFieldChanged.bind(this, "username");
         this._onPasswordChanged = this.onFieldChanged.bind(this, "password");
         this._onDomainChanged = this.onFieldChanged.bind(this, "domain");
         this._onProxyChanged = this.onFieldChanged.bind(this, "proxy");
+        this._onTransportChanged = this.onFieldChanged.bind(this, "transport");
+        this._onRegServerChanged = this.onFieldChanged.bind(this, "regServer");
+        this._onRegTimeoutChanged = this.onFieldChanged.bind(this, "regTimeout");
         this._onSubmitPress = this.onSubmitPress.bind(this);
         this._onDeletePress = this.onDeletePress.bind(this);
     }
 
     onFieldChanged(name, value) {
-        this.setState({[name]: value});
+        let s = {...this.state, [name]: value};
+        let addable = s.name.length > 0 && s.username.length > 0 && s.domain.length > 0 && s.password.length > 0;
+
+        this.setState({[name]: value, addable: addable});
     }
     
     onSubmitPress() {
-        // TODO: Validation and prompting.
-        // TODO: Add port and transport
+        if (!this.state.addable) {
+            return alert("Please fill all required fields.");
+        }
 
         let credentials = {
             name: this.state.name,
@@ -84,7 +93,11 @@ class AccountScreen extends React.Component {
             regTimeout: this.state.regTimeout
         };
 
-        this.props.onCreatePress && this.props.onCreatePress(credentials);
+        if (this.props.account) {
+            this.props.onChangePress && this.props.onChangePress(credentials);
+        } else {
+            this.props.onCreatePress && this.props.onCreatePress(credentials);
+        }
     }
 
     onDeletePress() {
@@ -115,16 +128,16 @@ class AccountScreen extends React.Component {
                     <LinedSection title="General" />
 
                     <LinedDialogInput title="Full name" placeholder="Display name" value={this.state.name} onChange={this._onNameChanged} />
-                    <LinedDialogInput title="Username" placeholder="Account name / Login" value={this.state.username} onChange={this._onUsernameChanged} />
-                    <LinedDialogInput title="Server" placeholder="SIP server domain" value={this.state.domain} onChange={this._onDomainChanged} />
-                    <LinedDialogInput title="Password" placeholder="Password to access your account" value={this.state.password} onChange={this._onPasswordChanged} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false}} title="Username" placeholder="Account name / Login" value={this.state.username} onChange={this._onUsernameChanged} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false}} title="Server" placeholder="SIP server domain" value={this.state.domain} onChange={this._onDomainChanged} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false, secureTextEntry: true}} title="Password" placeholder="Password to access your account" value={this.state.password} valueType="password" onChange={this._onPasswordChanged} />
 
                     <LinedSection title="Advanced" />
 
-                    <LinedDialogInput title="Proxy" placeholder="Proxy domain/ip and port (optional)" value="" onChange={this._onProxyChanged} />
-                    <LinedDialogInput title="Transport" placeholder="Connection transport UDP, TCP, TLS (optional)" value="" onChange={() => {}} />
-                    <LinedDialogInput title="Registry server / Realm" placeholder="URL to be put in the request URI for the registration" value="" onChange={() => {}} />
-                    <LinedDialogInput title="Registration Timeout" placeholder="Interval for registration, in seconds" value="" onChange={() => {}} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false}} title="Proxy" description="Proxy domain/ip and port" placeholder="Proxy domain/ip and port" value={this.state.proxy} onChange={this._onProxyChanged} />
+                    <LinedDialogSelection options={["UDP", "TCP", "TLS"]} title="Transport" placeholder="Connection transport UDP, TCP, TLS" value={this.state.transport} onChange={this._onTransportChanged} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false}} title="Registry server / Realm" placeholder="URL to be put in the request URI for the registration" value={this.state.regServer} onChange={this._onRegServerChanged} />
+                    <LinedDialogInput inputProps={{autoCapitalize: "none", autoCorrect: false, keyboardType: "numeric"}} title="Registration Timeout" placeholder="Interval for registration, in seconds" value={this.state.regTimeout} onChange={this._onRegTimeoutChanged} />
                 </ScrollView>
                 {
                     !this.props.account ? null :
@@ -143,6 +156,7 @@ class AccountScreen extends React.Component {
 AccountScreen.props = {
     onBackPress: PropTypes.func,
     onCreatePress: PropTypes.func,
+    onChangePress: PropTypes.func,
     onDeletePress: PropTypes.func
 };
 
@@ -159,6 +173,10 @@ function actions(dispatch) {
         },
         onCreatePress: (configuration) => {
             dispatch(createAccount(configuration));
+        },
+        onChangePress: (account, configuration) => {
+            alert("Not implemented");
+            // dispatch(replaceAccount(account, configuration));
         },
         onDeletePress: (account) => {
             dispatch(deleteAccount(account))

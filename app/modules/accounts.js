@@ -30,7 +30,7 @@ export function initAccounts(accounts) {
  * @param {Account} account
  * @returns {Function}
  */
-export function changeAccount(account) {
+export function onAccountChanged(account) {
     return async function(dispatch, getState) {
         dispatch({type: ACCOUNT_CHANGED, account});
     };
@@ -43,9 +43,6 @@ export function changeAccount(account) {
  * @returns {Function}
  */
 export function createAccount(configuration) {
-
-    console.log("createAccount", configuration);
-
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
         let account = await endpoint.createAccount({
@@ -53,6 +50,25 @@ export function createAccount(configuration) {
         });
 
         dispatch({type: ACCOUNT_CREATED, account});
+        dispatch(Navigation.goTo({name: 'settings'}));
+    };
+}
+
+/**
+ * Replaces existing account with new configuration (e.g. remove and recreate account)
+ *
+ * @param {Account} account
+ * @param {Object} configuration
+ * @returns {Function}
+ */
+export function replaceAccount(account, configuration) {
+    return async function(dispatch, getState) {
+        //let endpoint = getState()['app']['endpoint'];
+        //let account = await endpoint.createAccount({
+        //    ...configuration
+        //});
+        //
+        //dispatch({type: ACCOUNT_CREATED, account});
         dispatch(Navigation.goTo({name: 'settings'}));
     };
 }
