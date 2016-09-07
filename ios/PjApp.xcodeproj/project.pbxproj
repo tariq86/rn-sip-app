@@ -23,35 +23,35 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		DD7E96A71D7B52F400D9E94F /* .gitattributes in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95531D7B52F400D9E94F /* .gitattributes */; settings = {ASSET_TAGS = (); }; };
-		DD7E96A81D7B52F400D9E94F /* m_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95681D7B52F400D9E94F /* m_auto.h.in */; settings = {ASSET_TAGS = (); }; };
-		DD7E96A91D7B52F400D9E94F /* os_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95701D7B52F400D9E94F /* os_auto.h.in */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AA1D7B52F400D9E94F /* config_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95DD1D7B52F400D9E94F /* config_auto.h.in */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AB1D7B52F400D9E94F /* config_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E961C1D7B52F400D9E94F /* config_auto.h.in */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AC1D7B52F400D9E94F /* sip_autoconf.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E964F1D7B52F400D9E94F /* sip_autoconf.h.in */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AD1D7B52F400D9E94F /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E968E1D7B52F400D9E94F /* libcrypto.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AE1D7B52F400D9E94F /* libg7221codec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E968F1D7B52F400D9E94F /* libg7221codec-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96AF1D7B52F400D9E94F /* libgsmcodec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96901D7B52F400D9E94F /* libgsmcodec-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B01D7B52F400D9E94F /* libilbccodec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96911D7B52F400D9E94F /* libilbccodec-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B11D7B52F400D9E94F /* libopenh264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96921D7B52F400D9E94F /* libopenh264.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B21D7B52F400D9E94F /* libpj-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96931D7B52F400D9E94F /* libpj-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B31D7B52F400D9E94F /* libpjlib-util-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96941D7B52F400D9E94F /* libpjlib-util-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B41D7B52F400D9E94F /* libpjmedia-audiodev-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96951D7B52F400D9E94F /* libpjmedia-audiodev-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B51D7B52F400D9E94F /* libpjmedia-codec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96961D7B52F400D9E94F /* libpjmedia-codec-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B61D7B52F400D9E94F /* libpjmedia-videodev-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96971D7B52F400D9E94F /* libpjmedia-videodev-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B71D7B52F400D9E94F /* libpjmedia-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96981D7B52F400D9E94F /* libpjmedia-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B81D7B52F400D9E94F /* libpjnath-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96991D7B52F400D9E94F /* libpjnath-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96B91D7B52F400D9E94F /* libpjsdp-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969A1D7B52F400D9E94F /* libpjsdp-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BA1D7B52F400D9E94F /* libpjsip-simple-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969B1D7B52F400D9E94F /* libpjsip-simple-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BB1D7B52F400D9E94F /* libpjsip-ua-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969C1D7B52F400D9E94F /* libpjsip-ua-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BC1D7B52F400D9E94F /* libpjsip-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969D1D7B52F400D9E94F /* libpjsip-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BD1D7B52F400D9E94F /* libpjsua-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969E1D7B52F400D9E94F /* libpjsua-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BE1D7B52F400D9E94F /* libpjsua2-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969F1D7B52F400D9E94F /* libpjsua2-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96BF1D7B52F400D9E94F /* libresample-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A01D7B52F400D9E94F /* libresample-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96C01D7B52F400D9E94F /* libspeex-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A11D7B52F400D9E94F /* libspeex-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96C11D7B52F400D9E94F /* libsrtp-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A21D7B52F400D9E94F /* libsrtp-x86_64-apple-darwin_ios.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96C21D7B52F400D9E94F /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A31D7B52F400D9E94F /* libssl.a */; settings = {ASSET_TAGS = (); }; };
-		DD7E96C61D7B531000D9E94F /* libRTCPjSip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96C51D7B52F400D9E94F /* libRTCPjSip.a */; };
+		A6DD654A1D80027E00A51AC2 /* libRTCPjSip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DD65491D80026200A51AC2 /* libRTCPjSip.a */; };
+		DD7E96A71D7B52F400D9E94F /* .gitattributes in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95531D7B52F400D9E94F /* .gitattributes */; };
+		DD7E96A81D7B52F400D9E94F /* m_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95681D7B52F400D9E94F /* m_auto.h.in */; };
+		DD7E96A91D7B52F400D9E94F /* os_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95701D7B52F400D9E94F /* os_auto.h.in */; };
+		DD7E96AA1D7B52F400D9E94F /* config_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E95DD1D7B52F400D9E94F /* config_auto.h.in */; };
+		DD7E96AB1D7B52F400D9E94F /* config_auto.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E961C1D7B52F400D9E94F /* config_auto.h.in */; };
+		DD7E96AC1D7B52F400D9E94F /* sip_autoconf.h.in in Resources */ = {isa = PBXBuildFile; fileRef = DD7E964F1D7B52F400D9E94F /* sip_autoconf.h.in */; };
+		DD7E96AD1D7B52F400D9E94F /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E968E1D7B52F400D9E94F /* libcrypto.a */; };
+		DD7E96AE1D7B52F400D9E94F /* libg7221codec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E968F1D7B52F400D9E94F /* libg7221codec-x86_64-apple-darwin_ios.a */; };
+		DD7E96AF1D7B52F400D9E94F /* libgsmcodec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96901D7B52F400D9E94F /* libgsmcodec-x86_64-apple-darwin_ios.a */; };
+		DD7E96B01D7B52F400D9E94F /* libilbccodec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96911D7B52F400D9E94F /* libilbccodec-x86_64-apple-darwin_ios.a */; };
+		DD7E96B11D7B52F400D9E94F /* libopenh264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96921D7B52F400D9E94F /* libopenh264.a */; };
+		DD7E96B21D7B52F400D9E94F /* libpj-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96931D7B52F400D9E94F /* libpj-x86_64-apple-darwin_ios.a */; };
+		DD7E96B31D7B52F400D9E94F /* libpjlib-util-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96941D7B52F400D9E94F /* libpjlib-util-x86_64-apple-darwin_ios.a */; };
+		DD7E96B41D7B52F400D9E94F /* libpjmedia-audiodev-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96951D7B52F400D9E94F /* libpjmedia-audiodev-x86_64-apple-darwin_ios.a */; };
+		DD7E96B51D7B52F400D9E94F /* libpjmedia-codec-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96961D7B52F400D9E94F /* libpjmedia-codec-x86_64-apple-darwin_ios.a */; };
+		DD7E96B61D7B52F400D9E94F /* libpjmedia-videodev-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96971D7B52F400D9E94F /* libpjmedia-videodev-x86_64-apple-darwin_ios.a */; };
+		DD7E96B71D7B52F400D9E94F /* libpjmedia-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96981D7B52F400D9E94F /* libpjmedia-x86_64-apple-darwin_ios.a */; };
+		DD7E96B81D7B52F400D9E94F /* libpjnath-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96991D7B52F400D9E94F /* libpjnath-x86_64-apple-darwin_ios.a */; };
+		DD7E96B91D7B52F400D9E94F /* libpjsdp-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969A1D7B52F400D9E94F /* libpjsdp-x86_64-apple-darwin_ios.a */; };
+		DD7E96BA1D7B52F400D9E94F /* libpjsip-simple-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969B1D7B52F400D9E94F /* libpjsip-simple-x86_64-apple-darwin_ios.a */; };
+		DD7E96BB1D7B52F400D9E94F /* libpjsip-ua-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969C1D7B52F400D9E94F /* libpjsip-ua-x86_64-apple-darwin_ios.a */; };
+		DD7E96BC1D7B52F400D9E94F /* libpjsip-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969D1D7B52F400D9E94F /* libpjsip-x86_64-apple-darwin_ios.a */; };
+		DD7E96BD1D7B52F400D9E94F /* libpjsua-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969E1D7B52F400D9E94F /* libpjsua-x86_64-apple-darwin_ios.a */; };
+		DD7E96BE1D7B52F400D9E94F /* libpjsua2-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E969F1D7B52F400D9E94F /* libpjsua2-x86_64-apple-darwin_ios.a */; };
+		DD7E96BF1D7B52F400D9E94F /* libresample-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A01D7B52F400D9E94F /* libresample-x86_64-apple-darwin_ios.a */; };
+		DD7E96C01D7B52F400D9E94F /* libspeex-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A11D7B52F400D9E94F /* libspeex-x86_64-apple-darwin_ios.a */; };
+		DD7E96C11D7B52F400D9E94F /* libsrtp-x86_64-apple-darwin_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A21D7B52F400D9E94F /* libsrtp-x86_64-apple-darwin_ios.a */; };
+		DD7E96C21D7B52F400D9E94F /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7E96A31D7B52F400D9E94F /* libssl.a */; };
 		F9ECD63FDD5E4B1085B7BEB0 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98ED18AA9F3E4C11A1BB73A8 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -140,9 +140,9 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BVLinearGradient;
 		};
-		DD7E96C41D7B52F400D9E94F /* PBXContainerItemProxy */ = {
+		A6DD65481D80026200A51AC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DD7E96A41D7B52F400D9E94F /* RTCPjSip.xcodeproj */;
+			containerPortal = A6DD653F1D80025F00A51AC2 /* RTCPjSip.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = DDFF87521D79D6F50096A8BE;
 			remoteInfo = RTCPjSip;
@@ -173,6 +173,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		98ED18AA9F3E4C11A1BB73A8 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
+		A6DD653F1D80025F00A51AC2 /* RTCPjSip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RTCPjSip.xcodeproj; path = "../node_modules/react-native-pjsip/ios/RTCPjSip.xcodeproj"; sourceTree = "<group>"; };
 		DD7E95531D7B52F400D9E94F /* .gitattributes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
 		DD7E95561D7B52F400D9E94F /* activesock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activesock.h; sourceTree = "<group>"; };
 		DD7E95571D7B52F400D9E94F /* addr_resolv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addr_resolv.h; sourceTree = "<group>"; };
@@ -495,7 +496,6 @@
 		DD7E96A11D7B52F400D9E94F /* libspeex-x86_64-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libspeex-x86_64-apple-darwin_ios.a"; sourceTree = "<group>"; };
 		DD7E96A21D7B52F400D9E94F /* libsrtp-x86_64-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsrtp-x86_64-apple-darwin_ios.a"; sourceTree = "<group>"; };
 		DD7E96A31D7B52F400D9E94F /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
-		DD7E96A41D7B52F400D9E94F /* RTCPjSip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RTCPjSip.xcodeproj; path = "../node_modules/react-native-pjsip/ios/RTCPjSip.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -511,7 +511,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD7E96C61D7B531000D9E94F /* libRTCPjSip.a in Frameworks */,
+				A6DD654A1D80027E00A51AC2 /* libRTCPjSip.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				DD7E96B81D7B52F400D9E94F /* libpjnath-x86_64-apple-darwin_ios.a in Frameworks */,
 				DD7E96C21D7B52F400D9E94F /* libssl.a in Frameworks */,
@@ -657,8 +657,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A6DD653F1D80025F00A51AC2 /* RTCPjSip.xcodeproj */,
 				DD7E95521D7B52F400D9E94F /* libpjsip */,
-				DD7E96A41D7B52F400D9E94F /* RTCPjSip.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -707,6 +707,14 @@
 			isa = PBXGroup;
 			children = (
 				A60B53081D76E92900703F6C /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A6DD65451D80026200A51AC2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A6DD65491D80026200A51AC2 /* libRTCPjSip.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1161,14 +1169,6 @@
 			path = pjsua2;
 			sourceTree = "<group>";
 		};
-		DD7E96A51D7B52F400D9E94F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD7E96C51D7B52F400D9E94F /* libRTCPjSip.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1283,8 +1283,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = DD7E96A51D7B52F400D9E94F /* Products */;
-					ProjectRef = DD7E96A41D7B52F400D9E94F /* RTCPjSip.xcodeproj */;
+					ProductGroup = A6DD65451D80026200A51AC2 /* Products */;
+					ProjectRef = A6DD653F1D80025F00A51AC2 /* RTCPjSip.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1373,11 +1373,11 @@
 			remoteRef = A60B53071D76E92900703F6C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DD7E96C51D7B52F400D9E94F /* libRTCPjSip.a */ = {
+		A6DD65491D80026200A51AC2 /* libRTCPjSip.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRTCPjSip.a;
-			remoteRef = DD7E96C41D7B52F400D9E94F /* PBXContainerItemProxy */;
+			remoteRef = A6DD65481D80026200A51AC2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1519,7 +1519,7 @@
 				INFOPLIST_FILE = PjApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "/Users/vadim/Projects/react-native-pjsip/**";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-pjsip/**";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1546,7 +1546,7 @@
 				INFOPLIST_FILE = PjApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "/Users/vadim/Projects/react-native-pjsip/**";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-pjsip/**";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
