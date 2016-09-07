@@ -38,7 +38,7 @@ export default class LinedAccountInfo extends Component {
         let registration = acc.getRegistration();
 
         return (
-            <View style={[{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#E0E7EA', padding: 10}, this.props.style]}>
+            <TouchableOpacity onPress={this.props.onPress} style={[{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#E0E7EA', padding: 10}, this.props.style]}>
 
                 <View style={{backgroundColor: "#DAA2E5", height: 48, width: 48, borderRadius: 48, alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: "#FFF"}}>CR</Text>
@@ -61,7 +61,7 @@ export default class LinedAccountInfo extends Component {
                 <View style={{justifyContent: 'center'}}>
                     <Image source={require('../../assets/images/common/lined-goto.png')} />
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }

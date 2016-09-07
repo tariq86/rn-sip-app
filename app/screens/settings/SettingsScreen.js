@@ -31,8 +31,16 @@ class SettingsScreen extends React.Component {
 
         for (let acc of list) {
             result.push((
-                <LinedAccountInfo key={acc.getId()} account={acc} onAccountPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
+                <LinedAccountInfo key={acc.getId()} account={acc} onPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
             ))
+        }
+
+        if (result.length == 0) {
+            return (
+                <View style={{height: 56, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{fontSize: 16, color: "#CCC"}}>No accounts available</Text>
+                </View>
+            )
         }
 
         return result;
@@ -101,6 +109,9 @@ function actions(dispatch) {
     return {
         onHamburgerPress: () => {
             dispatch(Navigation.openDrawer());
+        },
+        onAccountPress: (account) => {
+            dispatch(Navigation.goTo({name: 'account', account: account}));
         },
         onNewAccountPress: () => {
             dispatch(Navigation.goTo({name: 'account'}));

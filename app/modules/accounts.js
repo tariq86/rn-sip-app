@@ -43,6 +43,9 @@ export function changeAccount(account) {
  * @returns {Function}
  */
 export function createAccount(configuration) {
+
+    console.log("createAccount", configuration);
+
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
         let account = await endpoint.createAccount({
@@ -66,25 +69,14 @@ export function deleteAccount(account) {
         await endpoint.deleteAccount(account);
 
         // -----
-        // TODO: Unsubscribe
         dispatch({type: ACCOUNT_DELETED, account});
-        dispatch(Navigation.goTo({name: 'home'}));
+        dispatch(Navigation.goTo({name: 'settings'}));
     };
 }
-
-//function subscribe(account, dispatch) {
-//    account.addListener(
-//        "registration_changed",
-//        (account, registration) => {
-//            dispatch({type: ACCOUNT_REGISTRATION_CHANGED, account, registration})
-//        }
-//    );
-//}
 
 /**
  * Reducer
  */
-
 const initialState = {
     isLoading: true,
     map: new OrderedMap()

@@ -31,10 +31,16 @@ export default class LinedTextInput extends Component {
         this.props.onChangeText && this.props.onChangeText("")
     }
 
+    focus() {
+        this.refs.input.focus();
+    }
+
     render() {
         return (
             <View style={[s.wrapper, (this.state.active ? s.wrapperActive : {}), this.props.style]}>
                 <TextInput
+                    autoFocus={this.props.autoFocus}
+                    ref="input"
                     style={[s.input, this.props.inputStyle]}
                     placeholderTextColor="#ADADAD"
                     placeholder={this.props.placeholder}
@@ -63,6 +69,7 @@ LinedTextInput.propTypes = {
     placeholder: PropTypes.string,
     style: View.propTypes.style,
     inputStyle: TextInput.propTypes.style,
+    autoFocus: TextInput.propTypes.autoFocus,
     inputProps: PropTypes.object,
     onChangeText: PropTypes.func
 };
