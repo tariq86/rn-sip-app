@@ -1,6 +1,6 @@
 import {NetInfo, AppState, NativeModules} from 'react-native'
 import * as Navigation from './navigation'
-import {initAccounts, onAccountChanged} from './accounts'
+import {initAccounts, onAccountChanged, createAccount} from './accounts'
 import {initCalls, onCallReceived, onCallChanged, onCallTerminated} from './calls'
 import {Endpoint} from 'react-native-pjsip'
 

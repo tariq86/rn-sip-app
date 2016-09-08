@@ -14,6 +14,7 @@ import {
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
+import {makeCall} from '../../modules/calls'
 
 import Header from '../../components/Header'
 import KeypadWithActions from '../../components/call/KeypadWithActions'
@@ -24,6 +25,7 @@ class ConversationsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {dialerVisible: false};
+        this._onCallPress = this.onCallPress.bind(this);
     }
 
     setDialerVisible(visible) {
@@ -32,6 +34,11 @@ class ConversationsScreen extends React.Component {
 
     onKeypadPress() {
         this.setState({dialerVisible: true});
+    }
+
+    onCallPress(destination) {
+        this.setState({dialerVisible: false});
+        this.props.onCallPress && this.props.onCallPress(destination);
     }
 
     render() {
@@ -64,7 +71,7 @@ class ConversationsScreen extends React.Component {
                             visible={this.state.dialerVisible}
                             onRequestClose={() => {alert("Modal has been closed.")}}
                         >
-                            <KeypadWithActions style={{flex: 1}}/>
+                            <KeypadWithActions style={{flex: 1}} onCallPress={this._onCallPress}/>
 
                             <TouchableHighlight
                                 style={{height: 46, backgroundColor:"#E7ECEF", borderTopWidth: 1, borderColor: "#E0E7EA", alignItems: 'center', justifyContent: 'center'}}
@@ -103,7 +110,12 @@ function actions(dispatch) {
     return {
         onHamburgerPress: () => {
             dispatch(Navigation.openDrawer());
-        }
+        },
+        onCallPress: (destination) => {
+            if (destination) {
+                dispatch(makeCall(destination));
+            }
+        },
     };
 }
 

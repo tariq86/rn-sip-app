@@ -29,6 +29,7 @@ export function initCalls(calls) {
 export function onCallReceived(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_RECEIVED, call});
+        dispatch(Navigation.goTo({name: 'call', id: call.getId()}));
     };
 }
 
@@ -52,6 +53,7 @@ export function onCallChanged(call) {
  */
 export function onCallTerminated(call) {
     return async function(dispatch, getState) {
+        dispatch({type: CALL_CHANGED, call});
         dispatch({type: CALL_TERMINATED, call});
     };
 }
@@ -75,15 +77,14 @@ export function makeCall(destination, account = null) {
         }
 
         // -----
-        // TODO: Use account getHost property (not realm)!
-        // let call = await account.makeCall("sip:" + destination + "@192.168.31.85");
-        let call = await account.makeCall("sip:" + destination + "@192.168.1.250");
+        let endpoint = getState()['app']['endpoint'];
+        let call = await endpoint.makeCall(account, destination);
 
         // -----
         dispatch({type: CALL_INITIATED, call});
 
         // -----
-        dispatch(Navigation.goTo({name: 'call', call}));
+        dispatch(Navigation.goTo({name: 'call', id: call.getId()}));
     };
 }
 
@@ -95,15 +96,19 @@ export function makeCall(destination, account = null) {
  */
 export function hangupCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.hangup();
+        let endpoint = getState()['app']['endpoint'];
+        let result = await endpoint.hangupCall(call);
+
         console.log("Action hangupCall", result);
     };
 }
 
 export function answerCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.answer();
-        console.log("Action answerCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        let result = await endpoint.answerCall(call);
+
+        console.log("Action hangupCall", result);
     };
 }
 

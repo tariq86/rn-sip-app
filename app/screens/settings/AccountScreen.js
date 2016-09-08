@@ -36,7 +36,7 @@ class AccountScreen extends React.Component {
                 domain: this.props.account.getDomain(),
                 password: this.props.account.getPassword(),
 
-                proxy: this.props.account.getPassword(),
+                proxy: this.props.account.getProxy(),
                 transport: this.props.account.getTransport(),
                 regServer: this.props.account.getRegServer(),
                 regTimeout: this.props.account.getRegTimeout()

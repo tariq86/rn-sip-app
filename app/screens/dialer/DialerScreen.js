@@ -14,6 +14,8 @@ import {
     Dimensions
 } from 'react-native'
 import * as Navigation from '../../modules/navigation'
+import {makeCall} from '../../modules/calls'
+
 import Header from '../../components/Header'
 import KeypadWithActions from '../../components/call/KeypadWithActions'
 
@@ -26,7 +28,7 @@ class DialerScreen extends Component {
             <View style={styles.container}>
                 <Header title="Набрать номер" />
 
-                <KeypadWithActions style={{flex: 1}} />
+                <KeypadWithActions onCallPress={this.props.onCallPress} style={{flex: 1}} />
             </View>
         )
     }
@@ -36,8 +38,7 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         marginBottom: 49.5 // TODO: Use it only for iOS version.
-    },
-
+    }
 });
 
 function select(store) {
@@ -48,8 +49,13 @@ function select(store) {
 
 function actions(dispatch) {
     return {
+        onCallPress: (destination) => {
+            if (destination) {
+                dispatch(makeCall(destination));
+            }
+        },
         onCancelPress: () => {
-            dispatch(Navigation.goBack())
+            dispatch(Navigation.goBack());
         }
     };
 }

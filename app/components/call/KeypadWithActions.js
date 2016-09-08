@@ -54,23 +54,16 @@ export default class KeypadWithActions extends Component {
     }
 
     onKeyPress(key) {
-
-        console.log("onKeyPress", key);
-
         this.setState({
             value: this.state.value + key
         });
-    }
-
-    onActionPress(type) {
-        console.log("Action", type);
     }
 
     onDefineKeySize({width}) {
         this.setState({actionSize: width});
     }
 
-    renderActionKey(type, description) {
+    renderActionKey(type, description, callback) {
         let icon = null;
 
         switch (type) {
@@ -102,7 +95,7 @@ export default class KeypadWithActions extends Component {
 
         return (
             <View key={"action" + type} style={s.action}>
-                <TouchableOpacity onPress={this.onActionPress.bind(this, type)} style={touchableStyles}>
+                <TouchableOpacity onPress={() => {callback && callback(this.state.value)}} style={touchableStyles}>
                     <Image source={icon} />
                 </TouchableOpacity>
                 <Text style={s.actionText}>{description}</Text>
@@ -126,7 +119,7 @@ export default class KeypadWithActions extends Component {
                      <View style={sk.outerLineOffset} />
                      {this.renderActionKey("message", "Отправить\nСМС")}
                      <View style={sk.innerLineOffset} />
-                     {this.renderActionKey("call", "Совершить\nзвонок")}
+                     {this.renderActionKey("call", "Совершить\nзвонок", this.props.onCallPress)}
                      <View style={sk.innerLineOffset} />
                      {this.renderActionKey("fax", "Отправить\nфакс")}
                      <View style={sk.outerLineOffset} />
@@ -139,5 +132,6 @@ export default class KeypadWithActions extends Component {
 
 
 KeypadWithActions.propTypes = {
-    style: View.propTypes.style
+    style: View.propTypes.style,
+    onCallPress: PropTypes.func
 }

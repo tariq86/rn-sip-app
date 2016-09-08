@@ -40,7 +40,7 @@ export default class LinedAccountInfo extends Component {
         let registration = acc.getRegistration();
 
         let accountColor = colorify(acc.getName());
-        let presenceColor = registration.getStatus() == "OK" ? "#34D023" : "#CCC";
+        let presenceColor = registration.getStatusText() == "OK" ? "#34D023" : "#CCC";
 
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#E0E7EA', padding: 10}, this.props.style]}>
