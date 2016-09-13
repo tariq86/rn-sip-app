@@ -28,7 +28,12 @@ class DialerScreen extends Component {
             <View style={styles.container}>
                 <Header title="Набрать номер" />
 
-                <KeypadWithActions onCallPress={this.props.onCallPress} style={{flex: 1}} />
+                <KeypadWithActions
+                    style={{flex: 1}}
+                    actions={[
+                        {icon: "call", text: "Call", callback: this.props.onCallPress}
+                    ]}
+                />
             </View>
         )
     }

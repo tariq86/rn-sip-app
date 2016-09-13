@@ -71,7 +71,12 @@ class ConversationsScreen extends React.Component {
                             visible={this.state.dialerVisible}
                             onRequestClose={() => {alert("Modal has been closed.")}}
                         >
-                            <KeypadWithActions style={{flex: 1}} onCallPress={this._onCallPress}/>
+                            <KeypadWithActions
+                                style={{flex: 1}}
+                                actions={[
+                                    {icon: "call", text: "Call", callback: this._onCallPress}
+                                ]}
+                            />
 
                             <TouchableHighlight
                                 style={{height: 46, backgroundColor:"#E7ECEF", borderTopWidth: 1, borderColor: "#E0E7EA", alignItems: 'center', justifyContent: 'center'}}

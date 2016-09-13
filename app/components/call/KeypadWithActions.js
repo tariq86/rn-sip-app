@@ -118,12 +118,13 @@ export default class KeypadWithActions extends Component {
         let actions = [];
 
         if (this.props.actions.length == 3) {
+            let a = this.props.actions;
             actions.push(<View style={sk.outerLineOffset} />);
-            actions.push(this.renderActionKey("message", "Отправить\nСМС"))
+            actions.push(this.renderActionKey(a[0]['icon'], a[0]['text'], a[0]['callback']));
             actions.push(<View style={sk.innerLineOffset} />);
-            actions.push(this.renderActionKey("call", "Совершить\nзвонок", this.props.onCallPress));
+            actions.push(this.renderActionKey(a[1]['icon'], a[1]['text'], a[1]['callback']));
             actions.push(<View style={sk.innerLineOffset} />);
-            actions.push(this.renderActionKey("fax", "Отправить\nфакс"));
+            actions.push(this.renderActionKey(a[2]['icon'], a[2]['text'], a[2]['callback']));
             actions.push(<View style={sk.outerLineOffset} />);
         } else {
             for (let action of this.props.actions) {
@@ -167,6 +168,5 @@ KeypadWithActions.propTypes = {
     keyTextStyle: Text.propTypes.style,
     keyUnderlayColor: PropTypes.string,
     actionTouchableStyle: View.propTypes.style,
-    actionTextStyle: Text.propTypes.style,
-    onCallPress: PropTypes.func
+    actionTextStyle: Text.propTypes.style
 }
