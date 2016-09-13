@@ -1,4 +1,4 @@
-import {NetInfo, AppState} from 'react-native'
+import {NetInfo, AppState, Platform} from 'react-native'
 import * as Navigation from './navigation'
 import {
     OrderedMap,
@@ -33,6 +33,15 @@ export function initAccounts(accounts) {
 export function onAccountChanged(account) {
     return async function(dispatch, getState) {
         dispatch({type: ACCOUNT_CHANGED, account});
+
+        // -----
+        if (Platform.OS === 'android') {
+            let endpoint = getState()['app']['endpoint'];
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
     };
 }
 
@@ -48,6 +57,13 @@ export function createAccount(configuration) {
         let account = await endpoint.createAccount({
             ...configuration
         });
+
+        if (Platform.OS === 'android') {
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
 
         dispatch({type: ACCOUNT_CREATED, account});
         dispatch(Navigation.goTo({name: 'settings'}));
@@ -83,6 +99,9 @@ export function deleteAccount(account) {
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
         await endpoint.deleteAccount(account);
+
+        // -----
+        endpoint.stopForeground();
 
         // -----
         dispatch({type: ACCOUNT_DELETED, account});

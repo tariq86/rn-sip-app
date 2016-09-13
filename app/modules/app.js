@@ -1,4 +1,4 @@
-import {NetInfo, AppState, NativeModules} from 'react-native'
+import {NetInfo, AppState, Platform, NativeModules} from 'react-native'
 import * as Navigation from './navigation'
 import {initAccounts, onAccountChanged, createAccount} from './accounts'
 import {initCalls, onCallReceived, onCallChanged, onCallTerminated} from './calls'
@@ -32,6 +32,15 @@ export function init() {
         endpoint.on("call_terminated", (call) => {
             dispatch(onCallTerminated(call));
         });
+
+        // Show notification if account exist
+        if (Platform.OS === 'android' && accounts.length > 0) {
+            let account = accounts[0];
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
 
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
