@@ -46,7 +46,7 @@ export default class CallButtons extends Component {
 
         this._onHangupPress = this.onHangupPress.bind(this);
         this._onAnswerPress = this.onAnswerPress.bind(this);
-        this._onTransferPress = this.onTransferPress.bind(this);
+        this._onRedirectPress = this.onRedirectPress.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -75,9 +75,9 @@ export default class CallButtons extends Component {
         }
     }
 
-    onTransferPress() {
+    onRedirectPress() {
         if (this.props.call.getState() == "PJSIP_INV_STATE_INCOMING") {
-            this.props.onTransferPress && this.props.onTransferPress();
+            this.props.onRedirectPress && this.props.onRedirectPress();
         }
     }
 
@@ -97,7 +97,7 @@ export default class CallButtons extends Component {
                     this.state.answerable && (
                         <Animated.View style={{position: 'absolute', left: this.state.answerOffset, opacity: this.state.answerOpacity, height: 64, width: 64}}>
                             <TouchableOpacity onPress={this._onAnswerPress} style={{width: 64, height: 64, backgroundColor:"#4CD964", justifyContent: 'center', alignItems: 'center', borderRadius: 64}}>
-                                <Image source={require('../../assets/images/call/action-hangup.png')} />
+                                <Image source={require('../../assets/images/call/action-answer.png')} />
                             </TouchableOpacity>
                         </Animated.View>
                     )
@@ -106,8 +106,8 @@ export default class CallButtons extends Component {
                 {
                     this.state.answerable && (
                         <Animated.View style={{position: 'absolute', left: this.state.transferOffset, opacity: this.state.transferOpacity}}>
-                            <TouchableOpacity onPress={this._onTransferPress} style={{width: 64, height: 64, backgroundColor:"#EBAE00", justifyContent: 'center', alignItems: 'center', borderRadius: 64}}>
-                                <Image source={require('../../assets/images/call/action-hangup.png')} />
+                            <TouchableOpacity onPress={this._onRedirectPress} style={{width: 64, height: 64, backgroundColor:"#EBAE00", justifyContent: 'center', alignItems: 'center', borderRadius: 64}}>
+                                <Image source={require('../../assets/images/call/action-redirect.png')} />
                             </TouchableOpacity>
                         </Animated.View>
                     )
@@ -122,5 +122,5 @@ CallButtons.propTypes = {
     call: PropTypes.object.isRequired,
     onAnswerPress: PropTypes.func,
     onHangupPress: PropTypes.func,
-    onTransferPress: PropTypes.func
+    onRedirectPress: PropTypes.func
 }

@@ -14,6 +14,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: correctFontSizeForScreen(30)
     },
+    textNotEditable: {
+        marginLeft: 10,
+        marginRight: 10
+    },
     clearTouchable: {
         width: 32,
         height: 32,

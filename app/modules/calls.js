@@ -29,7 +29,7 @@ export function initCalls(calls) {
 export function onCallReceived(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_RECEIVED, call});
-        dispatch(Navigation.goTo({name: 'call', id: call.getId()}));
+        dispatch(Navigation.goTo({name: 'call', call}));
     };
 }
 
@@ -78,13 +78,10 @@ export function makeCall(destination, account = null) {
 
         // -----
         let endpoint = getState()['app']['endpoint'];
-        let call = await endpoint.makeCall(account, destination);
+        let call = endpoint.makeCall(account, destination);
 
         // -----
-        dispatch({type: CALL_INITIATED, call});
-
-        // -----
-        dispatch(Navigation.goTo({name: 'call', id: call.getId()}));
+        dispatch(Navigation.goTo({name: 'call', call}));
     };
 }
 
@@ -97,68 +94,80 @@ export function makeCall(destination, account = null) {
 export function hangupCall(call) {
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
-        let result = await endpoint.hangupCall(call);
-
-        console.log("Action hangupCall", result);
+        endpoint.hangupCall(call);
     };
 }
 
 export function answerCall(call) {
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
-        let result = await endpoint.answerCall(call);
-
-        console.log("Action hangupCall", result);
+        endpoint.answerCall(call);
     };
 }
 
 export function muteCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.mute();
-        console.log("Action muteCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.muteCall(call);
     };
 }
 
 export function unmuteCall(call) {
-
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.unMuteCall(call);
+    };
 }
 
 export function holdCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.hold();
-        console.log("Action holdCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.holdCall(call);
     };
 }
 
 export function unholdCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.unhold();
-        console.log("Action unholdCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.unholdCall(call);
     };
 }
 
-export function enableSpeaker(call) {
-
+export function useSpeaker(call) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.useSpeaker(call);
+    };
 }
 
-export function disableSpeaker(call) {
-
+export function useEarpiece(call) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.useEarpiece(call);
+    };
 }
 
-export function enableVideo(call) {
-
+export function dtmfCall(call, key) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.dtmfCall(call, key);
+    };
 }
 
-export function disableVideo(call) {
-
+export function redirectCall(call, destination) { redirectCall
+    return async function(dispatch, getState) {
+        let account = getState().accounts.map.get(call.getAccountId());
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.redirectCall(account, call, destination);
+    };
 }
 
-export function makeTransfer(destination, call) {
-
-}
-
-export function sendDTMF(key, call) {
-
+export function xferCall(call, destination) {
+    return async function(dispatch, getState) {
+        let account = getState().accounts.map.get(call.getAccountId());
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.xferCall(account, call, destination);
+    };
 }
 
 /**

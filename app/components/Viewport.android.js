@@ -93,7 +93,7 @@ class Viewport extends React.Component {
         for (let call of calls) {
             result.push(
                 (
-                    <TouchableHighlight key={call.getId()} style={{height: 38, backgroundColor: "#4cda64", alignItems: 'center', justifyContent: 'center'}} onPress={() => this.props.onCallSelect(call.getId())}>
+                    <TouchableHighlight key={call.getId()} style={{height: 38, backgroundColor: "#4cda64", alignItems: 'center', justifyContent: 'center'}} onPress={() => this.props.onCallSelect(call)}>
                         <Text style={{color: "#FFF", fontSize: 14, paddingLeft: 10}}>{call.getRemoteUri()}</Text>
                     </TouchableHighlight>
                 )
@@ -157,8 +157,8 @@ function actions(dispatch) {
         onTabSelect: (tab) => {
             dispatch(Navigation.goAndReplace({name: tab}));
         },
-        onCallSelect: (id) => {
-            dispatch(Navigation.goTo({name: 'call', id: id}));
+        onCallSelect: (call) => {
+            dispatch(Navigation.goTo({name: 'call', call}));
         },
         onDrawerClose: () => {
             dispatch(Navigation.closeDrawer());

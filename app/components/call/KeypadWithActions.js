@@ -66,6 +66,7 @@ export default class KeypadWithActions extends Component {
     renderActionKey(type, description, callback) {
         let icon = null;
 
+        // TODO: Pass image instead of type.
         switch (type) {
             case 'fax':
                 icon = require('../../assets/images/keypad/fax-icon.png');
@@ -75,6 +76,15 @@ export default class KeypadWithActions extends Component {
                 break;
             case 'message':
                 icon = require('../../assets/images/keypad/message-icon.png');
+                break;
+            case 'redirect':
+                icon = require('../../assets/images/call/action-redirect.png');
+                break;
+            case 'attendant-transfer':
+                icon = require('../../assets/images/call/action-attendant-transfer-icon.png');
+                break;
+            case 'blind-transfer':
+                icon = require('../../assets/images/call/action-blind-transfer.png');
                 break;
         }
 
@@ -87,7 +97,7 @@ export default class KeypadWithActions extends Component {
         let touchableStyles = [{
             width: this.state.actionSize - 10,
             height: this.state.actionSize - 10
-        }, s.actionTouchable];
+        }, s.actionTouchable, this.props.actionTouchableStyle];
 
         if (type == 'call') {
             touchableStyles.push(s.actionGreenTouchable);
@@ -98,31 +108,46 @@ export default class KeypadWithActions extends Component {
                 <TouchableOpacity onPress={() => {callback && callback(this.state.value)}} style={touchableStyles}>
                     <Image source={icon} />
                 </TouchableOpacity>
-                <Text style={s.actionText}>{description}</Text>
+                <Text style={[s.actionText, this.props.actionTextStyle]}>{description}</Text>
             </View>
         )
     }
 
     render() {
+
+        let actions = [];
+
+        if (this.props.actions.length == 3) {
+            actions.push(<View style={sk.outerLineOffset} />);
+            actions.push(this.renderActionKey("message", "Отправить\nСМС"))
+            actions.push(<View style={sk.innerLineOffset} />);
+            actions.push(this.renderActionKey("call", "Совершить\nзвонок", this.props.onCallPress));
+            actions.push(<View style={sk.innerLineOffset} />);
+            actions.push(this.renderActionKey("fax", "Отправить\nфакс"));
+            actions.push(<View style={sk.outerLineOffset} />);
+        } else {
+            for (let action of this.props.actions) {
+                actions.push(this.renderActionKey(action['icon'], action['text'], action['callback']));
+            }
+        }
+
         return (
              <View style={this.props.style}>
-                 <KeypadInputText style={{flex: 0.08 * this.state.heightRatio}}
+                 <KeypadInputText style={[{flex: 0.08 * this.state.heightRatio}, this.props.inputStyle]}
+                                  textStyle={this.props.inputTextStyle}
                                   value={this.state.value}
                                   onBackspacePress={this._onBackspacePress}
                                   onClearPress={this._onClearPress}  />
                  <View style={{flex: 0.02 * this.state.heightRatio}} />
-                 <Keypad style={{flex: 0.75}}
+                 <Keypad style={[{flex: 0.75}, this.props.keypadStyle]}
+                         keyStyle={this.props.keyStyle}
+                         keyUnderlayColor={this.props.keyUnderlayColor}
+                         keyTextStyle={this.props.keyTextStyle}
                          onKeyPress={this._onKeyPress}
                          onDefineKeySize={this._onDefineKeySize} />
                  <View style={{flex: 0.02 * this.state.heightRatio}} />
                  <View style={s.actionsWrapper}>
-                     <View style={sk.outerLineOffset} />
-                     {this.renderActionKey("message", "Отправить\nСМС")}
-                     <View style={sk.innerLineOffset} />
-                     {this.renderActionKey("call", "Совершить\nзвонок", this.props.onCallPress)}
-                     <View style={sk.innerLineOffset} />
-                     {this.renderActionKey("fax", "Отправить\nфакс")}
-                     <View style={sk.outerLineOffset} />
+                     {actions}
                  </View>
                  <View style={{flex: 0.02 * this.state.heightRatio}} />
             </View>
@@ -131,7 +156,17 @@ export default class KeypadWithActions extends Component {
 }
 
 
+// TODO: Add theme parameter instead of inputStyle, inputTextStyle, keypadStyle, keyStyle, keyTextStyle, keyTextStyle, actionTextStyle
 KeypadWithActions.propTypes = {
     style: View.propTypes.style,
+    actions: PropTypes.array,
+    inputStyle: View.propTypes.style,
+    inputTextStyle: Text.propTypes.style,
+    keypadStyle: View.propTypes.style,
+    keyStyle: View.propTypes.style,
+    keyTextStyle: Text.propTypes.style,
+    keyUnderlayColor: PropTypes.string,
+    actionTouchableStyle: View.propTypes.style,
+    actionTextStyle: Text.propTypes.style,
     onCallPress: PropTypes.func
 }

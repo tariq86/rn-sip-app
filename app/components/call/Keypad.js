@@ -49,24 +49,18 @@ export default class Keypad extends Component {
             props['onLayout'] = (event) => this.onLayoutKey(event);
         }
 
-        if (digit == '*' || digit == '#') {
-            return (
-                <View key={digit} style={{flex: 0.202}} />
-            )
-        }
-
         return (
             <View {...props} key={digit} style={s.keyWrapper}>
 
                 {
                     /* Show key only when we know it's width to render square touchable */
                     !this.state.keySize ? null :
-                    <TouchableHighlight underlayColor="#ccd9e2"
-                                        style={[s.keyTouchable, {width: this.state.keySize}]}
+                    <TouchableHighlight underlayColor={(this.props.keyUnderlayColor ? this.props.keyUnderlayColor : "#ccd9e2" )}
+                                        style={[s.keyTouchable, {width: this.state.keySize}, this.props.keyStyle]}
                                         onPress={this.onKeyPress.bind(this, digit)}>
                         <View style={{backgroundColor: 'transparent'}}>
-                            <Text style={s.keyDigitText}>{digit}</Text>
-                            <Text style={s.keyLettersText}>{letters}</Text>
+                            <Text style={[s.keyDigitText, this.props.keyTextStyle]}>{digit}</Text>
+                            <Text style={[s.keyLettersText, this.props.keyTextStyle]}>{letters}</Text>
                         </View>
                     </TouchableHighlight>
                 }
@@ -122,6 +116,9 @@ export default class Keypad extends Component {
 
 Keypad.propTypes = {
     style: View.propTypes.style,
+    keyStyle: View.propTypes.style,
+    keyUnderlayColor: PropTypes.string,
+    keyTextStyle: Text.propTypes.style,
     onKeyPress: PropTypes.func,
     onDefineKeySize: PropTypes.func
 };

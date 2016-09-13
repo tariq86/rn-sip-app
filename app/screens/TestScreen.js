@@ -12,70 +12,32 @@ import {
     TabBarIOS,
     Dimensions
 } from 'react-native'
+import * as Calls from '../modules/calls'
 import * as Navigation from '../modules/navigation'
-import Header from '../components/Header'
-
-import LinedSection from '../components/common/LinedSection';
-import LinedTextInput from '../components/common/LinedTextInput';
-import LinedTextInputStyles from '../styles/common/LinedTextInput';
 
 import {connect} from 'react-redux'
 
 
-    class TestScreen extends Component {
+class TestScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            username: "",
-            password: "",
-            host: "",
-            port: "",
-            realm: ""
-        };
+        this._makeCall = this.makeCall.bind(this);
+    }
+
+    makeCall() {
+        this.props.onCallPress && this.props.onCallPress();
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Header title="Test Screen" />
-
-                <View style={{flex: 1}}>
-
-
-
-
-
-                    { /* LinedSection */ }
-                    <LinedSection title="Settins" />
-
-
-                    { /* LinedTextInput */ }
-                    <LinedTextInput placeholder="Username" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}} />
-                    <LinedTextInput
-                        style={LinedTextInputStyles.wrapperWithOffset}
-                        inputStyle={LinedTextInputStyles.inputWithOffset}
-                        placeholder="Password"
-                        value={this.state.password}
-                        onChangeText={(text) => {this.setState({password: text})}} />
-                    <LinedTextInput placeholder="Host" value={this.state.host} />
-                    <LinedTextInput placeholder="Port" value={this.state.port} />
-                    <LinedTextInput placeholder="Realm" value={this.state.realm} />
-
-
-                </View>
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <TouchableHighlight onPress={this._makeCall} style={{borderRadius: 3, backgroundColor:"#CCC", padding: 10, paddingLeft: 20, paddingRight: 20}}>
+                    <Text>Make call</Text>
+                </TouchableHighlight>
             </View>
         )
     }
 }
-
-var STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 25;
-
-
-var styles = StyleSheet.create({
-    container: {
-        flex: 1
-    }
-});
 
 TestScreen.props = {
 
@@ -89,8 +51,8 @@ function select(store) {
 
 function actions(dispatch) {
     return {
-        onCancelPress: () => {
-            dispatch(Navigation.goBack())
+        onCallPress: () => {
+            dispatch(Calls.makeCall("1000"));
         }
     };
 }

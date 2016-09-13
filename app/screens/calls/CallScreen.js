@@ -8,6 +8,7 @@ import {
     View,
     Text,
     Platform,
+    Modal,
     StyleSheet,
     Image,
     PixelRatio,
@@ -15,7 +16,7 @@ import {
     TabBarIOS
 } from 'react-native'
 import * as Navigation from '../../modules/navigation'
-import {hangupCall, answerCall, muteCall, unmuteCall, holdCall, unholdCall, enableSpeaker, disableSpeaker, makeTransfer, sendDTMF} from '../../modules/calls'
+import * as Calls from '../../modules/calls'
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -24,6 +25,14 @@ import CallState from '../../components/call/CallState'
 import CallInfo from '../../components/call/CallInfo'
 import CallAction from '../../components/call/CallAction'
 import CallButtons from '../../components/call/CallButtons'
+import CallActions from '../../components/call/CallActions'
+import * as CallAnimation from './CallAnimation'
+
+// TODO Move to TranferModal
+import Keypad from '../../components/call/Keypad'
+import KeypadWithActions from '../../components/call/KeypadWithActions'
+import KeypadInputText from '../../components/call/KeypadInputText'
+import KeypadActions from '../../components/call/KeypadActions'
 
 let backgroundColorShow = false;
 
@@ -33,172 +42,200 @@ class CallScreen extends Component {
         super(props);
 
         let {height : screenHeight, width : screenWidth} = Dimensions.get('window');
+        let call = this.props.call;
 
-        // TODO: Calculate buttonsOpacity and buttonsOffset bcs its as static
+        if (call instanceof Promise) {
+            call.then(this.onInitializationResponse.bind(this));
+            call = null;
+        }
+
+        console.log("call", call);
 
         this.state = {
-            call: props.calls.get(props.id),
+            call,
             terminatedCall: null,
+
+            isRedirectModalVisible: false,
+
+            isTransferModalVisible: false,
+            isDTMFModalVisible: false,
+            dtmfValue: "",
+
             screenHeight,
             screenWidth,
-            infoHeight: this.calcHeightForInfo(screenHeight),
-            avatarHeight: this.calcHeightForAvatar(screenHeight),
-            stateHeight: this.calcHeightForState(screenHeight),
-            actionsHeight: this.calcHeightForActions(screenHeight),
-            buttonsHeight: this.calcHeightForButtons(screenHeight),
+
+            ...CallAnimation.calculateComponentsHeight(screenHeight)
         };
-        this.state = {...this.state, ...this.calcInitialPosition(this.state)};
 
+        if (call) {
+            this.state = {...this.state, ...CallAnimation.calculateInitialDimensions(this.state, call)};
+        }
 
-        this._onCallHangup = this.onCallHangup.bind(this);
         this._onCallAnswer = this.onCallAnswer.bind(this);
+        this._onCallHangup = this.onCallHangup.bind(this);
+        this._onCallChatPress = this.onCallChatPress.bind(this);
+        this._onCallMutePress = this.onCallMutePress.bind(this);
+        this._onCallUnMutePress = this.onCallUnMutePress.bind(this);
+        this._onCallSpeakerPress = this.onCallSpeakerPress.bind(this);
+        this._onCallEarpiecePress = this.onCallEarpiecePress.bind(this);
+
+        this._onCallHoldPress = this.onCallHoldPress.bind(this);
+        this._onCallUnHoldPress = this.onCallUnHoldPress.bind(this);
+        
+        this._onCallDTMFPress = this.onCallDTMFPress.bind(this);
+        this._onCallDTMFKeyPress = this.onCallDTMFKeyPress.bind(this);
+        this._onCallDTMFModalClosePress = this.onCallDTMFModalClosePress.bind(this);
+
+        this._onCallTransferPress = this.onCallTransferPress.bind(this);
+        this._onCallTransferClosePress = this.onCallTransferClosePress.bind(this);
+        this._onCallAttendantTransferPress = this.onCallAttendantTransferPress.bind(this);
+        this._onCallBlindTransferPress = this.onCallBlindTransferPress.bind(this);
+
+
+        this._onCallRedirect = this.onCallRedirectPress.bind(this);
+        this._onCallRedirectClosePress = this.onCallRedirectClosePress.bind(this);
+        this._onCallRedirectSubmitPress = this.onCallRedirectSubmitPress.bind(this);
+    }
+
+    onInitializationResponse(call) {
+        let state = {
+            call: call
+        };
+        state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state}, call)};
+
+        this.setState(state);
     }
 
     componentWillReceiveProps(nextProps) {
         // Remember latest state of current call, to be able display call information after removal from state
-        if (!this.state.terminatedCall) {
-            let call = nextProps.calls.get(this.props.id);
-            let dim = this.calcCallPositions(this.state, call);
+        if (this.state.call && nextProps.calls.has(this.state.call.getId())) {
+            let call = nextProps.calls.get(this.state.call.getId());
 
-            Animated.parallel([
-                Animated.timing(this.state.infoOffset, {toValue: dim.infoOffset}),
-                Animated.timing(this.state.stateOffset, {toValue: dim.stateOffset}),
+            if (this.state.call.getState() != call.getState()) {
+                // Animate component's for different Call states
+                CallAnimation.animateCallState(this.state, call);
+            }
 
-                Animated.timing(this.state.avatarOffset, {toValue: dim.avatarOffset}),
-                Animated.timing(this.state.avatarOpacity, {toValue: dim.avatarOpacity}),
-
-                Animated.timing(this.state.actionsOffset, {toValue: dim.actionsOffset}),
-                Animated.timing(this.state.actionsOpacity, {toValue: dim.actionsOpacity})
-            ]).start();
+            this.setState({call});
 
             if (call.getState() == "PJSIP_INV_STATE_DISCONNECTED") {
-                this.setState({terminatedCall:call});
                 this.props.onCallEnd && this.props.onCallEnd();
             }
         }
     }
 
-    calcDimensionsForIncomingCall(state) {
-        let totals = state.infoHeight  + state.stateHeight + state.actionsHeight + state.buttonsHeight;
-        let spaces = state.screenHeight - totals;
-        let space = spaces / 4;
-
-        let infoOffset = space;
-        let avatarOffset = infoOffset + state.infoHeight + space;
-        let stateOffset = avatarOffset + state.avatarHeight + space;
-
-        return {
-            infoOffset: infoOffset,
-            avatarOpacity: 1,
-            avatarOffset: avatarOffset,
-            stateOffset: stateOffset,
-            actionsOpacity: 0,
-            actionsOffset: state.screenHeight
-        }
-    }
-
-    calcDimensionsForActiveCall(state) {
-        let totals = state.infoHeight  + state.stateHeight + state.actionsHeight + state.buttonsHeight;
-        let spaces = state.screenHeight - totals;
-        let space = spaces / 4;
-
-        let infoOffset = space;
-        let stateOffset = infoOffset + state.infoHeight + space;
-        let actionsOffset = stateOffset + state.stateHeight + space;
-
-        return {
-            infoOffset: infoOffset,
-            avatarOpacity: 0,
-            avatarOffset: state.screenHeight,
-            stateOffset: stateOffset,
-            actionsOpacity: 1,
-            actionsOffset: actionsOffset
-        }
-    }
-
-    calcDimensionsForTerminatedCall(state) {
-
-        return {
-            infoOffset: 20,
-            avatarOpacity: 0,
-            avatarOffset: state.screenHeight,
-            stateOffset: 250,
-            actionsOpacity: 0,
-            actionsOffset: state.screenHeight,
-            buttonsOpacity: 1,
-            buttonsOffset: 400
-        }
-    }
-
-    calcCallPositions(state, call) {
-        switch (call.getState()) {
-            case 'PJSIP_INV_STATE_NULL':
-            case 'PJSIP_INV_STATE_CALLING':
-            case 'PJSIP_INV_STATE_EARLY':
-            case 'PJSIP_INV_STATE_CONNECTING':
-            case 'PJSIP_INV_STATE_CONFIRMED':
-                return this.calcDimensionsForActiveCall(state);
-            case 'PJSIP_INV_STATE_INCOMING':
-                return this.calcDimensionsForIncomingCall(state);
-            case 'PJSIP_INV_STATE_DISCONNECTED':
-                return this.calcDimensionsForTerminatedCall(state);
-        }
-    }
-
-    calcInitialPosition(state) {
-        let dim = this.calcCallPositions(state, state.call);
-
-        return {
-            infoOffset: new Animated.Value(dim.infoOffset),
-            avatarOpacity: new Animated.Value(dim.avatarOpacity),
-            avatarOffset: new Animated.Value(dim.avatarOffset),
-            stateOffset: new Animated.Value(dim.stateOffset),
-            actionsOpacity: new Animated.Value(dim.actionsOpacity),
-            actionsOffset: new Animated.Value(dim.actionsOffset),
-            buttonsOpacity: new Animated.Value(dim.buttonsOpacity),
-            buttonsOffset: new Animated.Value(dim.buttonsOffset),
-        }
-    }
-
-    calcHeightForInfo(height) {
-        return height * 0.12;
-    }
-
-    calcHeightForState(height) {
-        return height * 0.08;
-    }
-
-    calcHeightForAvatar(height) {
-        return height * 0.3;
-    }
-
-    calcHeightForActions(height) {
-        return height * 0.4;
-    }
-
-    calcHeightForButtons(height) {
-        return height * 0.22;
-    }
-
     onCallHangup() {
-        console.log("_onCallHangup");
-
         this.props.onCallHangup && this.props.onCallHangup(this.state.call);
     }
 
     onCallAnswer() {
-        console.log("_onCallAnswer");
         this.props.onCallAnswer && this.props.onCallAnswer(this.state.call);
     }
 
-    render() {
-        let call = this.state.terminatedCall ? this.state.terminatedCall : this.props.calls.get(this.props.id);
+    onCallRedirect() {
+        this.props.onCallRedirect && this.props.onCallRedirect(this.state.call);
+    }
 
-        console.log("this.state.actionsOpacity", this.state.actionsOpacity);
+    onCallChatPress() {
+        this.props.onCallChatPress && this.props.onCallChatPress(this.state.call);
+    }
+
+    onCallMutePress() {
+        this.props.onCallMutePress && this.props.onCallMutePress(this.state.call);
+    }
+
+    onCallUnMutePress() {
+        this.props.onCallUnMutePress && this.props.onCallUnMutePress(this.state.call);
+    }
+
+    onCallSpeakerPress() {
+        this.props.onCallSpeakerPress && this.props.onCallSpeakerPress(this.state.call);
+    }
+
+    onCallEarpiecePress() {
+        this.props.onCallEarpiecePress && this.props.onCallEarpiecePress(this.state.call);
+    }
+
+    onCallTransferPress() {
+        console.log("onCallTransferPress");
+        this.setState({isTransferModalVisible: true});
+    }
+
+    onCallTransferClosePress() {
+        this.setState({isTransferModalVisible: false});
+    }
+
+    onCallAttendantTransferPress(value) {
+        if (value.length > 0) {
+            this.setState({isTransferModalVisible: false});
+            this.props.onCallAttendantTransferPress && this.props.onCallAttendantTransferPress(this.state.call, value);
+        }
+    }
+
+    onCallBlindTransferPress(value) {
+        if (value.length > 0) {
+            this.setState({isTransferModalVisible: false});
+            this.props.onCallBlindTransferPress && this.props.onCallBlindTransferPress(this.state.call, value);
+        }
+    }
+
+    onCallDTMFPress() {
+        this.setState({isDTMFModalVisible: true});
+    }
+
+    onCallDTMFKeyPress(key) {
+        this.setState({dtmfValue: this.state.dtmfValue + key});
+
+        this.props.onCallDTMFPress && this.props.onCallDTMFPress(this.state.call, key);
+    }
+
+    onCallDTMFModalClosePress() {
+        this.setState({isDTMFModalVisible: false, dtmfValue: ""});
+    }
+
+    onCallHoldPress() {
+        this.props.onCallHoldPress && this.props.onCallHoldPress(this.state.call);
+    }
+
+    onCallUnHoldPress() {
+        this.props.onCallUnHoldPress && this.props.onCallUnHoldPress(this.state.call);
+    }
+
+    onCallRedirectPress() {
+        this.setState({isRedirectModalVisible: true});
+    }
+
+    onCallRedirectClosePress() {
+        this.setState({isRedirectModalVisible: false});
+    }
+
+    onCallRedirectSubmitPress(destination) {
+        if (destination.length > 0) {
+            this.setState({isRedirectModalVisible: false});
+            this.props.onCallRedirect && this.props.onCallRedirect(this.state.call, destination);
+        }
+    }
+
+    renderCallWait() {
+        return (
+            <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text>Please wait while call initialized</Text>
+                </View>
+            </LinearGradient>
+        )
+    }
+
+    render() {
+        let call = this.state.call;
+
+        if (!call) {
+            return this.renderCallWait();
+        }
 
         return (
             <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
-                <View style={{flex: 1, marginTop: STATUS_BAR_HEIGHT}}>
+                <View style={{flex: 1}}>
 
                     <Animated.View style={{position: 'absolute', top: this.state.infoOffset, height: this.state.infoHeight, width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
                         <CallInfo call={call} />
@@ -217,68 +254,128 @@ class CallScreen extends Component {
                     <Animated.View style={{position: 'absolute', top: this.state.actionsOffset, height: this.state.actionsHeight, opacity: this.state.actionsOpacity, flexDirection:'row', width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
 
                         <View style={{flex: 0.15}} />
-
-                        <View style={{flex: 0.7}}>
-                            <View style={{flexDirection: 'row'}}>
-                                <CallAction type="chat" description="chat" />
-                                <View style={{flex: 0.3}} />
-                                <CallAction type="mute" description="mute" />
-                                <View style={{flex: 0.3}} />
-                                <CallAction type="speaker" description="speaker" />
-                            </View>
-
-                            <View style={{flexDirection: 'row', marginTop: 30}}>
-                                <CallAction type="transfer" description="transfer" />
-                                <View style={{flex: 0.3}} />
-                                <CallAction type="hold" description="hold" />
-                                <View style={{flex: 0.3}} />
-                                <View style={{width: 64}} />
-                            </View>
-                        </View>
-
+                        <CallActions call={call}
+                                     style={{flex: 0.7}}
+                                     onChatPress={this._onCallChatPress}
+                                     onMutePress={this._onCallMutePress}
+                                     onUnMutePress={this._onCallUnMutePress}
+                                     onSpeakerPress={this._onCallSpeakerPress}
+                                     onEarpiecePress={this._onCallEarpiecePress}
+                                     onTransferPress={this._onCallTransferPress}
+                                     onDTMFPress={this._onCallDTMFPress}
+                                     onHoldPress={this._onCallHoldPress}
+                                     onUnHoldPress={this._onCallUnHoldPress} />
                         <View style={{flex: 0.15}} />
 
                     </Animated.View>
 
-                    <Animated.View style={{position: 'absolute', top: this.state.screenHeight - this.state.buttonsHeight, height: this.state.buttonsHeight, alignItems: 'center', width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
-                        <CallButtons onAnswerPress={this._onCallAnswer} onHangupPress={this._onCallHangup} call={call} />
-                    </Animated.View>
+                    <View style={{position: 'absolute', top: this.state.screenHeight - this.state.buttonsHeight, height: this.state.buttonsHeight, alignItems: 'center', width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
+                        <CallButtons
+                            onAnswerPress={this._onCallAnswer}
+                            onHangupPress={this._onCallHangup}
+                            onRedirectPress={this._onCallRedirect}
+                            call={call} />
+                    </View>
+
+                    {/* TODO: Move to RedirectDialog */}
+                    <Modal
+                        animationType={"fade"}
+                        transparent={true}
+                        visible={this.state.isRedirectModalVisible}
+                        onRequestClose={this._onCallRedirectClosePress}
+                    >
+                        <View style={{backgroundColor: "#3f5057", flex: 1}}>
+
+                            <KeypadWithActions
+                                style={{flex: 1, backgroundColor:"#3f5057"}}
+                                inputStyle={{backgroundColor:"#3c4b51"}}
+                                inputTextStyle={{color:"#FFF"}}
+                                keyUnderlayColor={"#566971"}
+                                keyTextStyle={{color:"#FFF"}}
+                                actionTouchableStyle={{backgroundColor:"#59696f"}}
+                                actionTextStyle={{color:"#FFF"}}
+                                actions={[
+                                    // {icon: "attendant-transfer", text: "Attendant\ntransfer", callback: this._onCallAttendantTransferPress},
+                                    {icon: "redirect", text: "Redirect", callback: this._onCallRedirectSubmitPress}
+                                ]}
+                            />
+
+                            <TouchableOpacity onPress={this._onCallRedirectClosePress} style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#52636a"}}>
+                                <Text style={{fontSize: 12, color: "#FFF"}}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
+                    {/* TODO: Move to TransferDialog */}
+                    <Modal
+                        animationType={"fade"}
+                        transparent={true}
+                        visible={this.state.isTransferModalVisible}
+                        onRequestClose={this._onCallTransferClosePress}
+                    >
+                        <View style={{backgroundColor: "#3f5057", flex: 1}}>
+
+                            <KeypadWithActions
+                                style={{flex: 1, backgroundColor:"#3f5057"}}
+                                inputStyle={{backgroundColor:"#3c4b51"}}
+                                inputTextStyle={{color:"#FFF"}}
+                                keyUnderlayColor={"#566971"}
+                                keyTextStyle={{color:"#FFF"}}
+                                actionTouchableStyle={{backgroundColor:"#59696f"}}
+                                actionTextStyle={{color:"#FFF"}}
+                                actions={[
+                                    // {icon: "attendant-transfer", text: "Attendant\ntransfer", callback: this._onCallAttendantTransferPress},
+                                    {icon: "blind-transfer", text: "Blind\ntransfer", callback: this._onCallBlindTransferPress}
+                                ]}
+                            />
+
+                            <TouchableOpacity onPress={this._onCallTransferClosePress} style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#52636a"}}>
+                                <Text style={{fontSize: 12, color: "#FFF"}}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
+                    {/* TODO: Move to DTMFDialog */}
+                    <Modal
+                        animationType={"fade"}
+                        transparent={true}
+                        visible={this.state.isDTMFModalVisible}
+                        onRequestClose={this._onCallDTMFModalClosePress}
+                    >
+                        <View style={{backgroundColor: "rgba(0,0,0,0.5)", flex: 1}}>
+
+                            <View style={{margin: 30, flex: 0.7, marginTop: 70, backgroundColor: "#FFF", borderRadius: 8}}>
+
+                                <View style={{padding: 12, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: "#E0E7EA"}}>
+                                    <Text style={{textAlign: 'center', flex: 1, fontSize: 18}}>DTMF</Text>
+                                    <TouchableOpacity onPress={this._onCallDTMFModalClosePress}>
+                                        <Image source={require('../../assets/images/modal/close-icon.png')} />
+                                    </TouchableOpacity>
+                                </View>
+
+                                <KeypadInputText style={{flex: 0.20}} value={this.state.dtmfValue} editable={false} />
+
+                                <Keypad onKeyPress={this._onCallDTMFKeyPress} style={{flex:1, borderColor: "#E0E7EA", borderTopWidth: 1, paddingTop: 20, paddingBottom: 30}} />
+                            </View>
+                        </View>
+                    </Modal>
+
                 </View>
             </LinearGradient>
         )
     }
 }
 
-var STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
-
-
 CallScreen.props = {
-    onCallEnd: PropTypes.func
+    onCallEnd: PropTypes.func,
+    onCallHangup: PropTypes.func,
+    onCallAnswer: PropTypes.func
 }
-
-// Later on in your styles..
-var styles = StyleSheet.create({
-    linearGradient: {
-        flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 5
-    },
-    buttonText: {
-        fontSize: 18,
-        fontFamily: 'Gill Sans',
-        textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
-        backgroundColor: 'transparent',
-    },
-});
-
 
 function select(store) {
     return {
         calls: store.calls.map,
-        id: store.navigation.current.id
+        call: store.navigation.current.call
     };
 }
 
@@ -289,15 +386,41 @@ function actions(dispatch) {
                 dispatch(Navigation.goBack());
             }, 5000);
         },
+        onCallHoldPress(call) {
+            dispatch(Calls.holdCall(call));
+        },
+        onCallUnHoldPress(call) {
+            dispatch(Calls.unholdCall(call));
+        },
+        onCallMutePress(call) {
+            dispatch(Calls.muteCall(call));
+        },
+        onCallUnMutePress(call) {
+            dispatch(Calls.unmuteCall(call));
+        },
+        onCallSpeakerPress(call) {
+            dispatch(Calls.useSpeaker(call));
+        },
+        onCallEarpiecePress(call) {
+            dispatch(Calls.useEarpiece(call));
+        },
+        onCallDTMFPress(call, key) {
+            dispatch(Calls.dtmfCall(call, key));
+        },
+        onCallBlindTransferPress(call, destination) {
+            dispatch(Calls.xferCall(call, destination));
+        },
+        onCallAttendantTransferPress() {
+            alert("Not implemented");
+        },
+        onCallRedirect(call, destination) {
+            dispatch(Calls.redirectCall(call, destination));
+        },
         onCallHangup(call) {
-
-            console.log("hangupCall");
-
-            dispatch(hangupCall(call));
+            dispatch(Calls.hangupCall(call));
         },
         onCallAnswer(call) {
-            console.log("answerCall");
-            dispatch(answerCall(call));
+            dispatch(Calls.answerCall(call));
         }
     };
 }
