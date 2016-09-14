@@ -12,7 +12,7 @@
     "react-native": "^0.31.0",
     "react-native-action-button": "^2.0.1",
     "react-native-linear-gradient": "^1.5.12",
-    "react-native-pjsip": "^0.1.0",
+    "react-native-pjsip": "https://github.com/datso/react-native-pjsip.git",
     "react-native-viewpager": "^0.2.11",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
