@@ -1,7 +1,7 @@
-import {NetInfo, AppState} from 'react-native'
+import {NetInfo, AppState, Platform, NativeModules} from 'react-native'
 import * as Navigation from './navigation'
-import {initAccounts, changeAccount} from './accounts'
-import {initCalls, receiveCall, changeCall, terminateCall} from './calls'
+import {initAccounts, onAccountChanged, createAccount} from './accounts'
+import {initCalls, onCallReceived, onCallChanged, onCallTerminated} from './calls'
 import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
@@ -11,8 +11,6 @@ export const INITIALIZED = 'app/INITIALIZED';
  */
 export function init() {
     return async (dispatch, getState) => {
-        console.log("App init");
-
         // Retrieving PjSip service state
         // It is possible that Endpoint instance already have registered accounts and active calls.
         // (because Javascript state is not persistent when User close application, e.g. application goes to background state)
@@ -23,23 +21,44 @@ export function init() {
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
-            dispatch(changeAccount(account));
+            dispatch(onAccountChanged(account));
         });
         endpoint.on("call_received", (call) => {
-            dispatch(receiveCall(call));
+            dispatch(onCallReceived(call));
         });
         endpoint.on("call_changed", (call) => {
-            dispatch(changeCall(call));
+            dispatch(onCallChanged(call));
         });
         endpoint.on("call_terminated", (call) => {
-            dispatch(terminateCall(call));
+            dispatch(onCallTerminated(call));
         });
+
+        // Show notification if account exist
+        if (Platform.OS === 'android' && accounts.length > 0) {
+            let account = accounts[0];
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
 
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
         dispatch({type: INITIALIZED, payload: endpoint});
 
-        dispatch(Navigation.goAndReplace({name: 'home'}))
+        let route = {name: 'settings'};
+
+        // Automatically show incoming call
+        if (calls.length > 0) {
+            for (let c of calls) {
+                if (c.getState() == "PJSIP_INV_STATE_INCOMING") {
+                    route = {name:'call', call: c};
+                    break;
+                }
+            }
+        }
+
+        dispatch(Navigation.goAndReplace(route));
     }
 }
 

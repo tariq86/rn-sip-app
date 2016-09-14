@@ -1,4 +1,4 @@
-import {NetInfo, AppState} from 'react-native'
+import {NetInfo} from 'react-native'
 import * as Navigation from './navigation'
 import {OrderedMap, Record} from 'immutable';
 
@@ -26,9 +26,10 @@ export function initCalls(calls) {
  * @param {Call} call
  * @returns {Function}
  */
-export function receiveCall(call) {
+export function onCallReceived(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_RECEIVED, call});
+        dispatch(Navigation.goTo({name: 'call', call}));
     };
 }
 
@@ -38,7 +39,7 @@ export function receiveCall(call) {
  * @param {Call} call
  * @returns {Function}
  */
-export function changeCall(call) {
+export function onCallChanged(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_CHANGED, call});
     };
@@ -50,8 +51,12 @@ export function changeCall(call) {
  * @param {Call} call
  * @returns {Function}
  */
-export function terminateCall(call) {
+export function onCallTerminated(call) {
+
+    // TODO: Clean up Navigation history once call is ended.
+
     return async function(dispatch, getState) {
+        dispatch({type: CALL_CHANGED, call});
         dispatch({type: CALL_TERMINATED, call});
     };
 }
@@ -75,12 +80,8 @@ export function makeCall(destination, account = null) {
         }
 
         // -----
-        // TODO: Use account getHost property (not realm)!
-        // let call = await account.makeCall("sip:" + destination + "@192.168.31.85");
-        let call = await account.makeCall("sip:" + destination + "@192.168.1.250");
-
-        // -----
-        dispatch({type: CALL_INITIATED, call});
+        let endpoint = getState()['app']['endpoint'];
+        let call = endpoint.makeCall(account, destination);
 
         // -----
         dispatch(Navigation.goTo({name: 'call', call}));
@@ -95,65 +96,88 @@ export function makeCall(destination, account = null) {
  */
 export function hangupCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.hangup();
-        console.log("Action hangupCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.hangupCall(call);
     };
 }
 
 export function answerCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.answer();
-        console.log("Action answerCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.answerCall(call);
     };
 }
 
 export function muteCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.mute();
-        console.log("Action muteCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.muteCall(call);
     };
 }
 
 export function unmuteCall(call) {
-
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.unMuteCall(call);
+    };
 }
 
 export function holdCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.hold();
-        console.log("Action holdCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.holdCall(call);
     };
 }
 
 export function unholdCall(call) {
     return async function(dispatch, getState) {
-        let result = await call.unhold();
-        console.log("Action unholdCall", result);
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.unholdCall(call);
     };
 }
 
-export function enableSpeaker(call) {
-
+export function useSpeaker(call) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.useSpeaker(call);
+    };
 }
 
-export function disableSpeaker(call) {
-
+export function useEarpiece(call) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.useEarpiece(call);
+    };
 }
 
-export function enableVideo(call) {
-
+export function dtmfCall(call, key) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.dtmfCall(call, key);
+    };
 }
 
-export function disableVideo(call) {
-
+export function redirectCall(call, destination) { redirectCall
+    return async function(dispatch, getState) {
+        let account = getState().accounts.map.get(call.getAccountId());
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.redirectCall(account, call, destination);
+    };
 }
 
-export function makeTransfer(destination, call) {
-
+export function xferCall(call, destination) {
+    return async function(dispatch, getState) {
+        let account = getState().accounts.map.get(call.getAccountId());
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.xferCall(account, call, destination);
+    };
 }
 
-export function sendDTMF(key, call) {
-
+export function xferReplacesCall(call, destinationCall) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.xferReplacesCall(call, destinationCall);
+    };
 }
 
 /**

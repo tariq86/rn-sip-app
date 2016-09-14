@@ -5,6 +5,8 @@ const NAVIGATE_BACK = 'navigation/NAVIGATE_BACK';
 const NAVIGATE_REPLACE = 'navigation/NAVIGATE_REPLACE';
 const NAVIGATE_RESET = 'navigation/NAVIGATE_RESET';
 const NAVIGATE_RESET_WITH_STACK = 'navigation/NAVIGATE_RESET_WITH_STACK';
+const OPEN_DRAWER = 'navigation/OPEN_DRAWER';
+const CLOSE_DRAWER = 'navigation/CLOSE_DRAWER';
 
 export function goTo(route) {
     return dispatch => {
@@ -14,6 +16,7 @@ export function goTo(route) {
 }
 
 export function goBack() {
+    // TODO: Redirect to main screen once history is empty.
     return dispatch => {
         dispatch({type: NAVIGATE_BACK});
         nav.pop()
@@ -41,11 +44,24 @@ export function resetWithStack(stack) {
     }
 }
 
+export function openDrawer() {
+    return dispatch => {
+        dispatch({type: OPEN_DRAWER});
+    }
+}
+
+export function closeDrawer() {
+    return dispatch => {
+        dispatch({type: CLOSE_DRAWER});
+    }
+}
+
 const initialState = {
     init: {name: 'launch'},
     current: {},
-    prevision: {},
-    history: []
+    prevision: {}, // TODO: Rename may be to previous ?
+    history: [],
+    drawer: false
 };
 
 export default function navigation(state = initialState, action) {
@@ -54,7 +70,8 @@ export default function navigation(state = initialState, action) {
             return {...state,
                 current: action.route,
                 prevision: state.current,
-                history: state.history.concat(action.route)
+                history: state.history.concat(action.route),
+                drawer: false
             };
 
         case NAVIGATE_BACK: {
@@ -64,7 +81,8 @@ export default function navigation(state = initialState, action) {
             return {...state,
                 current: state.prevision,
                 prevision: newHistory.length >= 2 ? newHistory[newHistory.length - 2] : {},
-                history: newHistory
+                history: newHistory,
+                drawer: false
             }
         }
 
@@ -72,7 +90,8 @@ export default function navigation(state = initialState, action) {
             return {...state,
                 current: action.route,
                 prevision: {},
-                history: [].concat(action.route)
+                history: [].concat(action.route),
+                drawer: false
             };
 
         case NAVIGATE_REPLACE: {
@@ -80,7 +99,8 @@ export default function navigation(state = initialState, action) {
             newHistory[state.history.length - 1] = action.route;
             return {...state,
                 current: action.route,
-                history: newHistory
+                history: newHistory,
+                drawer: false
             }
         }
 
@@ -88,7 +108,18 @@ export default function navigation(state = initialState, action) {
             return {...state,
                 current: action.stack[action.stack.length - 1],
                 prevision: action.stack.length === 1 ? {} : action.stack[action.stack.length - 2],
-                history: action.stack
+                history: action.stack,
+                drawer: false
+            };
+
+        case OPEN_DRAWER:
+            return {...state,
+                drawer: "VISIBLE"
+            };
+
+        case CLOSE_DRAWER:
+            return {...state,
+                drawer: false
             };
 
         default:

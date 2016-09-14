@@ -1,4 +1,4 @@
-import {NetInfo, AppState} from 'react-native'
+import {NetInfo, AppState, Platform} from 'react-native'
 import * as Navigation from './navigation'
 import {
     OrderedMap,
@@ -30,9 +30,18 @@ export function initAccounts(accounts) {
  * @param {Account} account
  * @returns {Function}
  */
-export function changeAccount(account) {
+export function onAccountChanged(account) {
     return async function(dispatch, getState) {
         dispatch({type: ACCOUNT_CHANGED, account});
+
+        // -----
+        if (Platform.OS === 'android') {
+            let endpoint = getState()['app']['endpoint'];
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
     };
 }
 
@@ -49,8 +58,34 @@ export function createAccount(configuration) {
             ...configuration
         });
 
+        if (Platform.OS === 'android') {
+            endpoint.startForeground({
+                title: account.getName(),
+                text: account.getRegistration().getStatusText()
+            });
+        }
+
         dispatch({type: ACCOUNT_CREATED, account});
-        dispatch(Navigation.goTo({name: 'home'}));
+        dispatch(Navigation.goTo({name: 'settings'}));
+    };
+}
+
+/**
+ * Replaces existing account with new configuration (e.g. remove and recreate account)
+ *
+ * @param {Account} account
+ * @param {Object} configuration
+ * @returns {Function}
+ */
+export function replaceAccount(account, configuration) {
+    return async function(dispatch, getState) {
+        //let endpoint = getState()['app']['endpoint'];
+        //let account = await endpoint.createAccount({
+        //    ...configuration
+        //});
+        //
+        //dispatch({type: ACCOUNT_CREATED, account});
+        dispatch(Navigation.goTo({name: 'settings'}));
     };
 }
 
@@ -66,25 +101,17 @@ export function deleteAccount(account) {
         await endpoint.deleteAccount(account);
 
         // -----
-        // TODO: Unsubscribe
+        endpoint.stopForeground();
+
+        // -----
         dispatch({type: ACCOUNT_DELETED, account});
-        dispatch(Navigation.goTo({name: 'home'}));
+        dispatch(Navigation.goTo({name: 'settings'}));
     };
 }
-
-//function subscribe(account, dispatch) {
-//    account.addListener(
-//        "registration_changed",
-//        (account, registration) => {
-//            dispatch({type: ACCOUNT_REGISTRATION_CHANGED, account, registration})
-//        }
-//    );
-//}
 
 /**
  * Reducer
  */
-
 const initialState = {
     isLoading: true,
     map: new OrderedMap()
