@@ -40,6 +40,7 @@ export default class CallState extends Component {
         console.log("connectDuration", call.getConnectDuration(), call.getFormattedConnectDuration());
 
         // TODO: Show error if last status text is not empty.
+        // TODO: Show reason if call wasn't answered.
 
         switch (call.getState()) {
             case 'PJSIP_INV_STATE_NULL':

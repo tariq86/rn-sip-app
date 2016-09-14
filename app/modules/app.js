@@ -46,7 +46,19 @@ export function init() {
         dispatch(initCalls(calls));
         dispatch({type: INITIALIZED, payload: endpoint});
 
-        dispatch(Navigation.goAndReplace({name: 'settings'}))
+        let route = {name: 'settings'};
+
+        // Automatically show incoming call
+        if (calls.length > 0) {
+            for (let c of calls) {
+                if (c.getState() == "PJSIP_INV_STATE_INCOMING") {
+                    route = {name:'call', call: c};
+                    break;
+                }
+            }
+        }
+
+        dispatch(Navigation.goAndReplace(route));
     }
 }
 

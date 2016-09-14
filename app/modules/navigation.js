@@ -16,6 +16,7 @@ export function goTo(route) {
 }
 
 export function goBack() {
+    // TODO: Redirect to main screen once history is empty.
     return dispatch => {
         dispatch({type: NAVIGATE_BACK});
         nav.pop()

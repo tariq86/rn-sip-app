@@ -55,6 +55,8 @@ class ConversationsScreen extends React.Component {
             };
         }
 
+        // TODO: Use DialerModal instead of Modal
+
         return (
             <View style={{flex: 1}}>
                 <Header title="Conversations" {...platformHeaderProps} />

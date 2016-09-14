@@ -1,4 +1,4 @@
-import {NetInfo, AppState} from 'react-native'
+import {NetInfo} from 'react-native'
 import * as Navigation from './navigation'
 import {OrderedMap, Record} from 'immutable';
 
@@ -52,6 +52,9 @@ export function onCallChanged(call) {
  * @returns {Function}
  */
 export function onCallTerminated(call) {
+
+    // TODO: Clean up Navigation history once call is ended.
+
     return async function(dispatch, getState) {
         dispatch({type: CALL_CHANGED, call});
         dispatch({type: CALL_TERMINATED, call});
@@ -167,6 +170,13 @@ export function xferCall(call, destination) {
         let account = getState().accounts.map.get(call.getAccountId());
         let endpoint = getState()['app']['endpoint'];
         endpoint.xferCall(account, call, destination);
+    };
+}
+
+export function xferReplacesCall(call, destinationCall) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.xferReplacesCall(call, destinationCall);
     };
 }
 

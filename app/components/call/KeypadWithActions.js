@@ -65,6 +65,8 @@ export default class KeypadWithActions extends Component {
 
     renderActionKey(type, description, callback) {
         let icon = null;
+        let actionTouchableStyle = this.props.theme == "dark" ? { backgroundColor:"#59696f" } : null;
+        let actionTextStyle = this.props.theme == "dark" ? {color:"#FFF"} : null;
 
         // TODO: Pass image instead of type.
         switch (type) {
@@ -97,7 +99,7 @@ export default class KeypadWithActions extends Component {
         let touchableStyles = [{
             width: this.state.actionSize - 10,
             height: this.state.actionSize - 10
-        }, s.actionTouchable, this.props.actionTouchableStyle];
+        }, s.actionTouchable, actionTouchableStyle];
 
         if (type == 'call') {
             touchableStyles.push(s.actionGreenTouchable);
@@ -108,14 +110,21 @@ export default class KeypadWithActions extends Component {
                 <TouchableOpacity onPress={() => {callback && callback(this.state.value)}} style={touchableStyles}>
                     <Image source={icon} />
                 </TouchableOpacity>
-                <Text style={[s.actionText, this.props.actionTextStyle]}>{description}</Text>
+                <Text style={[s.actionText, actionTextStyle]}>{description}</Text>
             </View>
         )
     }
 
     render() {
+        // TODO: Move all styles into KeypadStyles.js
+
+        console.log("this.props.theme", this.props.theme);
 
         let actions = [];
+        let inputStyle = this.props.theme == "dark" ? {backgroundColor:"#3c4b51"} : null;
+        let inputTextStyle = this.props.theme == "dark" ? {color:"#FFF"} : null;
+        let keyUnderlayColor = this.props.theme == "dark" ? "#566971" : null;
+        let keyTextStyle = this.props.theme == "dark" ? {color:"#FFF"} : null;
 
         if (this.props.actions.length == 3) {
             let a = this.props.actions;
@@ -134,16 +143,15 @@ export default class KeypadWithActions extends Component {
 
         return (
              <View style={this.props.style}>
-                 <KeypadInputText style={[{flex: 0.08 * this.state.heightRatio}, this.props.inputStyle]}
-                                  textStyle={this.props.inputTextStyle}
+                 <KeypadInputText style={[{flex: 0.08 * this.state.heightRatio}, inputStyle]}
+                                  textStyle={inputTextStyle}
                                   value={this.state.value}
                                   onBackspacePress={this._onBackspacePress}
                                   onClearPress={this._onClearPress}  />
                  <View style={{flex: 0.02 * this.state.heightRatio}} />
-                 <Keypad style={[{flex: 0.75}, this.props.keypadStyle]}
-                         keyStyle={this.props.keyStyle}
-                         keyUnderlayColor={this.props.keyUnderlayColor}
-                         keyTextStyle={this.props.keyTextStyle}
+                 <Keypad style={{flex: 0.75}}
+                         keyUnderlayColor={keyUnderlayColor}
+                         keyTextStyle={keyTextStyle}
                          onKeyPress={this._onKeyPress}
                          onDefineKeySize={this._onDefineKeySize} />
                  <View style={{flex: 0.02 * this.state.heightRatio}} />
@@ -156,17 +164,8 @@ export default class KeypadWithActions extends Component {
     }
 }
 
-
-// TODO: Add theme parameter instead of inputStyle, inputTextStyle, keypadStyle, keyStyle, keyTextStyle, keyTextStyle, actionTextStyle
 KeypadWithActions.propTypes = {
     style: View.propTypes.style,
     actions: PropTypes.array,
-    inputStyle: View.propTypes.style,
-    inputTextStyle: Text.propTypes.style,
-    keypadStyle: View.propTypes.style,
-    keyStyle: View.propTypes.style,
-    keyTextStyle: Text.propTypes.style,
-    keyUnderlayColor: PropTypes.string,
-    actionTouchableStyle: View.propTypes.style,
-    actionTextStyle: Text.propTypes.style
+    theme: PropTypes.string
 }

@@ -19,6 +19,9 @@ export default class CallAction extends Component {
             case 'chat':
                 icon = require('../../assets/images/call/action-chat.png');
                 break;
+            case 'add':
+                icon = require('../../assets/images/call/action-add.png');
+                break;
             case 'earpiece':
                 icon = require('../../assets/images/call/action-speaker.png');
                 break;
@@ -51,6 +54,9 @@ export default class CallAction extends Component {
                 break;
             case 'transfer':
                 icon = require('../../assets/images/call/action-transfer.png');
+                break;
+            case 'record':
+                icon = require('../../assets/images/call/action-record.png');
                 break;
         }
 

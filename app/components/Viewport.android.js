@@ -116,7 +116,7 @@ class Viewport extends React.Component {
                 return <SettingsScreen />;
         }
 
-        throw new Error(`Unknown tab ${this.props.tab}`);
+        // throw new Error(`Unknown tab ${this.props.tab}`);
     }
 
     render() {

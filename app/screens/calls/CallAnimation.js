@@ -15,13 +15,14 @@ export function calculateComponentsHeight(height) {
     }
 }
 
-export function calculateDimensionsForIncomingCall({screenHeight, infoHeight, stateHeight, actionsHeight, avatarHeight, buttonsHeight}) {
-
-    let totals = infoHeight + stateHeight + actionsHeight + buttonsHeight;
+export function calculateDimensionsForIncomingCall({screenHeight, infoHeight, stateHeight, actionsHeight, avatarHeight, buttonsHeight, totalCalls}) {
+    let switchHeight = calculateCallSwitchHeight(totalCalls);
+    let switchOffset = switchHeight > 0 ? 10 : 0;
+    let totals = switchOffset + switchHeight + infoHeight + stateHeight + actionsHeight + buttonsHeight;
     let spaces = screenHeight - totals;
     let space = spaces / 4;
 
-    let infoOffset = space;
+    let infoOffset = switchHeight + switchOffset + space;
     let avatarOffset = infoOffset + infoHeight + space;
     let stateOffset = avatarOffset + avatarHeight + space;
 
@@ -35,12 +36,18 @@ export function calculateDimensionsForIncomingCall({screenHeight, infoHeight, st
     }
 }
 
-export function calculateDimensionsForActiveCall({screenHeight, infoHeight, stateHeight, actionsHeight, buttonsHeight}) {
-    let totals = infoHeight + stateHeight + actionsHeight + buttonsHeight;
+function calculateCallSwitchHeight(totalCalls) {
+    let height = (totalCalls - 1) * 52;
+    return height > 0 ? height + 10 : 0;
+}
+
+export function calculateDimensionsForActiveCall({screenHeight, infoHeight, stateHeight, actionsHeight, buttonsHeight, totalCalls}) {
+    let switchHeight = calculateCallSwitchHeight(totalCalls);
+    let totals = switchHeight + infoHeight + stateHeight + actionsHeight + buttonsHeight;
     let spaces = screenHeight - totals;
     let space = spaces / 4;
 
-    let infoOffset = space;
+    let infoOffset = switchHeight + space;
     let stateOffset = infoOffset + infoHeight + space;
     let actionsOffset = stateOffset + stateHeight + space;
 
@@ -54,18 +61,22 @@ export function calculateDimensionsForActiveCall({screenHeight, infoHeight, stat
     }
 }
 
-export function calculateDimensionsForTerminatedCall({screenHeight}) {
-    // TODO: Implementation
+export function calculateDimensionsForTerminatedCall({screenHeight, infoHeight, stateHeight, buttonsHeight, totalCalls}) {
+    let switchHeight = calculateCallSwitchHeight(totalCalls);
+    let totals = switchHeight + infoHeight + stateHeight + buttonsHeight;
+    let spaces = screenHeight - totals;
+    let space = spaces / 3;
+
+    let infoOffset = switchHeight + space;
+    let stateOffset = infoOffset + infoHeight + space;
 
     return {
-        infoOffset: 20,
+        infoOffset: infoOffset,
         avatarOpacity: 0,
         avatarOffset: screenHeight,
-        stateOffset: 250,
+        stateOffset: stateOffset,
         actionsOpacity: 0,
-        actionsOffset: screenHeight,
-        buttonsOpacity: 1,
-        buttonsOffset: 400
+        actionsOffset: screenHeight
     }
 }
 

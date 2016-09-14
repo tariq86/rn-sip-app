@@ -26,7 +26,10 @@ import CallInfo from '../../components/call/CallInfo'
 import CallAction from '../../components/call/CallAction'
 import CallButtons from '../../components/call/CallButtons'
 import CallActions from '../../components/call/CallActions'
+import CallParallelInfo from '../../components/call/CallParallelInfo'
 import * as CallAnimation from './CallAnimation'
+import TransferModal from '../../components/call/TransferModal'
+import DialerModal from '../../components/call/DialerModal'
 
 // TODO Move to TranferModal
 import Keypad from '../../components/call/Keypad'
@@ -55,9 +58,10 @@ class CallScreen extends Component {
             call,
             terminatedCall: null,
 
+            isAddModalVisible: false,
             isRedirectModalVisible: false,
-
             isTransferModalVisible: false,
+
             isDTMFModalVisible: false,
             dtmfValue: "",
 
@@ -68,7 +72,7 @@ class CallScreen extends Component {
         };
 
         if (call) {
-            this.state = {...this.state, ...CallAnimation.calculateInitialDimensions(this.state, call)};
+            this.state = {...this.state, ...CallAnimation.calculateInitialDimensions({...this.state, totalCalls: props.calls.size}, call)};
         }
 
         this._onCallAnswer = this.onCallAnswer.bind(this);
@@ -91,6 +95,9 @@ class CallScreen extends Component {
         this._onCallAttendantTransferPress = this.onCallAttendantTransferPress.bind(this);
         this._onCallBlindTransferPress = this.onCallBlindTransferPress.bind(this);
 
+        this._onCallAddPress = this.onCallAddPress.bind(this);
+        this._onCallAddClosePress = this.onCallAddClosePress.bind(this);
+        this._onCallAddSubmitPress = this.onCallAddSubmitPress.bind(this);
 
         this._onCallRedirect = this.onCallRedirectPress.bind(this);
         this._onCallRedirectClosePress = this.onCallRedirectClosePress.bind(this);
@@ -101,7 +108,7 @@ class CallScreen extends Component {
         let state = {
             call: call
         };
-        state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state}, call)};
+        state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state, totalCalls: this.props.calls.size}, call)};
 
         this.setState(state);
     }
@@ -113,13 +120,13 @@ class CallScreen extends Component {
 
             if (this.state.call.getState() != call.getState()) {
                 // Animate component's for different Call states
-                CallAnimation.animateCallState(this.state, call);
+                CallAnimation.animateCallState({...this.state, totalCalls: nextProps.calls.size}, call);
             }
 
             this.setState({call});
 
             if (call.getState() == "PJSIP_INV_STATE_DISCONNECTED") {
-                this.props.onCallEnd && this.props.onCallEnd();
+                this.props.onCallEnd && this.props.onCallEnd(this.state.call);
             }
         }
     }
@@ -141,22 +148,24 @@ class CallScreen extends Component {
     }
 
     onCallMutePress() {
-        this.props.onCallMutePress && this.props.onCallMutePress(this.state.call);
+        this.props.onCallMute && this.props.onCallMute(this.state.call);
     }
 
     onCallUnMutePress() {
-        this.props.onCallUnMutePress && this.props.onCallUnMutePress(this.state.call);
+        this.props.onCallUnMute && this.props.onCallUnMute(this.state.call);
     }
 
     onCallSpeakerPress() {
-        this.props.onCallSpeakerPress && this.props.onCallSpeakerPress(this.state.call);
+        this.props.onCallSpeaker && this.props.onCallSpeaker(this.state.call);
     }
 
     onCallEarpiecePress() {
-        this.props.onCallEarpiecePress && this.props.onCallEarpiecePress(this.state.call);
+        this.props.onCallEarpiece && this.props.onCallEarpiece(this.state.call);
     }
 
     onCallTransferPress() {
+        // TODO: Put local call on hold while typing digits
+
         console.log("onCallTransferPress");
         this.setState({isTransferModalVisible: true});
     }
@@ -165,17 +174,15 @@ class CallScreen extends Component {
         this.setState({isTransferModalVisible: false});
     }
 
-    onCallAttendantTransferPress(value) {
-        if (value.length > 0) {
-            this.setState({isTransferModalVisible: false});
-            this.props.onCallAttendantTransferPress && this.props.onCallAttendantTransferPress(this.state.call, value);
-        }
+    onCallAttendantTransferPress(destinationCall) {
+        this.setState({isTransferModalVisible: false});
+        this.props.onCallAttendantTransfer && this.props.onCallAttendantTransfer(this.state.call, destinationCall);
     }
 
     onCallBlindTransferPress(value) {
         if (value.length > 0) {
             this.setState({isTransferModalVisible: false});
-            this.props.onCallBlindTransferPress && this.props.onCallBlindTransferPress(this.state.call, value);
+            this.props.onCallBlindTransfer && this.props.onCallBlindTransfer(this.state.call, value);
         }
     }
 
@@ -186,7 +193,7 @@ class CallScreen extends Component {
     onCallDTMFKeyPress(key) {
         this.setState({dtmfValue: this.state.dtmfValue + key});
 
-        this.props.onCallDTMFPress && this.props.onCallDTMFPress(this.state.call, key);
+        this.props.onCallDTMF && this.props.onCallDTMF(this.state.call, key);
     }
 
     onCallDTMFModalClosePress() {
@@ -194,13 +201,27 @@ class CallScreen extends Component {
     }
 
     onCallHoldPress() {
-        this.props.onCallHoldPress && this.props.onCallHoldPress(this.state.call);
+        this.props.onCallHold && this.props.onCallHold(this.state.call);
     }
 
     onCallUnHoldPress() {
-        this.props.onCallUnHoldPress && this.props.onCallUnHoldPress(this.state.call);
+        this.props.onCallUnHold && this.props.onCallUnHold(this.state.call);
     }
 
+    onCallAddPress() {
+        // TODO: Put local call on hold while typing digits
+        this.setState({isAddModalVisible: true});
+    }
+    
+    onCallAddClosePress() {
+        this.setState({isAddModalVisible: false});
+    }
+    
+    onCallAddSubmitPress(destination) {
+        this.setState({isAddModalVisible: false});
+        this.props.onCallAdd && this.props.onCallAdd(this.state.call, destination);
+    }
+    
     onCallRedirectPress() {
         this.setState({isRedirectModalVisible: true});
     }
@@ -216,6 +237,26 @@ class CallScreen extends Component {
         }
     }
 
+    renderSimultaniousCalls() {
+        let activeCall = this.state.call;
+        let calls = this.props.calls.toList().toArray().filter((c) => { return c.getId() != activeCall.getId()});
+        let result = [];
+
+        for (let i=0; i < calls.length; i++) {
+            let call = calls[i];
+
+            result.push(
+                (<CallParallelInfo key={"parallel-" + call.getId()} call={call} onPress={this.props.onCallSelect} style={{marginTop: i == 0 ? 0 : 5}} />)
+            )
+        }
+
+        return (
+            <View style={{position: 'absolute', top: 5, width: this.state.screenWidth,}}>
+                {result}
+            </View>
+        );
+    }
+
     renderCallWait() {
         return (
             <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
@@ -228,6 +269,7 @@ class CallScreen extends Component {
 
     render() {
         let call = this.state.call;
+        let calls = this.props.calls.toList().toArray();
 
         if (!call) {
             return this.renderCallWait();
@@ -236,6 +278,8 @@ class CallScreen extends Component {
         return (
             <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
                 <View style={{flex: 1}}>
+
+                    {this.renderSimultaniousCalls()}
 
                     <Animated.View style={{position: 'absolute', top: this.state.infoOffset, height: this.state.infoHeight, width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
                         <CallInfo call={call} />
@@ -252,10 +296,9 @@ class CallScreen extends Component {
                     </Animated.View>
 
                     <Animated.View style={{position: 'absolute', top: this.state.actionsOffset, height: this.state.actionsHeight, opacity: this.state.actionsOpacity, flexDirection:'row', width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
-
-                        <View style={{flex: 0.15}} />
                         <CallActions call={call}
                                      style={{flex: 0.7}}
+                                     onAddPress={this._onCallAddPress}
                                      onChatPress={this._onCallChatPress}
                                      onMutePress={this._onCallMutePress}
                                      onUnMutePress={this._onCallUnMutePress}
@@ -265,8 +308,6 @@ class CallScreen extends Component {
                                      onDTMFPress={this._onCallDTMFPress}
                                      onHoldPress={this._onCallHoldPress}
                                      onUnHoldPress={this._onCallUnHoldPress} />
-                        <View style={{flex: 0.15}} />
-
                     </Animated.View>
 
                     <View style={{position: 'absolute', top: this.state.screenHeight - this.state.buttonsHeight, height: this.state.buttonsHeight, alignItems: 'center', width: this.state.screenWidth, backgroundColor: backgroundColorShow ? "#59c15b" : "transparent"}}>
@@ -277,63 +318,28 @@ class CallScreen extends Component {
                             call={call} />
                     </View>
 
-                    {/* TODO: Move to RedirectDialog */}
-                    <Modal
-                        animationType={"fade"}
-                        transparent={true}
+                    <DialerModal
+                        actions={[
+                            {icon: "call", text: "Call2", callback: this._onCallAddSubmitPress}
+                        ]}
+                        visible={this.state.isAddModalVisible}
+                        onRequestClose={this._onCallAddClosePress} />
+
+                    <DialerModal
+                        actions={[
+                            {icon: "blind-transfer", text: "Redirect", callback: this._onCallRedirectSubmitPress}
+                        ]}
+                        theme="dark"
                         visible={this.state.isRedirectModalVisible}
-                        onRequestClose={this._onCallRedirectClosePress}
-                    >
-                        <View style={{backgroundColor: "#3f5057", flex: 1}}>
+                        onRequestClose={this._onCallRedirectClosePress} />
 
-                            <KeypadWithActions
-                                style={{flex: 1, backgroundColor:"#3f5057"}}
-                                inputStyle={{backgroundColor:"#3c4b51"}}
-                                inputTextStyle={{color:"#FFF"}}
-                                keyUnderlayColor={"#566971"}
-                                keyTextStyle={{color:"#FFF"}}
-                                actionTouchableStyle={{backgroundColor:"#59696f"}}
-                                actionTextStyle={{color:"#FFF"}}
-                                actions={[
-                                    // {icon: "attendant-transfer", text: "Attendant\ntransfer", callback: this._onCallAttendantTransferPress},
-                                    {icon: "redirect", text: "Redirect", callback: this._onCallRedirectSubmitPress}
-                                ]}
-                            />
-
-                            <TouchableOpacity onPress={this._onCallRedirectClosePress} style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#52636a"}}>
-                                <Text style={{fontSize: 12, color: "#FFF"}}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </Modal>
-
-                    {/* TODO: Move to TransferDialog */}
-                    <Modal
-                        animationType={"fade"}
-                        transparent={true}
+                    <TransferModal
+                        call={call}
+                        calls={calls}
                         visible={this.state.isTransferModalVisible}
                         onRequestClose={this._onCallTransferClosePress}
-                    >
-                        <View style={{backgroundColor: "#3f5057", flex: 1}}>
-
-                            <KeypadWithActions
-                                style={{flex: 1, backgroundColor:"#3f5057"}}
-                                inputStyle={{backgroundColor:"#3c4b51"}}
-                                inputTextStyle={{color:"#FFF"}}
-                                keyUnderlayColor={"#566971"}
-                                keyTextStyle={{color:"#FFF"}}
-                                actionTouchableStyle={{backgroundColor:"#59696f"}}
-                                actionTextStyle={{color:"#FFF"}}
-                                actions={[
-                                    // {icon: "attendant-transfer", text: "Attendant\ntransfer", callback: this._onCallAttendantTransferPress},
-                                    {icon: "blind-transfer", text: "Blind\ntransfer", callback: this._onCallBlindTransferPress}
-                                ]}
-                            />
-
-                            <TouchableOpacity onPress={this._onCallTransferClosePress} style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#52636a"}}>
-                                <Text style={{fontSize: 12, color: "#FFF"}}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </Modal>
+                        onBlindTransferPress={this._onCallBlindTransferPress}
+                        onAttendantTransferPress={this._onCallAttendantTransferPress} />
 
                     {/* TODO: Move to DTMFDialog */}
                     <Modal
@@ -374,44 +380,73 @@ CallScreen.props = {
 
 function select(store) {
     return {
-        calls: store.calls.map,
+        calls: store.calls.map, // TODO: Use Array instead of ImmutableJS struct
         call: store.navigation.current.call
     };
 }
 
-function actions(dispatch) {
+function actions(dispatch, getState) {
+    console.log("getState", getState);
     return {
-        onCallEnd() {
+        onCallEnd(call) {
             setTimeout(() => {
-                dispatch(Navigation.goBack());
-            }, 5000);
+                dispatch(
+                    async function(dispatch, getState) {
+                        let calls = getState().calls.map;
+                        let route = getState().navigation.current;
+                        let doRoute = (call) => {
+                            if (calls.has(call.getId())) {
+                                return;
+                            }
+
+                            // Open active call once current call ends.
+                            if (calls.size > 0) {
+                                return dispatch(Navigation.goAndReplace({name:'call', call:calls.first()}));
+                            }
+
+                            // Return to previous screen once call end.
+                            return dispatch(Navigation.goBack());
+                        };
+
+                        if (route.name != 'call') {
+                            return
+                        }
+
+                        if (route.call instanceof Promise) {
+                            route.call.then(doRoute);
+                        } else {
+                            doRoute(route.call);
+                        }
+                    }
+                );
+            }, 3000);
         },
-        onCallHoldPress(call) {
+        onCallHold(call) {
             dispatch(Calls.holdCall(call));
         },
-        onCallUnHoldPress(call) {
+        onCallUnHold(call) {
             dispatch(Calls.unholdCall(call));
         },
-        onCallMutePress(call) {
+        onCallMute(call) {
             dispatch(Calls.muteCall(call));
         },
-        onCallUnMutePress(call) {
+        onCallUnMute(call) {
             dispatch(Calls.unmuteCall(call));
         },
-        onCallSpeakerPress(call) {
+        onCallSpeaker(call) {
             dispatch(Calls.useSpeaker(call));
         },
-        onCallEarpiecePress(call) {
+        onCallEarpiece(call) {
             dispatch(Calls.useEarpiece(call));
         },
-        onCallDTMFPress(call, key) {
+        onCallDTMF(call, key) {
             dispatch(Calls.dtmfCall(call, key));
         },
-        onCallBlindTransferPress(call, destination) {
+        onCallBlindTransfer(call, destination) {
             dispatch(Calls.xferCall(call, destination));
         },
-        onCallAttendantTransferPress() {
-            alert("Not implemented");
+        onCallAttendantTransfer(call, destinationCall) {
+            dispatch(Calls.xferReplacesCall(call, destinationCall));
         },
         onCallRedirect(call, destination) {
             dispatch(Calls.redirectCall(call, destination));
@@ -421,6 +456,12 @@ function actions(dispatch) {
         },
         onCallAnswer(call) {
             dispatch(Calls.answerCall(call));
+        },
+        onCallSelect: (call) => {
+            dispatch(Navigation.goAndReplace({name: 'call', call}));
+        },
+        onCallAdd: (call, destination) => {
+            dispatch(Calls.makeCall(destination));
         }
     };
 }
