@@ -49,7 +49,7 @@ class CallScreen extends Component {
         let call = this.props.call;
 
         if (call instanceof Promise) {
-            call.then(this.onInitializationResponse.bind(this));
+            call.then(this.onInitializationResponse.bind(this), this.onInitializationError.bind(this));
             call = null;
         }
 
@@ -66,6 +66,8 @@ class CallScreen extends Component {
 
             screenHeight,
             screenWidth,
+
+            error: null,
 
             ...CallAnimation.calculateComponentsHeight(screenHeight)
         };
@@ -113,6 +115,11 @@ class CallScreen extends Component {
         state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state, totalCalls: this.props.calls.size}, call)};
 
         this.setState(state);
+    }
+
+    onInitializationError(reason) {
+        this.setState({error: reason});
+        this.props.onCallEnd && this.props.onCallEnd(this.state.call);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -296,11 +303,22 @@ class CallScreen extends Component {
         );
     }
 
+    renderError() {
+        return (
+            <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+                    <Text style={{color: "#FFF"}}>{this.state.error}</Text>
+                </View>
+            </LinearGradient>
+        )
+    }
+
     renderCallWait() {
+        // TODO: Show loader here
         return (
             <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text>Please wait while call initialized</Text>
+                    <Text style={{color: "#FFF"}}>Please wait while call initialized</Text>
                 </View>
             </LinearGradient>
         )
@@ -309,6 +327,10 @@ class CallScreen extends Component {
     render() {
         let call = this.state.call;
         let calls = this.props.calls.toList().toArray();
+
+        if (this.state.error) {
+            return this.renderError();
+        }
 
         if (!call) {
             return this.renderCallWait();
@@ -446,6 +468,10 @@ function actions(dispatch, getState) {
                     async function(dispatch, getState) {
                         let calls = getState().calls.map;
                         let route = getState().navigation.current;
+                        let doDirectRoute = () => {
+                            // Return to previous screen once call end.
+                            return dispatch(Navigation.goBack());
+                        };
                         let doRoute = (call) => {
                             if (calls.has(call.getId())) {
                                 return;
@@ -465,7 +491,7 @@ function actions(dispatch, getState) {
                         }
 
                         if (route.call instanceof Promise) {
-                            route.call.then(doRoute);
+                            route.call.then(doRoute, doDirectRoute);
                         } else {
                             doRoute(route.call);
                         }

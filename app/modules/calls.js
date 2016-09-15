@@ -92,7 +92,8 @@ export function makeCall(destination, account = null) {
         }
 
         if (!account) {
-            throw new Error("At least one account should be available to make a call.");
+            dispatch(Navigation.goTo({name: 'call', call: Promise.reject("At least one account should be available to make a call.")}));
+            return;
         }
 
         // -----
