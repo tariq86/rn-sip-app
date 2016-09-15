@@ -7,6 +7,7 @@ export const CALL_INITIATED = 'calls/CALL_INITIATED';
 export const CALL_RECEIVED = 'calls/CALL_RECEIVED';
 export const CALL_CHANGED = 'calls/CALL_CHANGED';
 export const CALL_TERMINATED = 'calls/CALL_TERMINATED';
+export const CALL_SCREEN_LOCKED = 'calls/CALL_SCREEN_LOCKED';
 
 /**
  * Handles initialization event.
@@ -58,6 +59,18 @@ export function onCallTerminated(call) {
     return async function(dispatch, getState) {
         dispatch({type: CALL_CHANGED, call});
         dispatch({type: CALL_TERMINATED, call});
+    };
+}
+
+/**
+ * Handles screen lock event.
+ *
+ * @param bool lock
+ * @returns {Function}
+ */
+export function onCallScreenLocked(lock) {
+    return async function(dispatch, getState) {
+        dispatch({type: CALL_SCREEN_LOCKED, lock});
     };
 }
 
@@ -186,6 +199,7 @@ export function xferReplacesCall(call, destinationCall) {
 
 const initialState = {
     isLoading: true,
+    isScreenLocked: false,
     map: new OrderedMap()
 };
 
@@ -214,6 +228,12 @@ export default function app(state = initialState, action) {
             return {
                 ...state,
                 map: state.map.delete(action.call.getId())
+            };
+
+        case CALL_SCREEN_LOCKED:
+            return {
+                ...state,
+                isScreenLocked: action.lock
             };
 
         default:

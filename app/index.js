@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {StatusBar, View} from 'react-native'
 import {Provider} from 'react-redux'
 import configureStore from './configureStore'
 
@@ -13,13 +12,7 @@ class Root extends Component {
     render() {
         return (
             <Provider store={store}>
-                <View style={{flex: 1}}>
-                    <StatusBar
-                        backgroundColor="#CCCCCC"
-                        barStyle="light-content"
-                        hidden={false} />
-                    <App />
-                </View>
+                <App />
             </Provider>
         )
     }

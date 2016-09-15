@@ -1,7 +1,7 @@
 import {NetInfo, AppState, Platform, NativeModules} from 'react-native'
 import * as Navigation from './navigation'
 import {initAccounts, onAccountChanged, createAccount} from './accounts'
-import {initCalls, onCallReceived, onCallChanged, onCallTerminated} from './calls'
+import {initCalls, onCallReceived, onCallChanged, onCallTerminated, onCallScreenLocked} from './calls'
 import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
@@ -31,6 +31,9 @@ export function init() {
         });
         endpoint.on("call_terminated", (call) => {
             dispatch(onCallTerminated(call));
+        });
+        endpoint.on("call_screen_locked", (call) => {
+            dispatch(onCallScreenLocked(call));
         });
 
         // Show notification if account exist

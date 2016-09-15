@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {
     Text,
     View,
+    StatusBar,
     TouchableHighlight,
     Navigator,
     Modal
@@ -70,15 +71,20 @@ class App extends Component {
 
     render() {
         const {navigation} = this.props;
+        const full = navigation.current.name == "call";
 
         return (
-            <Navigator
-                style={{flex: 1}}
-                ref={ref => nav = ref}
-                initialRoute={navigation.init}
-                configureScene={this.configureScene}
-                renderScene={this.renderScene.bind(this)}
-            />
+            <View style={{flex: 1}}>
+                <StatusBar
+                    backgroundColor="#CCCCCC"
+                    barStyle="light-content" />
+                <Navigator
+                    style={{flex: 1}}
+                    ref={ref => nav = ref}
+                    initialRoute={navigation.init}
+                    configureScene={this.configureScene}
+                    renderScene={this.renderScene.bind(this)} />
+            </View>
         )
     }
 }

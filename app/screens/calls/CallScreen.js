@@ -275,6 +275,13 @@ class CallScreen extends Component {
             return this.renderCallWait();
         }
 
+        if (this.props.isScreenLocked === true) {
+            // TODO: Use overlay with absolute position instead of this
+            return (
+                <View style={{flex: 1, backgroundColor: "#000"}} />
+            )
+        }
+
         return (
             <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
                 <View style={{flex: 1}}>
@@ -381,7 +388,8 @@ CallScreen.props = {
 function select(store) {
     return {
         calls: store.calls.map, // TODO: Use Array instead of ImmutableJS struct
-        call: store.navigation.current.call
+        call: store.navigation.current.call,
+        isScreenLocked: store.calls.isScreenLocked
     };
 }
 
