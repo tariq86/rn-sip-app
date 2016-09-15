@@ -37,11 +37,6 @@ export default class CallState extends Component {
         let call = this.props.call;
         let description = null;
 
-        console.log("connectDuration", call.getConnectDuration(), call.getFormattedConnectDuration());
-
-        // TODO: Show error if last status text is not empty.
-        // TODO: Show reason if call wasn't answered.
-
         switch (call.getState()) {
             case 'PJSIP_INV_STATE_NULL':
                 description = "initializing";
@@ -53,6 +48,17 @@ export default class CallState extends Component {
                 break;
             case 'PJSIP_INV_STATE_INCOMING':
                 description = "calling";
+                break;
+            case 'PJSIP_INV_STATE_DISCONNECTED':
+                if (call.getLastStatusCode() != "PJSIP_SC_OK") {
+                    description = call.getLastReason();
+
+                    if (!description) {
+                        description = call.getLastStatusCode();
+                    }
+                } else {
+                    description = call.getFormattedConnectDuration();
+                }
                 break;
             default:
                 description = call.getFormattedConnectDuration();
