@@ -31,10 +31,6 @@ export default class TransferModal extends Component {
     }
 
     onBlindTransferRequest() {
-        //if (this.refs.optionsModal) {
-        //    this.refs.optionsModal.close();
-        //}
-        
         this.setState({
             isRedirectModalVisible: true
         })

@@ -29,8 +29,11 @@ export function initCalls(calls) {
  */
 export function onCallReceived(call) {
     return async function(dispatch, getState) {
+        if (getState().navigation.current.name != 'call') {
+            dispatch(Navigation.goTo({name: 'call', call}));
+        }
+
         dispatch({type: CALL_RECEIVED, call});
-        dispatch(Navigation.goTo({name: 'call', call}));
     };
 }
 

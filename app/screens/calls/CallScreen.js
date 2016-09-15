@@ -30,6 +30,7 @@ import CallParallelInfo from '../../components/call/CallParallelInfo'
 import * as CallAnimation from './CallAnimation'
 import TransferModal from '../../components/call/TransferModal'
 import DialerModal from '../../components/call/DialerModal'
+import IncomingCallModal from '../../components/call/IncomingCallModal'
 
 // TODO Move to TranferModal
 import Keypad from '../../components/call/Keypad'
@@ -52,11 +53,9 @@ class CallScreen extends Component {
             call = null;
         }
 
-        console.log("call", call);
-
         this.state = {
             call,
-            terminatedCall: null,
+            incomingCall: null,
 
             isAddModalVisible: false,
             isRedirectModalVisible: false,
@@ -102,6 +101,9 @@ class CallScreen extends Component {
         this._onCallRedirect = this.onCallRedirectPress.bind(this);
         this._onCallRedirectClosePress = this.onCallRedirectClosePress.bind(this);
         this._onCallRedirectSubmitPress = this.onCallRedirectSubmitPress.bind(this);
+
+        this._onIncomingCallAnswer = this.onIncomingCallAnswer.bind(this);
+        this._onIncomingCallDecline = this.onIncomingCallDecline.bind(this);
     }
 
     onInitializationResponse(call) {
@@ -117,13 +119,40 @@ class CallScreen extends Component {
         // Remember latest state of current call, to be able display call information after removal from state
         if (this.state.call && nextProps.calls.has(this.state.call.getId())) {
             let call = nextProps.calls.get(this.state.call.getId());
+            let calls = nextProps.calls.toList().toArray();
 
-            if (this.state.call.getState() != call.getState()) {
-                // Animate component's for different Call states
-                CallAnimation.animateCallState({...this.state, totalCalls: nextProps.calls.size}, call);
+            // Animate component's for different Call states
+            CallAnimation.animateCallState({...this.state, totalCalls: calls.length}, call);
+
+            // Handle incoming call
+            let incomingCall = this.state.incomingCall;
+
+            if (!incomingCall && calls.length > 1) {
+                for (let c of calls) {
+                    if (c.getId() == call.getId()) {
+                        continue;
+                    }
+
+                    if (c.getState() == "PJSIP_INV_STATE_INCOMING") {
+                        incomingCall = c;
+                    }
+                }
+            } else if (incomingCall) {
+                let exist = false;
+
+                for (let c of calls) {
+                    if (c.getId() == incomingCall.getId()) {
+                        exist = true;
+                        break;
+                    }
+                }
+
+                if (!exist) {
+                    incomingCall = null;
+                }
             }
 
-            this.setState({call});
+            this.setState({call, incomingCall});
 
             if (call.getState() == "PJSIP_INV_STATE_DISCONNECTED") {
                 this.props.onCallEnd && this.props.onCallEnd(this.state.call);
@@ -237,6 +266,16 @@ class CallScreen extends Component {
         }
     }
 
+    onIncomingCallAnswer() {
+        this.setState({incomingCall: null});
+        this.props.onIncomingCallAnswer && this.props.onIncomingCallAnswer(this.state.incomingCall);
+    }
+
+    onIncomingCallDecline() {
+        this.setState({incomingCall: null});
+        this.props.onIncomingCallDecline && this.props.onIncomingCallDecline(this.state.incomingCall);
+    }
+
     renderSimultaniousCalls() {
         let activeCall = this.state.call;
         let calls = this.props.calls.toList().toArray().filter((c) => { return c.getId() != activeCall.getId()});
@@ -347,6 +386,11 @@ class CallScreen extends Component {
                         onRequestClose={this._onCallTransferClosePress}
                         onBlindTransferPress={this._onCallBlindTransferPress}
                         onAttendantTransferPress={this._onCallAttendantTransferPress} />
+
+                    <IncomingCallModal
+                        call={this.state.incomingCall}
+                        onAnswerPress={this._onIncomingCallAnswer}
+                        onDeclinePress={this._onIncomingCallDecline} />
 
                     {/* TODO: Move to DTMFDialog */}
                     <Modal
@@ -462,6 +506,10 @@ function actions(dispatch, getState) {
         onCallHangup(call) {
             dispatch(Calls.hangupCall(call));
         },
+        onCallDecline(call) {
+            // TODO: Add decline method.
+            dispatch(Calls.hangupCall(call));
+        },
         onCallAnswer(call) {
             dispatch(Calls.answerCall(call));
         },
@@ -470,6 +518,14 @@ function actions(dispatch, getState) {
         },
         onCallAdd: (call, destination) => {
             dispatch(Calls.makeCall(destination));
+        },
+        onIncomingCallAnswer(call) {
+            dispatch(Calls.answerCall(call));
+            dispatch(Navigation.goAndReplace({name: 'call', call}));
+        },
+        onIncomingCallDecline(call) {
+            // TODO: Add decline method.
+            dispatch(Calls.hangupCall(call));
         }
     };
 }
