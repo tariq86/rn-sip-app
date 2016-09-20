@@ -2,18 +2,14 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
-    TouchableHighlight,
     TouchableOpacity,
     Animated,
     View,
     Text,
-    Platform,
     Modal,
     StyleSheet,
     Image,
-    PixelRatio,
-    Dimensions,
-    TabBarIOS
+    Dimensions
 } from 'react-native'
 import * as Navigation from '../../modules/navigation'
 import * as Calls from '../../modules/calls'
@@ -455,7 +451,8 @@ function select(store) {
     return {
         calls: store.calls.map, // TODO: Use Array instead of ImmutableJS struct
         call: store.navigation.current.call,
-        isScreenLocked: store.calls.isScreenLocked
+        isScreenLocked: store.calls.isScreenLocked,
+        isFromForeground: store.app.foreground
     };
 }
 

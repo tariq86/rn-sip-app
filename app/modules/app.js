@@ -17,7 +17,7 @@ export function init() {
 
         let endpoint = new Endpoint();
         let state = await endpoint.start();
-        let {accounts, calls} = state;
+        let {accounts, calls, foreground} = state;
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
@@ -47,7 +47,7 @@ export function init() {
 
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
-        dispatch({type: INITIALIZED, payload: endpoint});
+        dispatch({type: INITIALIZED, payload: endpoint, foreground});
 
         let route = {name: 'settings'};
 
@@ -70,6 +70,7 @@ export function init() {
  */
 
 const initialState = {
+    foreground: false,
     endpoint: null
 };
 
@@ -77,7 +78,8 @@ export default function app(state = initialState, action) {
     switch (action.type) {
         case INITIALIZED:
             return {...state,
-                endpoint: action.payload
+                endpoint: action.payload,
+                foreground: action.foreground
             };
 
         default:
