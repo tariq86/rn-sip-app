@@ -18,6 +18,8 @@ import TestScreen from './TestScreen'
 import LaunchScreen from './LaunchScreen'
 
 import AccountScreen from './settings/AccountScreen'
+import NetworkSettingsScreen from './settings/NetworkSettingsScreen'
+import MediaSettingsScreen from './settings/MediaSettingsScreen'
 
 import Viewport from '../components/Viewport'
 
@@ -55,6 +57,10 @@ class App extends Component {
                 return (<CallScreen />);
             case 'account':
                 return (<AccountScreen />);
+            case 'network_settings':
+                return (<NetworkSettingsScreen />);
+            case 'media_settings':
+                return (<MediaSettingsScreen />);
             case 'test':
                 return (<TestScreen />);
             default:

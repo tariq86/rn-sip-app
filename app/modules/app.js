@@ -5,6 +5,7 @@ import {initCalls, onCallReceived, onCallChanged, onCallTerminated, onCallScreen
 import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
+export const CHANGED_SETTINGS = 'app/CHANGED_SETTINGS';
 
 /**
  * Action Creators
@@ -15,9 +16,16 @@ export function init() {
         // It is possible that Endpoint instance already have registered accounts and active calls.
         // (because Javascript state is not persistent when User close application, e.g. application goes to background state)
 
+        let configuration = {
+            ua: "PjApp by Vadim Ruban",
+            foreground: true // Service will start working in foreground if at least one account exist and have network connection.
+        };
+
         let endpoint = new Endpoint();
-        let state = await endpoint.start();
-        let {accounts, calls, foreground} = state;
+        let state = await endpoint.start(configuration);
+        let {accounts, calls, foreground, settings : endpointSettings} = state;
+
+        console.log("state", state);
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
@@ -36,18 +44,9 @@ export function init() {
             dispatch(onCallScreenLocked(call));
         });
 
-        // Show notification if account exist
-        if (Platform.OS === 'android' && accounts.length > 0) {
-            let account = accounts[0];
-            endpoint.startForeground({
-                title: account.getName(),
-                text: account.getRegistration().getStatusText()
-            });
-        }
-
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
-        dispatch({type: INITIALIZED, payload: endpoint, foreground});
+        dispatch({type: INITIALIZED, endpoint, endpointSettings, foreground});
 
         let route = {name: 'settings'};
 
@@ -65,12 +64,29 @@ export function init() {
     }
 }
 
+export function changeNetworkSettings(configuration) {
+    return async (dispatch, getState) => {
+        let endpoint = getState().app.endpoint;
+        await endpoint.changeNetworkConfiguration(configuration);
+
+        let serviceConfiguration = {
+            ...getState().app.endpointSettings.service,
+            foreground: configuration.foreground
+        };
+        let settings = await endpoint.changeServiceConfiguration(serviceConfiguration);
+
+        dispatch({type: CHANGED_SETTINGS, payload: settings});
+        dispatch(Navigation.goAndReplace({name: 'settings'}));
+    }
+}
+
 /**
  * Reducer
  */
 
 const initialState = {
     foreground: false,
+    endpointSettings: null,
     endpoint: null
 };
 
@@ -78,8 +94,13 @@ export default function app(state = initialState, action) {
     switch (action.type) {
         case INITIALIZED:
             return {...state,
-                endpoint: action.payload,
+                endpoint: action.endpoint,
+                endpointSettings: action.endpointSettings,
                 foreground: action.foreground
+            };
+        case CHANGED_SETTINGS:
+            return {...state,
+                endpointSettings: action.payload
             };
 
         default:

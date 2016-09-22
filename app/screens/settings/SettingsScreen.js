@@ -14,6 +14,7 @@ import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
 
 import LinedAccountInfo from '../../components/settings/LinedAccountInfo'
+import LinedSettingsItem from '../../components/settings/LinedSettingsItem'
 import LinedSection from '../../components/common/LinedSection'
 import LinedTextInput from '../../components/common/LinedTextInput'
 
@@ -68,6 +69,8 @@ class SettingsScreen extends React.Component {
             onPress: this.props.onNewAccountPress
         };
 
+        // TODO: Add icon for network and media configuration.
+
         return (
             <View style={{flex: 1}}>
                 <Header title="Settings" {...platformHeaderProps} />
@@ -76,15 +79,11 @@ class SettingsScreen extends React.Component {
 
                 {this.renderAccounts(this.props.accounts)}
 
-                { /**
-                <View style={{height: 40, alignItems:'center', justifyContent: 'center'}}>
-                    <Text>No accounts available</Text>
-                </View>
-                 **/
-                }
-
                 <LinedSection title="Advanced" />
 
+                <LinedSettingsItem onPress={this.props.onNetworkSettingsPress} title="Network" description="How application can be connected to the network" />
+
+                <LinedSettingsItem onPress={this.props.onMediaSettingsPress} title="Media" description="Codecs and in-call sound behaviour" />
 
             </View>
         );
@@ -115,6 +114,12 @@ function actions(dispatch) {
         },
         onNewAccountPress: () => {
             dispatch(Navigation.goTo({name: 'account'}));
+        },
+        onNetworkSettingsPress: () => {
+            dispatch(Navigation.goTo({name: 'network_settings'}));
+        },
+        onMediaSettingsPress: () => {
+            dispatch(Navigation.goTo({name: 'media_settings'}));
         }
     };
 }
