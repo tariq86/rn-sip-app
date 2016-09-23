@@ -86,24 +86,6 @@ class Viewport extends React.Component {
         )
     }
 
-    renderActiveCalls() {
-        let calls = this.props.calls.toList();
-        let result = [];
-
-        for (let call of calls) {
-            result.push(
-                (
-                    <TouchableHighlight key={call.getId()} style={{height: 38, backgroundColor: "#4cda64", alignItems: 'center', justifyContent: 'center'}} onPress={() => this.props.onCallSelect(call)}>
-                        <Text style={{color: "#FFF", fontSize: 14, paddingLeft: 10}}>{call.getRemoteUri()}</Text>
-                    </TouchableHighlight>
-                )
-            )
-        }
-
-        return result;
-
-    }
-
     renderContent() {
         switch (this.props.tab) {
             case 'conversations':
@@ -123,7 +105,6 @@ class Viewport extends React.Component {
         return (
             <DrawerLayoutAndroid drawerWidth={320} ref={(drawer) => { this._drawer = drawer; }} onDrawerClose={this.props.onDrawerClose} style={{flex: 1}} renderNavigationView={this.renderNavigationView.bind(this)}>
                 <View key={this.props.tab} style={{flex: 1}}>
-                    {this.renderActiveCalls()}
                     {this.renderContent()}
                 </View>
             </DrawerLayoutAndroid>
@@ -147,8 +128,7 @@ function select(store) {
 
     return {
         tab: tab,
-        drawer: store.navigation.drawer,
-        calls: store.calls.map
+        drawer: store.navigation.drawer
     };
 }
 

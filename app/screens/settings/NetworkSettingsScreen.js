@@ -120,7 +120,7 @@ class MediaSettingsScreen extends React.Component {
 
                     <LinedSection title="Background connection" />
 
-                    <LinedDialogCheckbox onChange={this._onForegroundChange} value={this.state.foreground} title="Work in background" description="Application will run in background until connection will be available, may consume more battery but you will receive incoming call while phone is in sleep mode" />
+                    <LinedDialogCheckbox onChange={this._onForegroundChange} value={this.state.foreground} title="Run in background" description="Disable this if you do not want incoming calls, it will improve battery life significantly" />
 
                     <LinedSection title="Nat traversal" />
 

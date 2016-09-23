@@ -23,9 +23,8 @@ export function init() {
 
         let endpoint = new Endpoint();
         let state = await endpoint.start(configuration);
-        let {accounts, calls, foreground, settings : endpointSettings} = state;
-
-        console.log("state", state);
+        let {accounts, calls, settings : endpointSettings} = state;
+        let {notificationIsFromForeground, notificationCallId} = state;
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
@@ -46,7 +45,7 @@ export function init() {
 
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
-        dispatch({type: INITIALIZED, endpoint, endpointSettings, foreground});
+        dispatch({type: INITIALIZED, endpoint, endpointSettings, notificationIsFromForeground, notificationCallId});
 
         let route = {name: 'settings'};
 
@@ -85,7 +84,8 @@ export function changeNetworkSettings(configuration) {
  */
 
 const initialState = {
-    foreground: false,
+    notificationIsFromForeground: false,
+    notificationCallId: null,
     endpointSettings: null,
     endpoint: null
 };
@@ -96,7 +96,8 @@ export default function app(state = initialState, action) {
             return {...state,
                 endpoint: action.endpoint,
                 endpointSettings: action.endpointSettings,
-                foreground: action.foreground
+                notificationIsFromForeground: action.notificationIsFromForeground,
+                notificationCallId: action.notificationCallId,
             };
         case CHANGED_SETTINGS:
             return {...state,
