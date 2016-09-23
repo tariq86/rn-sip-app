@@ -105,16 +105,17 @@ export function makeCall(destination, account = null) {
     };
 }
 
-/**
- * Hangups active call.
- *
- * @param {Call} call
- * @returns {Function}
- */
 export function hangupCall(call) {
     return async function(dispatch, getState) {
         let endpoint = getState()['app']['endpoint'];
         endpoint.hangupCall(call);
+    };
+}
+
+export function declineCall(call) {
+    return async function(dispatch, getState) {
+        let endpoint = getState()['app']['endpoint'];
+        endpoint.declineCall(call);
     };
 }
 

@@ -547,8 +547,7 @@ function actions(dispatch, getState) {
             dispatch(Navigation.goAndReplace({name: 'call', call}));
         },
         onIncomingCallDecline(call) {
-            // TODO: Add decline method.
-            dispatch(Calls.hangupCall(call));
+            dispatch(Calls.declineCall(call));
         }
     };
 }
