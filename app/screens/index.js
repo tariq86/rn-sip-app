@@ -83,7 +83,9 @@ class App extends Component {
             <View style={{flex: 1}}>
                 <StatusBar
                     backgroundColor="#CCCCCC"
-                    barStyle="light-content" />
+                    barStyle="light-content"
+                    hidden={full}
+                />
                 <Navigator
                     style={{flex: 1}}
                     ref={ref => nav = ref}
