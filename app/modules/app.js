@@ -6,6 +6,7 @@ import {Endpoint} from 'react-native-pjsip'
 
 export const INITIALIZED = 'app/INITIALIZED';
 export const CHANGED_SETTINGS = 'app/CHANGED_SETTINGS';
+export const CHANGED_CONNECTIVITY = 'app/CHANGED_CONNECTIVITY';
 
 /**
  * Action Creators
@@ -16,19 +17,20 @@ export function init() {
         // It is possible that Endpoint instance already have registered accounts and active calls.
         // (because Javascript state is not persistent when User close application, e.g. application goes to background state)
 
-        let configuration = {
-            ua: "PjApp by Vadim Ruban",
-            foreground: true // Service will start working in foreground if at least one account exist and have network connection.
-        };
-
         let endpoint = new Endpoint();
-        let state = await endpoint.start(configuration);
-        let {accounts, calls, settings : endpointSettings} = state;
-        let {notificationIsFromForeground, notificationCallId} = state;
+        let state = await endpoint.start();
+        let {accounts, calls, settings : endpointSettings, connectivity : endpointConnectivity} = state;
+
+        // TODO: Show slider of active call when notificationIsFromForeground is true.
+        // let {notificationIsFromForeground} = state;
 
         // Subscribe to endpoint events
         endpoint.on("registration_changed", (account) => {
             dispatch(onAccountChanged(account));
+        });
+        endpoint.on("connectivity_changed", (available) => {
+            console.log("connectivity_changed", available);
+            dispatch(onConnectivityChanged(available));
         });
         endpoint.on("call_received", (call) => {
             dispatch(onCallReceived(call));
@@ -45,12 +47,19 @@ export function init() {
 
         dispatch(initAccounts(accounts));
         dispatch(initCalls(calls));
-        dispatch({type: INITIALIZED, endpoint, endpointSettings, notificationIsFromForeground, notificationCallId});
+        dispatch({type: INITIALIZED, endpoint, endpointSettings, endpointConnectivity});
 
         let route = {name: 'settings'};
 
-        // Automatically show incoming call
-        if (calls.length > 0) {
+        // Show selected call
+        if (state.hasOwnProperty("notificationCallId")) {
+            for (let c of calls) {
+                if (c.getId() == state['notificationCallId']) {
+                    route = {name:'call', call: c};
+                    break;
+                }
+            }
+        } else if (calls.length > 0) {
             for (let c of calls) {
                 if (c.getState() == "PJSIP_INV_STATE_INCOMING") {
                     route = {name:'call', call: c};
@@ -79,14 +88,20 @@ export function changeNetworkSettings(configuration) {
     }
 }
 
+function onConnectivityChanged(available) {
+    return async function(dispatch, getState) {
+        dispatch({type: CHANGED_CONNECTIVITY, payload: available});
+    };
+}
+
 /**
  * Reducer
  */
 
 const initialState = {
     notificationIsFromForeground: false,
-    notificationCallId: null,
     endpointSettings: null,
+    endpointConnectivity: false,
     endpoint: null
 };
 
@@ -96,14 +111,18 @@ export default function app(state = initialState, action) {
             return {...state,
                 endpoint: action.endpoint,
                 endpointSettings: action.endpointSettings,
+                endpointConnectivity: action.endpointConnectivity,
                 notificationIsFromForeground: action.notificationIsFromForeground,
-                notificationCallId: action.notificationCallId,
+                notificationCallId: action.notificationCallId
             };
         case CHANGED_SETTINGS:
             return {...state,
                 endpointSettings: action.payload
             };
-
+        case CHANGED_CONNECTIVITY:
+            return {...state,
+                endpointConnectivity: action.payload
+            };
         default:
             return state
     }

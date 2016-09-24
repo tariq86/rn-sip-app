@@ -32,7 +32,7 @@ class SettingsScreen extends React.Component {
 
         for (let acc of list) {
             result.push((
-                <LinedAccountInfo key={acc.getId()} account={acc} onPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
+                <LinedAccountInfo key={acc.getId()} account={acc} connectivity={this.props.connectivity} onPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
             ))
         }
 
@@ -100,7 +100,8 @@ SettingsScreen.props = {
 
 function select(store) {
     return {
-        accounts: store.accounts.map
+        accounts: store.accounts.map,
+        connectivity: store.app.endpointConnectivity
     };
 }
 

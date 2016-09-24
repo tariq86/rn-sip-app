@@ -41,8 +41,11 @@ export default class LinedAccountInfo extends Component {
 
         let accountColor = colorify(acc.getName());
         let presenceColor = registration.isActive() && registration.getStatusText() == "OK" ? "#34D023" : "#CCC";
+        let status = registration.getStatusText();
 
-        let status = registration.isActive() ? registration.getStatusText() : "Inactive";
+        if (this.props.connectivity === false) {
+            status = "No connectivity or Limited";
+        }
 
         return (
             <TouchableOpacity onPress={this.props.onPress} style={[{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#E0E7EA', padding: 10}, this.props.style]}>
@@ -78,5 +81,6 @@ export default class LinedAccountInfo extends Component {
 LinedAccountInfo.propTypes = {
     style: View.propTypes.style,
     account: PropTypes.object,
+    connectivity: PropTypes.bool,
     onPress: PropTypes.func
 };
