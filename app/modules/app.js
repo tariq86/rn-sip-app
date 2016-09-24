@@ -1,4 +1,4 @@
-import {NetInfo, AppState, Platform, NativeModules} from 'react-native'
+import {NetInfo, AppState, Platform, NativeModules, BackAndroid} from 'react-native'
 import * as Navigation from './navigation'
 import {initAccounts, onAccountChanged, createAccount} from './accounts'
 import {initCalls, onCallReceived, onCallChanged, onCallTerminated, onCallScreenLocked} from './calls'
@@ -29,7 +29,6 @@ export function init() {
             dispatch(onAccountChanged(account));
         });
         endpoint.on("connectivity_changed", (available) => {
-            console.log("connectivity_changed", available);
             dispatch(onConnectivityChanged(available));
         });
         endpoint.on("call_received", (call) => {
@@ -66,6 +65,19 @@ export function init() {
                     break;
                 }
             }
+        }
+
+        if (Platform.OS === 'android') {
+            BackAndroid.addEventListener('hardwareBackPress', function() {
+                let prev = getState().navigation.prevision.name;
+
+                if (prev) {
+                    dispatch(Navigation.goBack());
+                    return true;
+                }
+
+                return false;
+            });
         }
 
         dispatch(Navigation.goAndReplace(route));
