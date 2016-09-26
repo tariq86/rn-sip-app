@@ -1,4 +1,4 @@
-import {nav} from '../screens'
+import {nav} from '../screens/MainScreen'
 
 const NAVIGATE_TO = 'navigation/NAVIGATE_TO';
 const NAVIGATE_BACK = 'navigation/NAVIGATE_BACK';

@@ -56,9 +56,6 @@ export function onCallChanged(call) {
  * @returns {Function}
  */
 export function onCallTerminated(call) {
-
-    // TODO: Clean up Navigation history once call is ended.
-
     return async function(dispatch, getState) {
         dispatch({type: CALL_CHANGED, call});
         dispatch({type: CALL_TERMINATED, call});

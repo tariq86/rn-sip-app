@@ -15,11 +15,11 @@ import {connect} from 'react-redux'
 import Header from './Header'
 import * as Navigation from '../modules/navigation'
 
-import ConversationsScreen from '../screens/conversations/ConversationsScreen'
-import ContactsScreen from '../screens/contacts/ContactsScreen'
-import DialerScreen from '../screens/dialer/DialerScreen'
-import HistoryScreen from '../screens/history/HistoryScreen'
-import SettingsScreen from '../screens/settings/SettingsScreen'
+import ConversationsScreen from '../screens/ConversationsScreen'
+import ContactsScreen from '../screens/ContactsScreen'
+import DialerScreen from '../screens/DialerScreen'
+import HistoryScreen from '../screens/HistoryScreen'
+import SettingsScreen from '../screens/SettingsScreen'
 
 class Viewport extends React.Component {
 
