@@ -50,11 +50,11 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-      <service  android:name="com.carusto.PjSipService"
+      <service
+                android:name="com.carusto.ReactNativePjSip.PjSipService"
                 android:enabled="true"
-                android:exported="true"></service>
-
-      <receiver android:name="com.carusto.PjSipConnectivityReceiver">
+                android:exported="true" />
+      <receiver android:name="com.carusto.ReactNativePjSip.PjSipConnectivityReceiver">
         <intent-filter>
           <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
         </intent-filter>
