@@ -45,7 +45,7 @@ export default class ListCustomField extends Component {
 
     render() {
         let value = this.props.value;
-        let empty = this.props.value.length == 0;
+        let empty = !this.props.value || this.props.value.length == 0;
 
         if (this.props.valueType == 'password') {
             value = "*".repeat(value.length)
@@ -58,7 +58,7 @@ export default class ListCustomField extends Component {
                         <Text style={(empty ? s.listTitle : s.listPlaceholder)}>{this.props.title}</Text>
                         <Text style={(empty ? s.listPlaceholder : s.listTitle)}>
                             {
-                                this.props.value.length > 0 ? value : this.props.placeholder
+                                this.props.value && this.props.value.length > 0 ? value : this.props.placeholder
                             }
                         </Text>
                     </View>
@@ -96,7 +96,7 @@ export default class ListCustomField extends Component {
 }
 
 ListCustomField.propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     valueType: PropTypes.string,
     placeholder: PropTypes.string,
     title: PropTypes.string,

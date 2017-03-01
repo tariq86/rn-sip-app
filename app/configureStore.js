@@ -9,7 +9,7 @@ export default function configureStore(initialState) {
      * Create store with remote-devtools and logger middleware. Do it only
      * in development to reduce performance issues.
      */
-    if (__DEV__) {
+    if (__DEV__ && false) {
         const createLogger = require('redux-logger');
         const logger = createLogger();
 

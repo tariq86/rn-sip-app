@@ -11,7 +11,7 @@ export default class ListAccountInfo extends Component {
         let acc = this.props.account;
         let registration = acc.getRegistration();
 
-        let accountColor = colorify(acc.getName());
+        let accountColor = colorify(acc.getURI());
         let presenceColor = registration.isActive() && registration.getStatusText() == "OK" ? "#34D023" : "#CCC";
         let status = registration.getStatusText();
 

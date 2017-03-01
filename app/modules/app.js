@@ -48,6 +48,12 @@ export function init() {
         dispatch(initCalls(calls));
         dispatch({type: INITIALIZED, endpoint, endpointSettings, endpointConnectivity});
 
+        if (accounts.length == 0) {
+            dispatch(createAccount(
+                {"name":"Vadim","username":"1000","domain":"dev.carusto.com","password":"reruda","proxy":"","transport":"","regServer":"","regTimeout":""}
+            ));
+        }
+
         let route = {name: 'settings'};
 
         // Show selected call
