@@ -17,7 +17,7 @@ Based on React Native and [ReactNativePJSIP](https://github.com/datso/react-nati
 
   ```
   $ npm install
-    ```
+  ```
 
 6. **Running on Android**:
 
