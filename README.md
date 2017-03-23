@@ -1,6 +1,8 @@
-# Open-source SIP client for Android & IOS based on React Native and [ReactNativePJSIP](https://github.com/datso/react-native-pjsip)
+# Open-source SIP client for Android & IOS
 
-<img src="docs/screenshot-app.png">
+Based on React Native and [ReactNativePJSIP](https://github.com/datso/react-native-pjsip)
+
+<img src="docs/screenshot-app.png" width="760">
 
 ## Setup
 
