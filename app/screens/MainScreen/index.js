@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Text, View, StatusBar, TouchableHighlight, Navigator} from 'react-native'
 
-import {init} from '../../modules/app'
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
 
@@ -15,25 +14,13 @@ import MediaSettingsScreen from '../MediaSettingsScreen'
 
 import Viewport from '../../components/Viewport'
 
-// this need for passing navigator instance to navigation module
-export let nav;
-
 class App extends Component {
-
-    componentDidMount() {
-        const {dispatch} = this.props;
-
-        // init application
-        dispatch(init());
-    }
 
     configureScene(route) {
         return Navigator.SceneConfigs.FadeAndroid
     }
 
     renderScene(route, navigator) {
-        const {dispatch} = this.props;
-
         switch (route.name) {
             case 'launch':
                 return (<LaunchScreen />);
@@ -54,32 +41,32 @@ class App extends Component {
             case 'media_settings':
                 return (<MediaSettingsScreen />);
             default:
-                return (
-                    <View>
-                        <Text>Default scene</Text>
-                        <TouchableHighlight onPress={() => dispatch(Navigation.goTo({name: 'home'}))}>
-                            <Text>Go to home screen</Text>
-                        </TouchableHighlight>
-                    </View>
-                );
+                return (<TodoScreen />);
         }
+    }
+
+    componentDidMount() {
+        this.props.onNavigatorMount && this.props.onNavigatorMount(this.refs.navigator);
     }
 
     render() {
         const {navigation} = this.props;
         const full = navigation.current.name == "call";
+        const barColor = "#36454b";
+        const barStyle = "light-content";
+        const route = navigation.current.name ? navigation.current : navigation.init;
 
         return (
             <View style={{flex: 1}}>
                 <StatusBar
-                    backgroundColor="#CCCCCC"
-                    barStyle="light-content"
+                    backgroundColor={barColor}
+                    barStyle={barStyle}
                     hidden={full}
                 />
                 <Navigator
                     style={{flex: 1}}
-                    ref={ref => nav = ref}
-                    initialRoute={navigation.init}
+                    ref="navigator"
+                    initialRoute={route}
                     configureScene={this.configureScene}
                     renderScene={this.renderScene.bind(this)} />
             </View>
@@ -88,14 +75,21 @@ class App extends Component {
 }
 
 App.propTypes = {
-    dispatch: PropTypes.func,
     navigation: PropTypes.object
 };
 
-function mapStateToProps(state) {
+function select(store) {
     return {
-        navigation: state.navigation
-    }
+        navigation: store.navigation
+    };
 }
 
-export default connect(mapStateToProps)(App)
+function actions(dispatch) {
+    return {
+        onNavigatorMount: (ref) => {
+            dispatch(Navigation.ref(ref));
+        }
+    };
+}
+
+export default connect(select, actions)(App)

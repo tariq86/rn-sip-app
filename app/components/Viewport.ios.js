@@ -16,7 +16,6 @@ import Header from './Header'
 import * as Navigation from '../modules/navigation'
 
 import ConversationsScreen from '../screens/ConversationsScreen'
-import ContactsScreen from '../screens/ContactsScreen'
 import DialerScreen from '../screens/DialerScreen'
 import HistoryScreen from '../screens/HistoryScreen'
 import SettingsScreen from '../screens/SettingsScreen'
@@ -40,16 +39,6 @@ class Viewport extends React.Component {
                     icon={require('../assets/images/toolbar/conversations-icon.png')}>
 
                     <ConversationsScreen />
-
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    title="Contacts"
-                    selected={this.props.tab === 'contacts'}
-                    onPress={this.onTabSelect.bind(this, 'contacts')}
-                    onLayout={(event) => {}}
-                    icon={require('../assets/images/toolbar/contacts-icon.png')}>
-
-                    <ContactsScreen />
 
                 </TabBarIOS.Item>
                 <TabBarIOS.Item

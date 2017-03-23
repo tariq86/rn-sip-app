@@ -14,7 +14,7 @@ import {
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
-import {createAccount, replaceAccount, deleteAccount} from '../../modules/accounts'
+import {createAccount, replaceAccount, deleteAccount} from '../../modules/pjsip'
 
 import ListSection from '../../components/Common/ListSection';
 import ListTextField from '../../components/Common/ListTextField';

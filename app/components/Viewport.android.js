@@ -18,7 +18,6 @@ import Header from './Header'
 import * as Navigation from '../modules/navigation'
 
 import ConversationsScreen from '../screens/ConversationsScreen'
-import ContactsScreen from '../screens/ContactsScreen'
 import DialerScreen from '../screens/DialerScreen'
 import HistoryScreen from '../screens/HistoryScreen'
 import SettingsScreen from '../screens/SettingsScreen'
@@ -59,13 +58,6 @@ class Viewport extends React.Component {
                     </View>
                 </TouchableHighlight>
 
-                <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'contacts')}>
-                    <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
-                        <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/contacts-icon.png')} />
-                        <Text style={{fontSize: 16, color: "#939A9F", marginLeft: 16}}>Contacts</Text>
-                    </View>
-                </TouchableHighlight>
-
                 <TouchableHighlight underlayColor="#E7ECEF" style={{ marginTop: 10}} onPress={this.onTabSelect.bind(this, 'history')}>
                     <View style={{height: 46, flexDirection: 'row', alignItems:'center'}}>
                         <Image resizeMode="contain" style={{width: 36, marginLeft: 16}} source={require('../assets/images/toolbar/history-icon.png')} />
@@ -89,11 +81,7 @@ class Viewport extends React.Component {
     renderContent() {
         switch (this.props.tab) {
             case 'conversations':
-                console.log("ConversationsScreen", (<ConversationsScreen />));
-
                 return <ConversationsScreen />;
-            case 'contacts':
-                return <ContactsScreen />;
             case 'history':
                 return <HistoryScreen />;
             case 'settings':
@@ -104,18 +92,23 @@ class Viewport extends React.Component {
     }
 
     renderActiveCalls() {
-        let calls = this.props.calls.toList();
+        let calls = this.props.calls;
         let result = [];
-        for (let call of calls) {
-            result.push(
-                (
-                    <TouchableHighlight key={call.getId()}
-                                        style={{height: 38, backgroundColor: "#4cda64", alignItems: 'center', justifyContent: 'center'}}
-                                        onPress={() => this.props.onCallSelect(call)}>
-                        <Text style={{color: "#FFF", fontSize: 14, paddingLeft: 10}}>{call.getRemoteUri()}</Text>
-                    </TouchableHighlight>
+
+        for (let id in calls) {
+            if (calls.hasOwnProperty(id)) {
+                let call = calls[id];
+
+                result.push(
+                    (
+                        <TouchableHighlight key={call.getId()}
+                                            style={{height: 38, backgroundColor: "#4cda64", alignItems: 'center', justifyContent: 'center'}}
+                                            onPress={() => this.props.onCallSelect(call)}>
+                            <Text style={{color: "#FFF", fontSize: 14, paddingLeft: 10}}>{call.getRemoteUri()}</Text>
+                        </TouchableHighlight>
+                    )
                 )
-            )
+            }
         }
 
         return result;
@@ -144,13 +137,13 @@ function select(store) {
     let tab = store.navigation.current.name;
 
     if (['conversations', 'contacts', 'history', 'settings'].indexOf(tab) == -1) {
-        tab = store.navigation.prevision.name;
+        tab = store.navigation.previous.name;
     }
 
     return {
         tab: tab,
         drawer: store.navigation.drawer,
-        calls: store.calls.map
+        calls: store.pjsip.calls
     };
 }
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {Animated, View, Text, Image, Dimensions} from 'react-native'
 import * as Navigation from '../../modules/navigation'
-import * as Calls from '../../modules/calls'
+import * as PjSip from '../../modules/pjsip'
 import {connect} from 'react-redux'
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -51,7 +51,7 @@ class CallScreen extends Component {
         };
 
         if (call) {
-            this.state = {...this.state, ...CallAnimation.calculateInitialDimensions({...this.state, totalCalls: props.calls.size}, call)};
+            this.state = {...this.state, ...CallAnimation.calculateInitialDimensions({...this.state, totalCalls: Object.keys(props.calls).length}, call)};
         }
 
         this._onCallAnswer = this.onCallAnswer.bind(this);
@@ -90,7 +90,7 @@ class CallScreen extends Component {
         let state = {
             call: call
         };
-        state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state, totalCalls: this.props.calls.size}, call)};
+        state = {...state, ...CallAnimation.calculateInitialDimensions({...this.state, ...state, totalCalls: Object.keys(this.props.calls).length}, call)};
 
         this.setState(state);
     }
@@ -102,12 +102,17 @@ class CallScreen extends Component {
 
     componentWillReceiveProps(nextProps) {
         // Remember latest state of current call, to be able display call information after removal from state
-        if (this.state.call && nextProps.calls.has(this.state.call.getId())) {
-            let call = nextProps.calls.get(this.state.call.getId());
-            let calls = nextProps.calls.toList().toArray();
+        if ((!this.state.call && nextProps.call && !(nextProps.call instanceof Promise)) ||
+            (this.state.call && nextProps.calls.hasOwnProperty(this.state.call.getId()))) {
+            let prevCall = this.state.call ? this.state.call : nextProps.call;
+            let call = nextProps.calls[prevCall.getId()];
 
-            // Animate component's for different Call states
-            CallAnimation.animateCallState({...this.state, totalCalls: calls.length}, call);
+            if (!call) {
+                call = prevCall;
+            }
+
+            let calls = Object.keys(nextProps.calls).map((key) => nextProps.calls[key]);
+            let init = !this.state.call && nextProps.call;
 
             // Handle incoming call
             let incomingCall = this.state.incomingCall;
@@ -137,10 +142,15 @@ class CallScreen extends Component {
                 }
             }
 
-            this.setState({call, incomingCall});
+            if (init) {
+                this.setState({call, incomingCall, ...CallAnimation.calculateInitialDimensions({...this.state, totalCalls: Object.keys(nextProps.calls).length}, call)});
+            } else {
+                CallAnimation.animateCallState({...this.state, totalCalls: calls.length}, call);
+                this.setState({call, incomingCall});
+            }
 
             if (call.getState() == "PJSIP_INV_STATE_DISCONNECTED") {
-                this.props.onCallEnd && this.props.onCallEnd(this.state.call);
+                this.props.onCallEnd && this.props.onCallEnd(call);
             }
         }
     }
@@ -261,19 +271,23 @@ class CallScreen extends Component {
 
     renderSimultaniousCalls() {
         let activeCall = this.state.call;
-        let calls = this.props.calls.toList().toArray().filter((c) => { return c.getId() != activeCall.getId()});
+        // let calls = this.props.calls.toList().toArray().filter((c) => { return c.getId() != activeCall.getId()});
         let result = [];
+        let i = 0;
+        for (let id in this.props.calls) {
+            if (this.props.calls.hasOwnProperty(id) && id != activeCall.getId()) {
+                let call = this.props.calls[id];
 
-        for (let i=0; i < calls.length; i++) {
-            let call = calls[i];
+                result.push(
+                    (<CallParallelInfo key={"parallel-" + call.getId()} call={call} onPress={this.props.onCallSelect} style={{marginTop: i == 0 ? 0 : 5}} />)
+                )
+            }
 
-            result.push(
-                (<CallParallelInfo key={"parallel-" + call.getId()} call={call} onPress={this.props.onCallSelect} style={{marginTop: i == 0 ? 0 : 5}} />)
-            )
+            i++;
         }
 
         return (
-            <View style={{position: 'absolute', top: 5, width: this.state.screenWidth,}}>
+            <View style={{position: 'absolute', top: 5, width: this.state.screenWidth}}>
                 {result}
             </View>
         );
@@ -301,7 +315,7 @@ class CallScreen extends Component {
 
     render() {
         let call = this.state.call;
-        let calls = this.props.calls.toList().toArray();
+        let calls = this.props.calls;
 
         if (this.state.error) {
             return this.renderError();
@@ -407,9 +421,9 @@ CallScreen.props = {
 
 function select(store) {
     return {
-        calls: store.calls.map,
+        calls: store.pjsip.calls,
         call: store.navigation.current.call,
-        isScreenLocked: store.calls.isScreenLocked,
+        isScreenLocked: store.pjsip.isScreenLocked,
         isFromForeground: store.app.foreground
     };
 }
@@ -420,20 +434,22 @@ function actions(dispatch, getState) {
             setTimeout(() => {
                 dispatch(
                     async function(dispatch, getState) {
-                        let calls = getState().calls.map;
+                        let calls = getState().pjsip.calls;
                         let route = getState().navigation.current;
                         let doDirectRoute = () => {
                             // Return to previous screen once call end.
                             return dispatch(Navigation.goBack());
                         };
                         let doRoute = (call) => {
-                            if (calls.has(call.getId())) {
+                            if (calls.hasOwnProperty(call.getId())) {
                                 return;
                             }
 
                             // Open active call once current call ends.
-                            if (calls.size > 0) {
-                                return dispatch(Navigation.goAndReplace({name:'call', call:calls.first()}));
+                            for (let id in calls) {
+                                if (calls.hasOwnProperty(id)) {
+                                    return dispatch(Navigation.goAndReplace({name: 'call', call: calls[id]}));
+                                }
                             }
 
                             // Return to previous screen once call end.
@@ -454,53 +470,53 @@ function actions(dispatch, getState) {
             }, 3000);
         },
         onCallHold(call) {
-            dispatch(Calls.holdCall(call));
+            dispatch(PjSip.holdCall(call));
         },
         onCallUnHold(call) {
-            dispatch(Calls.unholdCall(call));
+            dispatch(PjSip.unholdCall(call));
         },
         onCallMute(call) {
-            dispatch(Calls.muteCall(call));
+            dispatch(PjSip.muteCall(call));
         },
         onCallUnMute(call) {
-            dispatch(Calls.unmuteCall(call));
+            dispatch(PjSip.unmuteCall(call));
         },
         onCallSpeaker(call) {
-            dispatch(Calls.useSpeaker(call));
+            dispatch(PjSip.useSpeaker(call));
         },
         onCallEarpiece(call) {
-            dispatch(Calls.useEarpiece(call));
+            dispatch(PjSip.useEarpiece(call));
         },
         onCallDtmf(call, key) {
-            dispatch(Calls.dtmfCall(call, key));
+            dispatch(PjSip.dtmfCall(call, key));
         },
         onCallBlindTransfer(call, destination) {
-            dispatch(Calls.xferCall(call, destination));
+            dispatch(PjSip.xferCall(call, destination));
         },
         onCallAttendantTransfer(call, destinationCall) {
-            dispatch(Calls.xferReplacesCall(call, destinationCall));
+            dispatch(PjSip.xferReplacesCall(call, destinationCall));
         },
         onCallRedirect(call, destination) {
-            dispatch(Calls.redirectCall(call, destination));
+            dispatch(PjSip.redirectCall(call, destination));
         },
         onCallHangup(call) {
-            dispatch(Calls.hangupCall(call));
+            dispatch(PjSip.hangupCall(call));
         },
         onCallAnswer(call) {
-            dispatch(Calls.answerCall(call));
+            dispatch(PjSip.answerCall(call));
         },
         onCallSelect: (call) => {
             dispatch(Navigation.goAndReplace({name: 'call', call}));
         },
         onCallAdd: (call, destination) => {
-            dispatch(Calls.makeCall(destination));
+            dispatch(PjSip.makeCall(destination));
         },
         onIncomingCallAnswer(call) {
-            dispatch(Calls.answerCall(call));
+            dispatch(PjSip.answerCall(call));
             dispatch(Navigation.goAndReplace({name: 'call', call}));
         },
         onIncomingCallDecline(call) {
-            dispatch(Calls.declineCall(call));
+            dispatch(PjSip.declineCall(call));
         }
     };
 }

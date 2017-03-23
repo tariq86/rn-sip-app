@@ -1,20 +1,7 @@
-'use strict';
-
 import React, { Component, PropTypes } from 'react';
-import {
-    TouchableHighlight,
-    TouchableOpacity,
-    View,
-    Text,
-    Image,
-    Platform,
-    StyleSheet,
-    PixelRatio,
-    TabBarIOS,
-    Dimensions
-} from 'react-native'
+import {View, StyleSheet} from 'react-native'
 import * as Navigation from '../../modules/navigation'
-import {makeCall} from '../../modules/calls'
+import {makeCall} from '../../modules/pjsip'
 
 import Header from '../../components/Header'
 import KeypadWithActions from '../../components/Call/KeypadWithActions'

@@ -1,12 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {
-    TouchableHighlight,
-    View,
-    Text,
-    Platform,
-    StyleSheet,
-    TabBarIOS
-} from 'react-native'
+import {View, Text, Platform} from 'react-native'
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
@@ -23,13 +16,15 @@ class SettingsScreen extends React.Component {
     }
 
     renderAccounts(accounts) {
-        let list = accounts.toArray();
         let result = [];
 
-        for (let acc of list) {
-            result.push((
-                <ListAccountInfo key={acc.getId()} account={acc} connectivity={this.props.connectivity} onPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
-            ))
+        for (let id in accounts) {
+            if (accounts.hasOwnProperty(id)) {
+                let acc = accounts[id];
+                result.push((
+                    <ListAccountInfo key={acc.getId()} account={acc} connectivity={this.props.connectivity} onPress={this.props.onAccountPress && this.props.onAccountPress.bind(this, acc)} />
+                ))
+            }
         }
 
         if (result.length == 0) {
@@ -96,7 +91,7 @@ SettingsScreen.props = {
 
 function select(store) {
     return {
-        accounts: store.accounts.map,
+        accounts: store.pjsip.accounts,
         connectivity: store.app.endpointConnectivity
     };
 }

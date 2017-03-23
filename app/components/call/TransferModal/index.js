@@ -59,7 +59,7 @@ export default class TransferModal extends Component {
     }
 
     render() {
-        if (this.props.calls.length == 1 || this.state.isRedirectModalVisible) {
+        if (Object.keys(this.props.calls).length == 1 || this.state.isRedirectModalVisible) {
             return (
                 <DialerModal
                     actions={[
@@ -73,16 +73,20 @@ export default class TransferModal extends Component {
 
         let options = [];
 
-        for (let c of this.props.calls) {
-            if (c.getId() == this.props.call.getId()) {
-                continue;
-            }
+        for (let id in this.props.calls) {
+            if (this.props.calls.hasOwnProperty(id)) {
+                let c = this.props.calls[id];
 
-            options.push({
-                key: "merge_" + c.getId(),
-                title: "Merge with " + c.getRemoteFormattedNumber(),
-                callback: this.props.onAttendantTransferPress.bind(null, c)
-            });
+                if (c.getId() == this.props.call.getId()) {
+                    continue;
+                }
+
+                options.push({
+                    key: "merge_" + c.getId(),
+                    title: "Merge with " + c.getRemoteFormattedNumber(),
+                    callback: this.props.onAttendantTransferPress.bind(null, c)
+                });
+            }
         }
 
         options.push({
@@ -120,7 +124,7 @@ export default class TransferModal extends Component {
 
 TransferModal.propTypes = {
     call: PropTypes.object.isRequired,
-    calls: PropTypes.array.isRequired,
+    calls: PropTypes.object.isRequired,
     visible: Modal.propTypes.visible,
     onRequestClose: Modal.propTypes.onRequestClose,
     onBlindTransferPress: PropTypes.func,

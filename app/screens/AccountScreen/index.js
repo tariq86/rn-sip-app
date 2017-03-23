@@ -3,7 +3,7 @@ import {TouchableHighlight, View, Text, Image, ScrollView} from 'react-native'
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
-import {createAccount, replaceAccount, deleteAccount} from '../../modules/accounts'
+import {createAccount, replaceAccount, deleteAccount} from '../../modules/pjsip'
 
 import Header from '../../components/Header'
 import ListSection from '../../components/Common/ListSection';

@@ -1,15 +1,23 @@
 import {combineReducers} from 'redux'
 
 import app from './app'
-import accounts from './accounts'
-import calls from './calls'
+import pjsip from './pjsip'
 import navigation from './navigation'
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
+    navigation,
     app,
-    accounts,
-    calls,
-    navigation
+    pjsip,
 });
 
-export default rootReducer
+const rootReducer = (state, action) => {
+    if (action.type === 'app/DESTROY') {
+        state = {
+            navigation: state.navigation
+        }
+    }
+
+    return appReducer(state, action)
+};
+
+export default rootReducer;

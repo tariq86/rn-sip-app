@@ -3,7 +3,7 @@ import {TouchableHighlight, View, Modal, Image, Text, Platform} from 'react-nati
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
-import {makeCall} from '../../modules/calls'
+import {makeCall} from '../../modules/pjsip'
 
 import Header from '../../components/Header'
 import KeypadWithActions from '../../components/Call/KeypadWithActions'

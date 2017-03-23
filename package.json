@@ -12,14 +12,17 @@
     "react": "15.4.2",
     "react-native": "^0.41.2",
     "react-native-action-button": "^2.0.1",
+    "react-native-callkit": "^1.1.0",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-pjsip": "https://github.com/datso/react-native-pjsip.git",
     "react-native-viewpager": "^0.2.11",
+    "react-native-voip-push-notification": "^1.1.0",
     "react-redux": "^5.0.2",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "remote-redux-devtools": "^0.4.1"
