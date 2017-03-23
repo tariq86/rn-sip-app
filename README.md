@@ -19,13 +19,13 @@ Based on React Native and [ReactNativePJSIP](https://github.com/datso/react-nati
   $ npm install
   ```
 
-6. **Running on Android**:
+3. **Running on Android**:
 
   ```
   $ react-native run-android
   ```
 
-7. **Running on iOS:**
+4. **Running on iOS:**
 
   ```
   $ react-native run-ios
