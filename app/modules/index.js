@@ -5,19 +5,19 @@ import pjsip from './pjsip'
 import navigation from './navigation'
 
 const appReducer = combineReducers({
-    navigation,
-    app,
-    pjsip,
-});
+  navigation,
+  app,
+  pjsip,
+})
 
 const rootReducer = (state, action) => {
-    if (action.type === 'app/DESTROY') {
-        state = {
-            navigation: state.navigation
-        }
+  if (action.type === 'app/DESTROY') {
+    state = {
+      navigation: state.navigation
     }
+  }
 
-    return appReducer(state, action)
-};
+  return appReducer(state, action)
+}
 
-export default rootReducer;
+export default rootReducer

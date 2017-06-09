@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import {View, StyleSheet} from 'react-native'
 import * as Navigation from '../../modules/navigation'
 import {makeCall} from '../../modules/pjsip'
@@ -8,48 +9,44 @@ import KeypadWithActions from '../../components/Call/KeypadWithActions'
 
 import {connect} from 'react-redux'
 
-class DialerScreen extends Component {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginBottom: 49.5
+  }
+})
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Header title="Набрать номер" />
-
-                <KeypadWithActions
-                    style={{flex: 1}}
-                    actions={[
-                        {icon: "call", text: "Call", callback: this.props.onCallPress}
-                    ]}
-                />
-            </View>
-        )
-    }
+const DialerScreen = ({onCallPress}) => {
+  return (
+    <View style={styles.container}>
+      <Header title="Keypad"/>
+      <KeypadWithActions
+        style={{flex: 1}}
+        actions={[
+          {icon: "call", text: "Call", callback: onCallPress}
+        ]}
+      />
+    </View>
+  )
 }
 
-var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginBottom: 49.5
-    }
-});
+DialerScreen.propTypes = {
+  onCallPress: PropTypes.func.isRequired
+}
 
-function select(store) {
-    return {
 
-    };
+function select() {
+  return {}
 }
 
 function actions(dispatch) {
-    return {
-        onCallPress: (destination) => {
-            if (destination) {
-                dispatch(makeCall(destination));
-            }
-        },
-        onCancelPress: () => {
-            dispatch(Navigation.goBack());
-        }
-    };
+  return {
+    onCallPress: (destination) => {
+      if (destination) {
+        dispatch(makeCall(destination))
+      }
+    }
+  }
 }
 
-export default connect(select, actions)(DialerScreen);
+export default connect(select, actions)(DialerScreen)

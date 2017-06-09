@@ -1,0 +1,53 @@
+{
+    "rules": {
+      "semi": [1, "never"],
+      "indent": 0,
+      "no-console": 0,
+      "no-undef": 0,
+      "no-unused-vars": 0,
+      "no-dupe-keys": 2,
+      "no-useless-rename": 2,
+      "no-useless-constructor": 2,
+      "prefer-const": 1,
+      "prefer-spread": 1,
+      "template-curly-spacing": 1,
+
+      "react/prefer-es6-class": 2,
+      "react/prop-types": 1,
+      "react/jsx-no-undef": 1,
+      "react/jsx-no-duplicate-props": 1,
+      "react/jsx-pascal-case": 2,
+      "react/jsx-closing-bracket-location": 2,
+      "react/jsx-boolean-value": 2,
+      "react/jsx-wrap-multilines": 2,
+      "react/self-closing-comp": 2,
+      "react/sort-comp": 2,
+      "react/no-is-mounted": 2,
+      "react/no-array-index-key": 2,
+      "react/no-children-prop": 2,
+      "react/no-danger": 1,
+      "react/no-deprecated": 2,
+      "react/no-unescaped-entities": 1,
+      "react/require-render-return": 2,
+      "react/jsx-curly-spacing": 1,
+      "react/jsx-no-comment-textnodes": 1,
+      "no-case-declarations": "off"
+    },
+    "parser": "babel-eslint",
+    "env": {
+        "es6": true,
+        "browser": false
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "ecmaFeatures": {
+        "modules": true,
+        "jsx": true,
+        "experimentalObjectRestSpread": true
+    },
+    "plugins": [
+        "react"
+    ]
+}

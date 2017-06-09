@@ -7,16 +7,15 @@
   },
   "dependencies": {
     "events": "^1.1.1",
-    "lodash": "^4.14.2",
+    "lodash": "^4.17.4",
     "moment": "^2.14.1",
     "react": "15.4.2",
     "react-native": "^0.41.2",
     "react-native-action-button": "^2.0.1",
+    "react-native-callkit": "git+https://github.com/datso/react-native-callkit.git",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-pjsip": "https://github.com/datso/react-native-pjsip.git",
     "react-native-viewpager": "^0.2.11",
-    "react-native-voip-push-notification": "^1.1.0",
-    "react-native-callkit": "git+https://github.com/datso/react-native-callkit.git",
     "react-native-voip-push-notification": "git+https://github.com/datso/react-native-voip-push-notification",
     "react-redux": "^5.0.2",
     "redux": "^3.5.2",
@@ -26,6 +25,11 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.8.0",
+    "eslint-plugin-react": "^7.0.1",
+    "prop-types": "^15.5.10",
     "remote-redux-devtools": "^0.4.1"
   }
 }

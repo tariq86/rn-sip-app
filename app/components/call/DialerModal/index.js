@@ -1,44 +1,39 @@
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {TouchableOpacity, View, Text, Modal} from 'react-native'
-
+import KeypadWithActions from '../KeypadWithActions'
 import s from './styles'
 
-import KeypadWithActions from '../KeypadWithActions'
+const DialerModal = ({theme, visible, actions, onRequestClose}) => {
+  const containerStyles = theme === "dark" ? s.containerDarkStyle : s.containerStyle
+  const contentStyles = theme === "dark" ? s.containerDarkStyle : s.containerStyle
+  const touchableStyle = theme === "dark" ? s.touchableDarkStyle : s.touchableStyle
+  const touchableTextStyle = theme === "dark" ? s.touchableTextDarkStyle : s.touchableTextStyle
 
-export default class DialerModal extends Component {
-
-    render() {
-        let containerStyles = this.props.theme == "dark" ? s.containerDarkStyle : s.containerStyle;
-        let contentStyles = this.props.theme == "dark" ? s.containerDarkStyle : s.containerStyle;
-        let touchableStyle = this.props.theme == "dark" ?  s.touchableDarkStyle : s.touchableStyle;
-        let touchableTextStyle = this.props.theme == "dark" ? s.touchableTextDarkStyle : s.touchableTextStyle;
-
-        return (
-            <Modal
-                animationType={"fade"}
-                transparent={true}
-                visible={this.props.visible}
-                onRequestClose={this.props.onRequestClose}
-            >
-                <View style={[{flex: 1}, containerStyles]}>
-                    <KeypadWithActions
-                        style={[{flex: 1}, contentStyles]}
-                        theme={this.props.theme}
-                        actions={this.props.actions}
-                    />
-                    <TouchableOpacity onPress={this.props.onRequestClose} style={[null, touchableStyle]}>
-                        <Text style={[s.touchableText, touchableTextStyle]}>Cancel</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
-        )
-    }
+  return (
+    <Modal
+      animationType={"fade"}
+      transparent
+      visible={visible}
+      onRequestClose={onRequestClose}
+    >
+      <View style={[{flex: 1}, containerStyles]}>
+        <KeypadWithActions
+          style={[{flex: 1}, contentStyles]}
+          theme={theme}
+          actions={actions}
+        />
+        <TouchableOpacity onPress={onRequestClose} style={[null, touchableStyle]}>
+          <Text style={[s.touchableText, touchableTextStyle]}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  )
 }
 
 DialerModal.propTypes = {
-    visible: Modal.propTypes.visible,
-    theme: PropTypes.string,
-    actions: PropTypes.array.isRequired,
-    onRequestClose: Modal.propTypes.onRequestClose,
-    onPress: PropTypes.func
+  visible: Modal.propTypes.visible,
+  theme: PropTypes.string,
+  actions: PropTypes.array.isRequired,
+  onRequestClose: Modal.propTypes.onRequestClose
 }
