@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 import {View, StyleSheet} from 'react-native'
 import * as Navigation from '../../modules/navigation'
 import {makeCall} from '../../modules/pjsip'
@@ -7,7 +8,7 @@ import {makeCall} from '../../modules/pjsip'
 import Header from '../../components/Header'
 import KeypadWithActions from '../../components/Call/KeypadWithActions'
 
-import {connect} from 'react-redux'
+import cs from '../../assets/styles/containers'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +22,7 @@ const DialerScreen = ({onCallPress}) => {
     <View style={styles.container}>
       <Header title="Keypad"/>
       <KeypadWithActions
-        style={{flex: 1}}
+        style={cs.max}
         actions={[
           {icon: "call", text: "Call", callback: onCallPress}
         ]}

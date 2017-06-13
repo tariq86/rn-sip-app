@@ -19,6 +19,7 @@ import DialerModal from '../../components/Call/DialerModal'
 import IncomingCallModal from '../../components/Call/IncomingCallModal'
 
 import s from './styles'
+import cs from '../../assets/styles/containers'
 
 class CallScreen extends Component {
   constructor(props) {
@@ -314,7 +315,7 @@ class CallScreen extends Component {
 
   renderError() {
     return (
-      <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
+      <LinearGradient colors={['#2a5743', '#14456f']} style={cs.max}>
         <View style={s.errorContainer}>
           <Text style={s.errorText}>{this.state.error}</Text>
         </View>
@@ -324,7 +325,7 @@ class CallScreen extends Component {
 
   renderCallWait() {
     return (
-      <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
+      <LinearGradient colors={['#2a5743', '#14456f']} style={cs.max}>
         <View style={s.initContainer}>
           <Text style={s.initText}>Please wait while call initialized</Text>
         </View>
@@ -352,8 +353,8 @@ class CallScreen extends Component {
     }
 
     return (
-      <LinearGradient colors={['#2a5743', '#14456f']} style={{flex: 1}}>
-        <View style={{flex: 1}}>
+      <LinearGradient colors={['#2a5743', '#14456f']} style={cs.max}>
+        <View style={cs.max}>
           {this.renderSimultaniousCalls()}
 
           <Animated.View

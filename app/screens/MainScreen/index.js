@@ -11,6 +11,8 @@ import NetworkSettingsScreen from '../NetworkSettingsScreen'
 import MediaSettingsScreen from '../MediaSettingsScreen'
 import Viewport from '../../components/Viewport'
 
+import cs from '../../assets/styles/containers'
+
 class App extends Component {
   componentDidMount() {
     this.props.onNavigatorMount(this.navigatorView)
@@ -53,14 +55,14 @@ class App extends Component {
     const route = navigation.current.name ? navigation.current : navigation.init
 
     return (
-      <View style={{flex: 1}}>
+      <View style={cs.max}>
         <StatusBar
           backgroundColor={barColor}
           barStyle={barStyle}
           hidden={full}
         />
         <Navigator
-          style={{flex: 1}}
+          style={cs.max}
           ref={(c) => {
             this.navigatorView = c
           }}

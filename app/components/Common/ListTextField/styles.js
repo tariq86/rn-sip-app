@@ -9,6 +9,9 @@ export default StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 3,
-    backgroundColor: "#F9F9F9"
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#CCC",
+    textAlign: 'center'
   }
 })

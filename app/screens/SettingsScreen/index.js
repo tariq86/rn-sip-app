@@ -10,6 +10,8 @@ import ListConfigurationInfo from '../../components/Settings/ListConfigurationIn
 import ListSection from '../../components/Common/ListSection'
 import Header from '../../components/Header'
 
+import cs from '../../assets/styles/containers'
+
 class SettingsScreen extends Component {
   renderAccounts(accounts) {
     const result = []
@@ -61,7 +63,7 @@ class SettingsScreen extends Component {
     // TODO: Add icon for network and media configuration.
 
     return (
-      <View style={{flex: 1}}>
+      <View style={cs.max}>
         <Header title="Settings" {...platformHeaderProps} />
 
         <ListSection title="Accounts"/>

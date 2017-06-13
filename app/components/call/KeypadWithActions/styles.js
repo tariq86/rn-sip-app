@@ -1,6 +1,25 @@
 import {StyleSheet} from 'react-native'
 import {correctFontSizeForScreen} from '../../../utils/scale'
 
+export function inputStyle (ratio, theme) {
+  return {
+    flex: 0.08 * ratio,
+    backgroundColor: theme === 'dark' ? "#3c4b51" : undefined
+  }
+}
+
+export function textStyle (theme) {
+  return {
+    color: theme === 'dark' ? "#FFF" : undefined
+  }
+}
+
+export function keyUnderlayColor (theme) {
+  return {
+    color: theme === 'dark' ? "#566971" : undefined
+  }
+}
+
 export default StyleSheet.create({
   actionsWrapper: {
     flex: 0.281,

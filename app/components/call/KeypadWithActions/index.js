@@ -6,7 +6,7 @@ import Keypad from '../Keypad'
 import KeypadInputText from '../KeypadInputText'
 
 import sk from '../Keypad/styles'
-import s from './styles'
+import s, {inputStyle, textStyle, keyUnderlayColor} from './styles'
 
 export default class KeypadWithActions extends Component {
 
@@ -53,8 +53,8 @@ export default class KeypadWithActions extends Component {
 
   renderActionKey(type, description, callback = noop) {
     let icon = null
-    const actionTouchableStyle = this.props.theme == "dark" ? s.actionDarkTouchable : null
-    const actionTextStyle = this.props.theme == "dark" ? s.actionDarkText : null
+    const actionTouchableStyle = this.props.theme === "dark" ? s.actionDarkTouchable : null
+    const actionTextStyle = this.props.theme === "dark" ? s.actionDarkText : null
 
     switch (type) {
       case 'fax':
@@ -103,11 +103,9 @@ export default class KeypadWithActions extends Component {
   }
 
   render() {
+    const {theme} = this.props
+    const {heightRatio} = this.state
     const actions = []
-    const inputStyle = this.props.theme == "dark" ? {backgroundColor: "#3c4b51"} : null
-    const inputTextStyle = this.props.theme == "dark" ? {color: "#FFF"} : null
-    const keyUnderlayColor = this.props.theme == "dark" ? "#566971" : null
-    const keyTextStyle = this.props.theme == "dark" ? {color: "#FFF"} : null
 
     if (this.props.actions.length === 3) {
       const a = this.props.actions
@@ -126,16 +124,17 @@ export default class KeypadWithActions extends Component {
 
     return (
       <View style={this.props.style}>
-        <KeypadInputText style={[{flex: 0.08 * this.state.heightRatio}, inputStyle]}
-                         textStyle={inputTextStyle}
-                         value={this.state.value}
-                         onBackspacePress={this._onBackspacePress}
-                         onClearPress={this._onClearPress}
+        <KeypadInputText
+          style={inputStyle(heightRatio, theme)}
+          textStyle={textStyle(theme)}
+          value={this.state.value}
+          onBackspacePress={this._onBackspacePress}
+          onClearPress={this._onClearPress}
         />
         <View style={{flex: 0.02 * this.state.heightRatio}}/>
         <Keypad style={{flex: 0.75}}
-                keyUnderlayColor={keyUnderlayColor}
-                keyTextStyle={keyTextStyle}
+                keyUnderlayColor={keyUnderlayColor(theme)}
+                keyTextStyle={textStyle(theme)}
                 onKeyPress={this._onKeyPress}
                 onDefineKeySize={this._onDefineKeySize}
         />

@@ -88,68 +88,67 @@ export default class CallActions extends Component {
     return (
       <View {...this.props.style}>
         <ViewPager
-          style={{flex: 1}}
+          style={s.pager}
           count={2}
           selectedIndex={this.state.actionsIndex}
           onSelectedIndexChange={this._onSelectedIndexChange}
         >
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 0.15}}/>
-            <View style={{flex: 0.7}}>
-              <View style={{flexDirection: 'row'}}>
+          <View style={s.actionsRow}>
+            <View style={s.actionsPadding}/>
+            <View style={s.actionsContent}>
+              <View style={s.actionsContentWrapper}>
                 <CallAction type="add" description="add" onPress={this._onAddPress}/>
-                <View style={{flex: 0.3}}/>
+                <View style={s.actionSeparator}/>
                 <CallAction
                   type={muted ? "unmute" : "mute"}
                   description={muted ? "unmute" : "mute"}
                   onPress={this._onMutePress}
                 />
-                <View style={{flex: 0.3}}/>
+                <View style={s.actionSeparator}/>
                 <CallAction
                   type={speaker ? "speaker" : "earpiece"}
                   description="speaker"
                   onPress={this._onSpeakerPress}
                 />
               </View>
-
-              <View style={{flexDirection: 'row', marginTop: 30}}>
+              <View style={s.actionsContentSecondWrapper}>
                 <CallAction type="transfer" description="transfer" onPress={this._onTransferPress}/>
-                <View style={{flex: 0.3}}/>
+                <View style={s.actionSeparator}/>
                 <CallAction
                   type={held ? "unhold" : "hold"}
                   description={held ? "unhold" : "hold"}
                   onPress={this._onHoldPress}
                 />
-                <View style={{flex: 0.3}}/>
+                <View style={s.actionSeparator}/>
                 <CallAction type="dtmf" description="dtmf" onPress={this._onDTMFPress}/>
               </View>
             </View>
-            <View style={{flex: 0.15}}/>
+            <View style={s.actionsPadding}/>
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 0.15}}/>
-            <View style={{flex: 0.7}}>
-              <View style={{flexDirection: 'row'}}>
+          <View style={s.actionsRow}>
+            <View style={s.actionsPadding}/>
+            <View style={s.actionsContent}>
+              <View style={s.actionsContentWrapper}>
                 <CallAction type="park" description="park" onPress={this._onParkPress}/>
-                <View style={{flex: 0.3}}/>
+                <View style={s.actionSeparator}/>
                 <CallAction type="merge" description="merge" onPress={this._onMergePress}/>
-                <View style={{flex: 0.3}}/>
-                <CallAction type="record" description="record" onPress={this._onRecordPress}/>
+                <View style={s.actionSeparator}/>
+                <CallAction type="record" description="record" onPress={() => {}}/>
               </View>
-              <View style={{flexDirection: 'row', marginTop: 30}}>
+              <View style={s.actionsContentSecondWrapper}>
                 <CallAction type="chat" description="chat" onPress={this._onChatPress}/>
-                <View style={{flex: 0.3}}/>
-                <View style={{width: 64}}/>
-                <View style={{flex: 0.3}}/>
-                <View style={{width: 64}}/>
+                <View style={s.actionSeparator}/>
+                <View style={s.actionEmpty}/>
+                <View style={s.actionSeparator}/>
+                <View style={s.actionEmpty}/>
               </View>
             </View>
-            <View style={{flex: 0.15}}/>
+            <View style={s.actionsPadding}/>
           </View>
         </ViewPager>
         <View style={s.switchContainer}>
-          <View style={[{marginRight: 5}, s.switchIndicator, (this.state.actionsIndex === 0 ? s.switchActive : null)]}/>
-          <View style={[{marginLeft: 5}, s.switchIndicator, (this.state.actionsIndex === 1 ? s.switchActive : null)]}/>
+          <View style={[s.switchIndicatorLeft, s.switchIndicator, (this.state.actionsIndex === 0 ? s.switchActive : null)]}/>
+          <View style={[s.switchIndicatorRight, s.switchIndicator, (this.state.actionsIndex === 1 ? s.switchActive : null)]}/>
         </View>
       </View>
     )

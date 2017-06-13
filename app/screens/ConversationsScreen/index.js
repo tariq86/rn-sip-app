@@ -10,6 +10,8 @@ import Header from '../../components/Header'
 import KeypadWithActions from '../../components/Call/KeypadWithActions'
 import ActionButton from 'react-native-action-button'
 
+import cs from '../../assets/styles/containers'
+
 class ConversationsScreen extends Component {
 
   constructor(props) {
@@ -46,7 +48,7 @@ class ConversationsScreen extends Component {
     // TODO: Use DialerModal instead of Modal
 
     return (
-      <View style={{flex: 1}}>
+      <View style={cs.max}>
         <Header title="Conversations" {...platformHeaderProps} />
         <View
           style={{
@@ -72,7 +74,7 @@ class ConversationsScreen extends Component {
               }}
             >
               <KeypadWithActions
-                style={{flex: 1}}
+                style={cs.max}
                 actions={[
                   {icon: "call", text: "Call", callback: this._onCallPress}
                 ]}

@@ -33,7 +33,15 @@ export function init() {
     // (because Javascript state is not persistent when User close application, e.g. application goes to background state)
 
     const endpoint = new Endpoint()
-    const state = await endpoint.start()
+    const state = await endpoint.start({
+      service: {
+        ua: Platform.select({ios: "RnSIP iOS", android: "RnSIP Android"})
+      },
+      network: {
+        useWifi: true,
+        useOtherNetworks: true
+      }
+    })
     const {accounts, calls, settings: endpointSettings, connectivity} = state
 
     // Subscribe to endpoint events
@@ -323,10 +331,6 @@ export function destroy() {
 export function createAccount(configuration) {
   return async function (dispatch, getState) {
     const {endpoint, tokens} = getState().pjsip
-
-
-    console.log("createAccount tokens", endpoint, tokens)
-
     const contactUriParams = Platform.select({
       ios: [
         ";app-id=com.carusto.mobile.app",
@@ -336,15 +340,10 @@ export function createAccount(configuration) {
       android: `;im-type=sip`,
     })
 
-    console.log("createAccount 1", configuration)
-    console.log("createAccount 2", contactUriParams)
-
     const account = await endpoint.createAccount({
       ...configuration,
       contactUriParams
     })
-
-    console.log("createAccount 3")
 
     dispatch({type: ACCOUNT_CREATED, payload: {account}})
 

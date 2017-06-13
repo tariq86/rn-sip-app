@@ -2,7 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {TouchableOpacity, View, Text, Modal} from 'react-native'
 import KeypadWithActions from '../KeypadWithActions'
+
 import s from './styles'
+import cs from '../../../assets/styles/containers'
 
 const DialerModal = ({theme, visible, actions, onRequestClose}) => {
   const containerStyles = theme === "dark" ? s.containerDarkStyle : s.containerStyle
@@ -17,13 +19,13 @@ const DialerModal = ({theme, visible, actions, onRequestClose}) => {
       visible={visible}
       onRequestClose={onRequestClose}
     >
-      <View style={[{flex: 1}, containerStyles]}>
+      <View style={[cs.max, containerStyles]}>
         <KeypadWithActions
-          style={[{flex: 1}, contentStyles]}
+          style={[cs.max, contentStyles]}
           theme={theme}
           actions={actions}
         />
-        <TouchableOpacity onPress={onRequestClose} style={[null, touchableStyle]}>
+        <TouchableOpacity onPress={onRequestClose} style={touchableStyle}>
           <Text style={[s.touchableText, touchableTextStyle]}>Cancel</Text>
         </TouchableOpacity>
       </View>

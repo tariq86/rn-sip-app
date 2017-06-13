@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {View, TouchableOpacity, Text, Modal, Image} from 'react-native'
+import {View, TouchableOpacity, Text, Modal, Image, KeyboardAvoidingView} from 'react-native'
 
+import Touchable from '../Touchable'
 import s from './styles'
 
 export default class ListCustomField extends Component {
@@ -46,15 +47,15 @@ export default class ListCustomField extends Component {
 
   render() {
     let value = this.props.value
-    const empty = !this.props.value || this.props.value.length == 0
+    const empty = !this.props.value || this.props.value.length === 0
 
-    if (this.props.valueType == 'password') {
+    if (this.props.valueType === 'password') {
       value = "*".repeat(value.length)
     }
 
     return (
       <View>
-        <TouchableOpacity style={s.listContainer} onPress={this._onModalOpenPress}>
+        <Touchable style={s.listContainer} onPress={this._onModalOpenPress}>
           <View style={s.listContent}>
             <Text style={(empty ? s.listTitle : s.listPlaceholder)}>{this.props.title}</Text>
             <Text style={(empty ? s.listPlaceholder : s.listTitle)}>
@@ -66,7 +67,7 @@ export default class ListCustomField extends Component {
           <View style={s.listIconContainer}>
             <Image source={require('../../../assets/images/common/lined-goto.png')}/>
           </View>
-        </TouchableOpacity>
+        </Touchable>
 
         <Modal
           animationType={"fade"}
@@ -74,21 +75,23 @@ export default class ListCustomField extends Component {
           visible={this.state.active}
           onRequestClose={this._onModalClosePress}
         >
-          <View style={s.modalBackground}>
-            <View style={s.modalContent}>
-              <View style={s.modalHeader}>
-                <Text style={s.modalTitle}>{this.props.title}</Text>
-                <TouchableOpacity onPress={this._onModalClosePress}>
-                  <Image source={require('../../../assets/images/modal/close-icon.png')}/>
-                </TouchableOpacity>
+          <View style={s.modalBackground} onStartShouldSetResponderCapture={this.onHandleCapture}>
+            <KeyboardAvoidingView behavior='position'>
+              <View style={s.modalContent}>
+                <View style={s.modalHeader}>
+                  <Text style={s.modalTitle}>{this.props.title}</Text>
+                  <Touchable style={s.modalClose} onPress={this._onModalClosePress}>
+                    <Image source={require('../../../assets/images/modal/close-icon.png')}/>
+                  </Touchable>
+                </View>
+
+                {this.props.children}
+
+                <Touchable onPress={this._onModalOkPress} style={s.modalSubmitTouchable}>
+                    <Text style={s.modalSubmitText}>SAVE</Text>
+                </Touchable>
               </View>
-
-              {this.props.children}
-
-              <TouchableOpacity onPress={this._onModalOkPress} style={s.modalSubmitTouchable}>
-                <Text style={s.modalSubmitText}>Submit</Text>
-              </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
           </View>
         </Modal>
       </View>

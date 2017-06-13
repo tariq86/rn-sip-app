@@ -4,8 +4,6 @@ import {correctFontSizeForScreen} from '../../../utils/scale'
 export default StyleSheet.create({
   listContainer: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: '#E0E7EA',
     padding: 10
   },
   listContent: {
@@ -24,39 +22,52 @@ export default StyleSheet.create({
   },
   modalBackground: {
     backgroundColor: "rgba(0,0,0,0.5)",
-    flex: 1
+    flex: 1,
+    justifyContent: 'center'
   },
   modalContent: {
-    margin: 30,
-    marginTop: 70,
+    marginBottom: 30,
+    marginLeft: 30,
+    marginRight: 30,
     backgroundColor: "#FFF",
     borderRadius: 8
   },
   modalHeader: {
-    padding: 12,
+    height: 58,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     borderBottomWidth: 1,
     borderColor: "#E0E7EA"
   },
   modalTitle: {
     textAlign: 'center',
     flex: 1,
-    fontSize: correctFontSizeForScreen(18)
+    fontSize: correctFontSizeForScreen(21)
   },
   modalSubmitTouchable: {
-    margin: 20,
-    height: 40,
-    borderRadius: 3,
-    flex: 0.5,
+    backgroundColor: "#E7ECEF",
+    borderTopWidth: 1,
+    borderColor: "#E0E7EA",
+    marginTop: 20,
+    height: 50,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
     paddingTop: 8,
     paddingBottom: 8,
-    backgroundColor: "#4ea1ef",
+    // backgroundColor: "#bdced5",
     alignItems: 'center',
     justifyContent: 'center'
   },
   modalSubmitText: {
     fontSize: correctFontSizeForScreen(13),
-    color: "#FFF"
+    color: "#000"
+  },
+  modalClose: {
+    position: 'absolute',
+    right: 20,
+    padding: 8,
+    top: 13,
+    borderRadius: 12
   }
 })

@@ -8,6 +8,8 @@ import ConversationsScreen from '../screens/ConversationsScreen'
 import HistoryScreen from '../screens/HistoryScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 
+import cs from '../assets/styles/containers'
+
 class Viewport extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.drawer === "VISIBLE") {
@@ -130,10 +132,10 @@ class Viewport extends Component {
           this._drawer = drawer
         }}
         onDrawerClose={this.props.onDrawerClose}
-        style={{flex: 1}}
+        style={cs.max}
         renderNavigationView={this.renderNavigationView.bind(this)}
       >
-        <View key={this.props.tab} style={{flex: 1}}>
+        <View key={this.props.tab} style={cs.max}>
           {this.renderActiveCalls()}
           {this.renderContent()}
         </View>

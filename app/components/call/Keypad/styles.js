@@ -33,6 +33,9 @@ export default styles = StyleSheet.create({
     color: "#000",
     fontWeight: '200',
     textAlign: "center"
+  },
+  keyDigitWrapper: {
+    backgroundColor: 'transparent'
   }
 })
 

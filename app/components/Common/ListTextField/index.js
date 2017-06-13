@@ -36,9 +36,7 @@ export default class ListTextField extends Component {
   render() {
     return (
       <ListCustomField
-        ref={(c) => {
-          this.fieldDialog = c
-        }}
+        ref={(c) => {this.fieldDialog = c}}
         value={this.props.value}
         valueType={this.props.valueType}
         placeholder={this.props.placeholder}
@@ -49,7 +47,9 @@ export default class ListTextField extends Component {
           style={s.input}
           onSubmitEditing={this._onSubmitPress}
           autoFocus
-          placeholderTextColor="#ADADAD"
+          placeholderTextColor="#666"
+          clearButtonMode='always'
+          returnKeyType={'done'}
           placeholder={this.props.placeholder}
           value={this.state.value}
           underlineColorAndroid="transparent"

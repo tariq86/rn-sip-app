@@ -42,11 +42,12 @@ export default class Keypad extends Component {
         {
           /* Show key only when we know it's width to render square touchable */
           !this.state.keySize ? null :
-            <TouchableHighlight underlayColor={(this.props.keyUnderlayColor ? this.props.keyUnderlayColor : "#ccd9e2" )}
-                                style={[s.keyTouchable, {width: this.state.keySize}, this.props.keyStyle]}
-                                onPress={this.onKeyPress.bind(this, digit)}
+            <TouchableHighlight
+              underlayColor={(this.props.keyUnderlayColor ? this.props.keyUnderlayColor : "#ccd9e2" )}
+              style={[s.keyTouchable, {width: this.state.keySize}, this.props.keyStyle]}
+              onPress={this.onKeyPress.bind(this, digit)}
             >
-              <View style={{backgroundColor: 'transparent'}}>
+              <View style={s.keyDigitWrapper}>
                 <Text style={[s.keyDigitText, this.props.keyTextStyle]}>{digit}</Text>
                 <Text style={[s.keyLettersText, this.props.keyTextStyle]}>{letters}</Text>
               </View>

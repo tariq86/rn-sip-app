@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {View, ScrollView} from 'react-native'
-
 import {connect} from 'react-redux'
 import {changeNetworkSettings} from '../../modules/app'
 import * as Navigation from '../../modules/navigation'
@@ -9,6 +8,8 @@ import * as Navigation from '../../modules/navigation'
 import Header from '../../components/Header'
 import ListSection from '../../components/Common/ListSection'
 import ListCheckbox from '../../components/Common/ListCheckbox'
+
+import cs from '../../assets/styles/containers'
 
 class MediaSettingsScreen extends Component {
 
@@ -90,10 +91,10 @@ class MediaSettingsScreen extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={cs.max}>
         <Header title={"Network settings"} {...platformHeaderProps} />
 
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={cs.max}>
           <ListSection title="Connectivity settings"/>
 
           <ListCheckbox

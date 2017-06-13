@@ -10,8 +10,11 @@ import Header from '../../components/Header'
 import ListSection from '../../components/Common/ListSection'
 import ListTextField from '../../components/Common/ListTextField'
 import ListSelectField from '../../components/Common/ListSelectField'
+import ListFieldSeparator from '../../components/Common/ListFieldSeparator'
 
 import s from './styles'
+import cs from '../../assets/styles/containers'
+
 
 class AccountScreen extends Component {
 
@@ -112,24 +115,26 @@ class AccountScreen extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={cs.max}>
         <Header title={this.props.account ? this.props.account.getName() : "New account"} {...platformHeaderProps} />
 
-        <ScrollView style={{flex: 1}}>
+        <ScrollView keyboardShouldPersistTaps='always' style={cs.max}>
           <ListSection title="General"/>
-
+          <ListFieldSeparator />
           <ListTextField
             title="Full name"
             placeholder="Display name"
             value={this.state.name}
             onChange={this._onNameChanged}
           />
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false}}
             title="Username"
             placeholder="Account name / Login" value={this.state.username}
             onChange={this._onUsernameChanged}
           />
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false}}
             title="Server"
@@ -137,6 +142,7 @@ class AccountScreen extends Component {
             value={this.state.domain}
             onChange={this._onDomainChanged}
           />
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false, secureTextEntry: true}}
             title="Password"
@@ -144,7 +150,9 @@ class AccountScreen extends Component {
             valueType="password"
             onChange={this._onPasswordChanged}
           />
+          <ListFieldSeparator />
           <ListSection title="Advanced"/>
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false}}
             title="Proxy"
@@ -153,6 +161,7 @@ class AccountScreen extends Component {
             value={this.state.proxy}
             onChange={this._onProxyChanged}
           />
+          <ListFieldSeparator />
           <ListSelectField
             options={["UDP", "TCP", "TLS"]}
             title="Transport"
@@ -160,6 +169,7 @@ class AccountScreen extends Component {
             value={this.state.transport}
             onChange={this._onTransportChanged}
           />
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false}}
             title="Registry server / Realm"
@@ -167,6 +177,7 @@ class AccountScreen extends Component {
             value={this.state.regServer}
             onChange={this._onRegServerChanged}
           />
+          <ListFieldSeparator />
           <ListTextField
             inputProps={{autoCapitalize: "none", autoCorrect: false, keyboardType: "numeric"}}
             title="Registration Timeout"
@@ -218,13 +229,17 @@ function actions(dispatch) {
       dispatch(Navigation.goBack())
     },
     onCreatePress: (configuration) => {
-      dispatch(createAccount(configuration))
+      dispatch(async () => {
+        const account = await dispatch(createAccount(configuration))
+        console.log("account", account)
+        await dispatch(Navigation.goAndReplace({name: 'settings'}))
+      })
     },
-    /**
-     onChangePress: (account, configuration) => {
-      dispatch(replaceAccount(account, configuration));
+    onChangePress: (account, configuration) => {
+      alert("Not implemented")
+      dispatch(Navigation.goAndReplace({name: 'settings'}))
+      // dispatch(replaceAccount(account, configuration));
     },
-     **/
     onDeletePress: (account) => {
       dispatch(deleteAccount(account))
     }

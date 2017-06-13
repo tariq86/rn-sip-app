@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
 import Header from '../../components/Header'
 
+import cs from '../../assets/styles/containers'
+
 const HistoryScreen = ({onHamburgerPress}) => {
   const platformHeaderProps = {}
 
@@ -19,7 +21,7 @@ const HistoryScreen = ({onHamburgerPress}) => {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={cs.max}>
       <Header title="History" {...platformHeaderProps} />
       <View
         style={{

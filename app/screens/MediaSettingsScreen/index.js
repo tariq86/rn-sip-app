@@ -7,6 +7,8 @@ import * as Navigation from '../../modules/navigation'
 import ListSection from '../../components/Common/ListSection'
 import Header from '../../components/Header'
 
+import cs from '../../assets/styles/containers'
+
 const MediaSettingsScreen = ({onBackPress}) => {
   const platformHeaderProps = {}
 
@@ -26,10 +28,10 @@ const MediaSettingsScreen = ({onBackPress}) => {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={cs.max}>
       <Header title={"Media settings"} {...platformHeaderProps} />
 
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={cs.max}>
         <ListSection title="General"/>
         <View style={{padding: 10}}>
           <Text>Not implemented</Text>
