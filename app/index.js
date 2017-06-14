@@ -2,8 +2,7 @@ import {Platform, BackAndroid} from 'react-native'
 import React, {Component} from 'react'
 import {Provider} from 'react-redux'
 import configureStore from './configureStore'
-
-import MainScreen from './screens/MainScreen'
+import AppScreen from './containers/AppScreen'
 
 const store = configureStore()
 
@@ -23,7 +22,7 @@ store.dispatch(async (dispatch, getState) => {
 
   for (const id in accounts) {
     if (accounts.hasOwnProperty(id)) {
-      route = {name: 'conversations'}
+      route = {name: 'dialer'}
       break
     }
   }
@@ -31,7 +30,7 @@ store.dispatch(async (dispatch, getState) => {
   for (const id in calls) {
     if (calls.hasOwnProperty(id)) {
       const call = calls[id]
-      if (call.getState() == "PJSIP_INV_STATE_INCOMING") {
+      if (call.getState() === "PJSIP_INV_STATE_INCOMING") {
         route = {name: 'call', call}
         break
       }
@@ -59,14 +58,12 @@ store.dispatch(async (dispatch, getState) => {
 // Render
 // ========================================
 
-class Root extends Component {
+export default class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        <MainScreen />
+        <AppScreen />
       </Provider>
     )
   }
 }
-
-export default Root

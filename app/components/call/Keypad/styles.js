@@ -20,7 +20,8 @@ export default styles = StyleSheet.create({
   },
   keyTouchable: {
     borderRadius: 100,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    overflow: 'hidden'
   },
   keyDigitText: {
     fontSize: correctFontSizeForScreen(28),

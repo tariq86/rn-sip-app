@@ -5,12 +5,12 @@ import {TabBarIOS} from 'react-native'
 import {connect} from 'react-redux'
 
 import * as Navigation from '../modules/navigation'
-import ConversationsScreen from '../screens/ConversationsScreen'
-import DialerScreen from '../screens/DialerScreen'
-import HistoryScreen from '../screens/HistoryScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import ConversationsScreen from './conversations/ConversationsScreen'
+import DialerScreen from './dialer/DialerScreen'
+import HistoryScreen from './history/HistoryScreen'
+import SettingsScreen from './settings/SettingsScreen'
 
-class Viewport extends React.Component {
+class AppViewport extends React.Component {
 
   onTabSelect(tab) {
     if (this.props.tab !== tab) {
@@ -75,19 +75,19 @@ class Viewport extends React.Component {
 
 }
 
-Viewport.propTypes = {
+AppViewport.propTypes = {
   tab: PropTypes.string,
   onTabSelect: PropTypes.func,
   navigator: PropTypes.object
 }
 
-function select(store) {
+function mapStateToProps(store) {
   return {
     tab: store.navigation.current.name
   }
 }
 
-function actions(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     onTabSelect: (tab) => {
       //if (tab == 'dialer') {
@@ -99,4 +99,4 @@ function actions(dispatch) {
   }
 }
 
-export default connect(select, actions)(Viewport)
+export default connect(mapStateToProps, mapDispatchToProps)(AppViewport)

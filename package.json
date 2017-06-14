@@ -5,6 +5,7 @@
   "scripts": {
     "start": "react-native start",
     "lint": "eslint ./app",
+    "test": "mocha --require react-native-mock/mock.js --compilers js:babel-core/register ./app/**/*.spec.js",
     "android": "react-native run-android",
     "ios": "react-native run-ios"
   },
@@ -29,11 +30,18 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "chai": "^4.0.2",
+    "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-react": "^7.0.1",
     "eslint-plugin-react-native": "^2.3.2",
+    "mocha": "^3.4.2",
     "prop-types": "^15.5.10",
-    "remote-redux-devtools": "^0.4.1"
+    "react": "^15.4.2",
+    "react-dom": "^15.6.0",
+    "react-native-mock": "^0.3.1",
+    "remote-redux-devtools": "^0.4.1",
+    "sinon": "^2.3.4"
   }
 }

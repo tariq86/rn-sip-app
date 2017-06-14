@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {TouchableHighlight, View, Text, Dimensions} from 'react-native'
 
 import s from './styles'
+import Touchable from '../../Common/Touchable'
 
 export default class Keypad extends Component {
   constructor(props) {
@@ -22,17 +23,17 @@ export default class Keypad extends Component {
   }
 
   onLayoutKey(event) {
-    var {width, height} = event.nativeEvent.layout
+    const {width, height} = event.nativeEvent.layout
     this.setState({keySize: height})
 
     this.props.onDefineKeySize && this.props.onDefineKeySize({width, height})
   }
 
   renderKey(digit, letters) {
-    var props = {}
+    const props = {}
 
 
-    if (digit == '1') {
+    if (digit === '1') {
       props['onLayout'] = (event) => this.onLayoutKey(event)
     }
 
@@ -42,8 +43,7 @@ export default class Keypad extends Component {
         {
           /* Show key only when we know it's width to render square touchable */
           !this.state.keySize ? null :
-            <TouchableHighlight
-              underlayColor={(this.props.keyUnderlayColor ? this.props.keyUnderlayColor : "#ccd9e2" )}
+            <Touchable
               style={[s.keyTouchable, {width: this.state.keySize}, this.props.keyStyle]}
               onPress={this.onKeyPress.bind(this, digit)}
             >
@@ -51,7 +51,7 @@ export default class Keypad extends Component {
                 <Text style={[s.keyDigitText, this.props.keyTextStyle]}>{digit}</Text>
                 <Text style={[s.keyLettersText, this.props.keyTextStyle]}>{letters}</Text>
               </View>
-            </TouchableHighlight>
+            </Touchable>
         }
       </View>
     )
@@ -87,7 +87,7 @@ export default class Keypad extends Component {
         </View>
       ))
 
-      if (i != keys.length - 1) {
+      if (i !== keys.length - 1) {
         keypad.push((
           <View key={"split" + i} style={{flex: 0.006 * this.state.heightRatio}}/>
         ))
@@ -105,7 +105,7 @@ export default class Keypad extends Component {
 Keypad.propTypes = {
   style: View.propTypes.style,
   keyStyle: View.propTypes.style,
-  keyUnderlayColor: PropTypes.string,
+  keyUnderlayColor: PropTypes.any,
   keyTextStyle: Text.propTypes.style,
   onKeyPress: PropTypes.func,
   onDefineKeySize: PropTypes.func

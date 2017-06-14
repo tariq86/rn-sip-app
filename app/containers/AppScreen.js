@@ -3,15 +3,14 @@ import PropTypes from 'prop-types'
 import {View, StatusBar, Navigator} from 'react-native'
 import {connect} from 'react-redux'
 
-import * as Navigation from '../../modules/navigation'
-import CallScreen from '../CallScreen'
-import LaunchScreen from '../LaunchScreen'
-import AccountScreen from '../AccountScreen'
-import NetworkSettingsScreen from '../NetworkSettingsScreen'
-import MediaSettingsScreen from '../MediaSettingsScreen'
-import Viewport from '../../components/Viewport'
-
-import cs from '../../assets/styles/containers'
+import * as Navigation from '../modules/navigation'
+import CallScreen from '../screens/CallScreen'
+import LaunchScreen from '../screens/LaunchScreen'
+import AccountScreen from '../screens/AccountScreen'
+import NetworkSettingsScreen from '../screens/NetworkSettingsScreen'
+import MediaSettingsScreen from '../screens/MediaSettingsScreen'
+import Viewport from './AppViewport'
+import cs from '../assets/styles/containers'
 
 class App extends Component {
   componentDidMount() {

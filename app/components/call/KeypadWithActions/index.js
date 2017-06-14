@@ -51,6 +51,7 @@ export default class KeypadWithActions extends Component {
     this.setState({actionSize: width})
   }
 
+  // TODO: Move to dedicated component
   renderActionKey(type, description, callback = noop) {
     let icon = null
     const actionTouchableStyle = this.props.theme === "dark" ? s.actionDarkTouchable : null
@@ -88,7 +89,7 @@ export default class KeypadWithActions extends Component {
       height: this.state.actionSize - 10
     }, s.actionTouchable, actionTouchableStyle]
 
-    if (type == 'call') {
+    if (type === 'call') {
       touchableStyles.push(s.actionGreenTouchable)
     }
 
@@ -109,13 +110,13 @@ export default class KeypadWithActions extends Component {
 
     if (this.props.actions.length === 3) {
       const a = this.props.actions
-      actions.push(<View style={sk.outerLineOffset}/>)
+      actions.push(<View key='view-1' style={sk.outerLineOffset}/>)
       actions.push(this.renderActionKey(a[0]['icon'], a[0]['text'], a[0]['callback']))
-      actions.push(<View style={sk.innerLineOffset}/>)
+      actions.push(<View key='view-2' style={sk.innerLineOffset}/>)
       actions.push(this.renderActionKey(a[1]['icon'], a[1]['text'], a[1]['callback']))
-      actions.push(<View style={sk.innerLineOffset}/>)
+      actions.push(<View key='view-3' style={sk.innerLineOffset}/>)
       actions.push(this.renderActionKey(a[2]['icon'], a[2]['text'], a[2]['callback']))
-      actions.push(<View style={sk.outerLineOffset}/>)
+      actions.push(<View key='view-4' style={sk.outerLineOffset}/>)
     } else {
       for (const action of this.props.actions) {
         actions.push(this.renderActionKey(action['icon'], action['text'], action['callback']))

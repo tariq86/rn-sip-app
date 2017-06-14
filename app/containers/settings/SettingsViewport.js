@@ -13,6 +13,8 @@ import Header from '../../components/Header'
 import cs from '../../assets/styles/containers'
 
 class SettingsScreen extends Component {
+
+  // TODO: Use dedicated component for that!
   renderAccounts(accounts) {
     const result = []
 
@@ -42,42 +44,18 @@ class SettingsScreen extends Component {
   }
 
   render() {
-    const platformHeaderProps = {}
-
-    if (Platform.OS === 'android') {
-      platformHeaderProps['leftItem'] = {
-        title: 'Menu',
-        icon: require('../../assets/images/header/hamburger.png'),
-        layout: 'icon',
-        onPress: this.props.onHamburgerPress
-      }
-    }
-
-    platformHeaderProps['rightItem'] = {
-      title: 'Create',
-      icon: require('../../assets/images/header/add_white.png'),
-      layout: 'icon',
-      onPress: this.props.onNewAccountPress
-    }
-
     // TODO: Add icon for network and media configuration.
-
+    // TODO: Use array to return elements without additional View
     return (
       <View style={cs.max}>
-        <Header title="Settings" {...platformHeaderProps} />
-
         <ListSection title="Accounts"/>
-
         {this.renderAccounts(this.props.accounts)}
-
         <ListSection title="Advanced"/>
-
         <ListConfigurationInfo
           onPress={this.props.onNetworkSettingsPress}
           title="Network"
           description="How application can be connected to the network"
         />
-
         <ListConfigurationInfo
           onPress={this.props.onMediaSettingsPress}
           title="Media"
@@ -92,30 +70,22 @@ class SettingsScreen extends Component {
 SettingsScreen.propTypes = {
   connectivity: PropTypes.bool,
   accounts: PropTypes.object,
-  onHamburgerPress: PropTypes.func,
   onAccountPress: PropTypes.func,
-  onNewAccountPress: PropTypes.func,
   onNetworkSettingsPress: PropTypes.func,
   onMediaSettingsPress: PropTypes.func
 }
 
-function select(store) {
+function mapStateToProps(store) {
   return {
     accounts: store.pjsip.accounts,
     connectivity: store.app.endpointConnectivity
   }
 }
 
-function actions(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    onHamburgerPress: () => {
-      dispatch(Navigation.openDrawer())
-    },
     onAccountPress: (account) => {
       dispatch(Navigation.goTo({name: 'account', account: account}))
-    },
-    onNewAccountPress: () => {
-      dispatch(Navigation.goTo({name: 'account'}))
     },
     onNetworkSettingsPress: () => {
       dispatch(Navigation.goTo({name: 'network_settings'}))
@@ -126,4 +96,4 @@ function actions(dispatch) {
   }
 }
 
-export default connect(select, actions)(SettingsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)
