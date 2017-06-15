@@ -83,46 +83,37 @@ class AppViewport extends Component {
 
     return (
       <View style={cs.max}>
-
-        <View style={{backgroundColor: '#a95f5f', height: 50, flexDirection: 'row'}}>
-          <View style={{marginLeft: 16, justifyContent: 'center', backgroundColor: "#5f6ca9", height: 50}}>
-            <View style={{width: 36, height: 36, backgroundColor: "#CCC"}} />
+        <View style={{height: 50, backgroundColor: '#3f5057', flexDirection: 'row'}}>
+          <View style={{marginLeft:16, justifyContent: 'center', height: 50}}>
+            <Image resizeMode="contain" style={{width: 42}} source={require('../assets/images/logo.png')}/>
           </View>
-          <View style={{flex: 1, justifyContent:'flex-end', backgroundColor: "#a95f78"}}>
+          <View style={{flex: 1, justifyContent:'flex-end'}}>
             <NavigationPager selection={tab} onChange={onTabSelect} />
           </View>
         </View>
-
-
         <ViewPager
           style={cs.max}
           count={4}
           selectedIndex={tabIndex}
           onSelectedIndexChange={onSelectedIndexChange}
         >
-          <View style={[cs.max, {backgroundColor: "#FFF"}]}>
+          <View style={cs.max}>
             <DialerViewport />
           </View>
-          <View style={[cs.max, {backgroundColor: "#CCC"}]}>
+          <View style={cs.max}>
             <ConversationsViewport />
           </View>
-          <View style={[cs.max, {backgroundColor: "#CCC"}]}>
+          <View style={cs.max}>
             <HistoryViewport />
           </View>
-          <View style={[cs.max, {backgroundColor: "#CCC"}]}>
+          <View style={cs.max}>
             <SettingsViewport />
           </View>
         </ViewPager>
-
       </View>
     )
   }
 }
-
-{/*<View key={this.props.tab} style={cs.max}>*/}
-  {/*{this.renderActiveCalls()}*/}
-  {/*{this.renderContent()}*/}
-{/*</View>*/}
 
 AppViewport.propTypes = {
   navigator: PropTypes.object,

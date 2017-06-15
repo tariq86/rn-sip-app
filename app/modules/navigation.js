@@ -43,8 +43,8 @@ export function goAndReplace(route) {
     const ref = getState().navigation.ref
     const tab = getState().navigation.current.name
 
-    const same = ['conversations', 'contacts', 'history', 'settings'].indexOf(route.name) !== -1 &&
-      ['conversations', 'contacts', 'history', 'settings'].indexOf(tab) !== -1
+    const same = ['conversations', 'dialer', 'history', 'settings'].indexOf(route.name) !== -1 &&
+      ['conversations', 'dialer', 'history', 'settings'].indexOf(tab) !== -1
 
     if (ref && !same) {
       ref.replace(route)
