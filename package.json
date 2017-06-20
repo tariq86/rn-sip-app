@@ -29,7 +29,9 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "autobind-decorator": "^1.4.1",
     "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "chai": "^4.0.2",
     "enzyme": "^2.8.2",
     "eslint": "^3.19.0",

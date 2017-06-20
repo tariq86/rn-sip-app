@@ -1,6 +1,8 @@
 import React, {Component}  from 'react'
 import PropTypes from 'prop-types'
 import {View, Text, Animated} from 'react-native'
+import Touchable from '../../Common/Touchable'
+import autobind from 'autobind-decorator'
 
 import s, {calculateItemsOffset} from './styles'
 
@@ -24,6 +26,7 @@ export function getNameOfTab (tab) {
   }
 }
 
+// TODO: Move to dedicated file.
 class NavigationItem extends Component {
   constructor(props) {
     super(props)
@@ -32,6 +35,8 @@ class NavigationItem extends Component {
       offsetValue: new Animated.Value(props.offset),
       opacityValue: new Animated.Value(props.selected ? 1 : 0)
     }
+
+    // this.onPress = this.onPress.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,12 +48,18 @@ class NavigationItem extends Component {
     }
   }
 
+  @autobind
+  onPress() {
+    const {tab, onPress} = this.props
+    onPress && onPress(tab)
+  }
+
   render() {
     const {tab, onTextLayout} = this.props
 
     return (
       <Animated.View style={{position: 'absolute', top: 7, right: this.state.offsetValue, flexDirection: 'row', height: 36}}>
-        <View style={{width: 36, height: 36, borderRadius: 18, backgroundColor: "#FFF"}} />
+        <Touchable onPress={this.onPress} style={{width: 36, height: 36, borderRadius: 18, backgroundColor: "#FFF"}} />
         <Animated.Text style={{paddingLeft: 8, paddingTop: 8, fontSize: 14, fontWeight: 'bold', color: "#FFF", opacity: this.state.opacityValue}} onLayout={onTextLayout} pointerEvents="none" numberOfLines={1}>{getNameOfTab(tab)}</Animated.Text>
       </Animated.View>
     )
@@ -59,7 +70,8 @@ NavigationItem.propTypes = {
   tab: PropTypes.string,
   selected: PropTypes.bool,
   offset: PropTypes.number,
-  onTextLayout: PropTypes.func
+  onTextLayout: PropTypes.func,
+  onPress: PropTypes.func
 }
 
 const NavigationSeparator = () => {
@@ -126,7 +138,7 @@ class NavigationPager extends Component {
   }
 
   render() {
-    const {selection, onChange} = this.props
+    const {selection, onPress} = this.props
     const {tabs} = this.state
 
     return (
@@ -137,7 +149,7 @@ class NavigationPager extends Component {
             const selected = name === selection
 
             return (
-              <NavigationItem key={name} selected={selected} tab={name} offset={offset} onTextLayout={onTextLayout} />
+              <NavigationItem key={name} selected={selected} tab={name} offset={offset} onPress={onPress} onTextLayout={onTextLayout} />
             )
           })
         }
@@ -148,7 +160,7 @@ class NavigationPager extends Component {
 
 NavigationPager.propTypes = {
   selection: PropTypes.string,
-  onChange: PropTypes.func
+  onPress: PropTypes.func
 }
 
 export default NavigationPager

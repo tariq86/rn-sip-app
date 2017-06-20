@@ -342,6 +342,7 @@ export function createAccount(configuration) {
 
     const account = await endpoint.createAccount({
       ...configuration,
+      transport: configuration.transport ? configuration.transport : "UDP",
       contactUriParams
     })
 

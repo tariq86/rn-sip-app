@@ -230,8 +230,7 @@ function actions(dispatch) {
     },
     onCreatePress: (configuration) => {
       dispatch(async () => {
-        const account = await dispatch(createAccount(configuration))
-        console.log("account", account)
+        await dispatch(createAccount(configuration))
         await dispatch(Navigation.goAndReplace({name: 'settings'}))
       })
     },

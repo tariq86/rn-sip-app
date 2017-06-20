@@ -9,6 +9,7 @@ import ListAccountInfo from '../../components/Settings/ListAccountInfo'
 import ListConfigurationInfo from '../../components/Settings/ListConfigurationInfo'
 import ListSection from '../../components/Common/ListSection'
 import Header from '../../components/Header'
+import Touchable from '../../components/Common/Touchable'
 
 import cs from '../../assets/styles/containers'
 
@@ -50,6 +51,11 @@ class SettingsScreen extends Component {
       <View style={cs.max}>
         <ListSection title="Accounts"/>
         {this.renderAccounts(this.props.accounts)}
+
+        <Touchable onPress={this.props.onCreateAccountPress} style={{padding: 10, justifyContent:'center', alignItems: 'center', backgroundColor: '#CCC'}}>
+          <Text>Create account</Text>
+        </Touchable>
+
         <ListSection title="Advanced"/>
         <ListConfigurationInfo
           onPress={this.props.onNetworkSettingsPress}
@@ -72,7 +78,8 @@ SettingsScreen.propTypes = {
   accounts: PropTypes.object,
   onAccountPress: PropTypes.func,
   onNetworkSettingsPress: PropTypes.func,
-  onMediaSettingsPress: PropTypes.func
+  onMediaSettingsPress: PropTypes.func,
+  onCreateAccountPress: PropTypes.func
 }
 
 function mapStateToProps(store) {
@@ -84,6 +91,9 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    onCreateAccountPress: () => {
+      dispatch(Navigation.goTo({name: 'account'}))
+    },
     onAccountPress: (account) => {
       dispatch(Navigation.goTo({name: 'account', account: account}))
     },

@@ -88,7 +88,7 @@ class AppViewport extends Component {
             <Image resizeMode="contain" style={{width: 42}} source={require('../assets/images/logo.png')}/>
           </View>
           <View style={{flex: 1, justifyContent:'flex-end'}}>
-            <NavigationPager selection={tab} onChange={onTabSelect} />
+            <NavigationPager selection={tab} onPress={onTabSelect} />
           </View>
         </View>
         <ViewPager
