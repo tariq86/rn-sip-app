@@ -5,7 +5,7 @@ import {View, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
 
-import Header from '../../components/Header'
+import Header from '../../components/common/Header'
 import SettingsViewport from './SettingsViewport'
 import cs from '../../assets/styles/containers'
 

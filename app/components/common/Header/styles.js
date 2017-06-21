@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native'
-import {correctFontSizeForScreen} from '../../utils/scale'
+import {correctFontSizeForScreen} from '../../../utils/scale'
 
 export const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0
 export const HEADER_HEIGHT = Platform.OS === 'ios' ? 42 + STATUS_BAR_HEIGHT : 50 + STATUS_BAR_HEIGHT

@@ -10,7 +10,7 @@ import DialerViewport from './dialer/DialerViewport'
 import SettingsViewport from './settings/SettingsViewport'
 
 import NavigationPager from '../components/viewport/NavigationPager'
-import ViewPager from '../components/Common/ViewPager'
+import ViewPager from '../components/common/ViewPager'
 
 import cs from '../assets/styles/containers'
 

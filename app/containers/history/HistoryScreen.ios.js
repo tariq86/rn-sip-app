@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import {connect} from 'react-redux'
 
 import HistoryViewport from './HistoryViewport'
-import Header from '../../components/Header'
+import Header from '../../components/common/Header'
 import cs from '../../assets/styles/containers'
 
 const HistoryScreen = () => {

@@ -1,7 +1,7 @@
 import React, {Component}  from 'react'
 import PropTypes from 'prop-types'
 import {View, Text, Animated} from 'react-native'
-import Touchable from '../../Common/Touchable'
+import Touchable from '../../common/Touchable'
 import autobind from 'autobind-decorator'
 
 import s, {calculateItemsOffset} from './styles'

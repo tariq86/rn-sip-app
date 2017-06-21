@@ -5,9 +5,9 @@ import {connect} from 'react-redux'
 import {changeNetworkSettings} from '../../modules/app'
 import * as Navigation from '../../modules/navigation'
 
-import Header from '../../components/Header'
-import ListSection from '../../components/Common/ListSection'
-import ListCheckbox from '../../components/Common/ListCheckbox'
+import Header from '../../components/common/Header'
+import ListSection from '../../components/common/ListSection'
+import ListCheckbox from '../../components/common/ListCheckbox'
 
 import cs from '../../assets/styles/containers'
 

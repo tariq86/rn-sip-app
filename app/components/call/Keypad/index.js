@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {TouchableHighlight, View, Text, Dimensions} from 'react-native'
 
 import s from './styles'
-import Touchable from '../../Common/Touchable'
+import Touchable from '../../common/Touchable'
 
 export default class Keypad extends Component {
   constructor(props) {

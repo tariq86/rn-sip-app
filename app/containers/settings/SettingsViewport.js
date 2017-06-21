@@ -5,11 +5,10 @@ import {View, Text, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
 
-import ListAccountInfo from '../../components/Settings/ListAccountInfo'
-import ListConfigurationInfo from '../../components/Settings/ListConfigurationInfo'
-import ListSection from '../../components/Common/ListSection'
-import Header from '../../components/Header'
-import Touchable from '../../components/Common/Touchable'
+import ListAccountInfo from '../../components/settings/ListAccountInfo'
+import ListConfigurationInfo from '../../components/settings/ListConfigurationInfo'
+import ListSection from '../../components/common/ListSection'
+import Touchable from '../../components/common/Touchable'
 
 import cs from '../../assets/styles/containers'
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {makeCall} from '../../modules/pjsip'
 
-import KeypadWithActions from '../../components/Call/KeypadWithActions'
+import KeypadWithActions from '../../components/call/KeypadWithActions'
 import cs from '../../assets/styles/containers'
 
 const DialerViewport = ({onCallPress}) => {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {View} from 'react-native'
 
 import s from './styles'
-import ViewPager from '../../Common/ViewPager'
+import ViewPager from '../../common/ViewPager'
 import CallAction from '../CallAction'
 
 export default class CallActions extends Component {

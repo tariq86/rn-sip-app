@@ -4,8 +4,8 @@ import {View, Text, ScrollView} from 'react-native'
 
 import {connect} from 'react-redux'
 import * as Navigation from '../../modules/navigation'
-import ListSection from '../../components/Common/ListSection'
-import Header from '../../components/Header'
+import ListSection from '../../components/common/ListSection'
+import Header from '../../components/common/Header'
 
 import cs from '../../assets/styles/containers'
 
