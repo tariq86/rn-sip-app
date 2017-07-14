@@ -39,3 +39,5 @@ DialerModal.propTypes = {
   actions: PropTypes.array.isRequired,
   onRequestClose: Modal.propTypes.onRequestClose
 }
+
+export default DialerModal

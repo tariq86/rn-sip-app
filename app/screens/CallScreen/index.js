@@ -290,7 +290,7 @@ class CallScreen extends Component {
 
     let i = 0
     for (const id in this.props.calls) {
-      if (this.props.calls.hasOwnProperty(id) && id !== activeCall.getId()) {
+      if (this.props.calls.hasOwnProperty(id) && id != activeCall.getId()) { // TODO: Check why type of ID is different
         const call = this.props.calls[id]
 
         result.push((
@@ -485,32 +485,22 @@ CallScreen.propTypes = {
   call: PropTypes.object,
   calls: PropTypes.object,
   isScreenLocked: PropTypes.bool,
-  onCallEnd: PropTypes.func.isRequired,
-  onCallAnswer: PropTypes.func.isRequired,
-  onCallHangup: PropTypes.func.isRequired,
-  onCallChatPress: PropTypes.func.isRequired,
-  onCallSelect: PropTypes.func.isRequired,
-  onCallMute: PropTypes.func.isRequired,
-  onCallUnMute: PropTypes.func.isRequired,
-  onCallSpeaker: PropTypes.func.isRequired,
-  onCallEarpiece: PropTypes.func.isRequired,
-  onCallHold: PropTypes.func.isRequired,
-  onCallUnHold: PropTypes.func.isRequired,
-  onCallDtmf: PropTypes.func.isRequired,
-  onCallDtmfKey: PropTypes.func.isRequired,
-  onCallDtmfModalClose: PropTypes.func.isRequired,
-  onCallTransfer: PropTypes.func.isRequired,
-  onCallTransferClose: PropTypes.func.isRequired,
-  onCallAttendantTransfer: PropTypes.func.isRequired,
-  onCallBlindTransfer: PropTypes.func.isRequired,
-  onCallAdd: PropTypes.func.isRequired,
-  onCallAddClose: PropTypes.func.isRequired,
-  onCallAddSubmit: PropTypes.func.isRequired,
-  onCallRedirect: PropTypes.func.isRequired,
-  onCallRedirectClose: PropTypes.func.isRequired,
-  onCallRedirectSubmit: PropTypes.func.isRequired,
-  onIncomingCallAnswer: PropTypes.func.isRequired,
-  onIncomingCallDecline: PropTypes.func.isRequired
+  onCallEnd: PropTypes.func,
+  onCallUnHold: PropTypes.func,
+  onCallMute: PropTypes.func,
+  onCallUnMute: PropTypes.func,
+  onCallSpeaker: PropTypes.func,
+  onCallEarpiece: PropTypes.func,
+  onCallDtmf: PropTypes.func,
+  onCallBlindTransfer: PropTypes.func,
+  onCallAttendantTransfer: PropTypes.func,
+  onCallRedirect: PropTypes.func,
+  onCallHangup: PropTypes.func,
+  onCallAnswer: PropTypes.func,
+  onCallSelect: PropTypes.func,
+  onCallAdd: PropTypes.func,
+  onIncomingCallAnswer: PropTypes.func,
+  onIncomingCallDecline: PropTypes.func
 }
 
 function select(store) {
