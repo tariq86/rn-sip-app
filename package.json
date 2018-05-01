@@ -16,6 +16,7 @@
     "react-native": "^0.55.3",
     "react-native-action-button": "^2.0.1",
     "react-native-callkit": "git+https://github.com/datso/react-native-callkit.git",
+    "react-native-deprecated-custom-components": "^0.1.2",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-pjsip": "https://github.com/datso/react-native-pjsip.git",
     "react-native-viewpager": "^0.2.11",

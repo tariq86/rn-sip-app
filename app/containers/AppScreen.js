@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {View, StatusBar, Navigator} from 'react-native'
+import {View, StatusBar} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 import {connect} from 'react-redux'
 
 import * as Navigation from '../modules/navigation'
