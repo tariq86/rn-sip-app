@@ -9,21 +9,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation = jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  NSURL *jsCodeLocation;
+
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   // Initialise RNCallKit
   RNCallKit *rncallkit = [[RNCallKit alloc] init];
-  
+
   // Initialise React Bridge with RNCallKit
   RCTBridge *bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
                         moduleProvider:^{ return @[rncallkit]; }
                         launchOptions:launchOptions];
-  
+
   // Initialise React Root View with React Bridge you've just created
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                             moduleName:@"PjApp"
                             initialProperties:nil];
-  
+
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -31,8 +33,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
-  
+
   return YES;
 }
 

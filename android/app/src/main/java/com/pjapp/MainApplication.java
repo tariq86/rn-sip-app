@@ -1,12 +1,10 @@
 package com.pjapp;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.carusto.ReactNativePjSip.PjSipModulePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -30,6 +28,11 @@ public class MainApplication extends Application implements ReactApplication {
             new PjSipModulePackage(),
             new LinearGradientPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 
