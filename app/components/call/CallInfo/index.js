@@ -34,7 +34,7 @@ const CallInfo = ({call}) => {
 
 CallInfo.propTypes = {
   call: PropTypes.object.isRequired,
-  style: View.propTypes.style,
+  style: PropTypes.style,
   onBackspacePress: PropTypes.func,
   onClearPress: PropTypes.func
 }

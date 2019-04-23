@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {TabBarIOS} from 'react-native'
+import {createBottomTabNavigator, createAppContainer} from 'react-navigation'
 
 import {connect} from 'react-redux'
 
@@ -10,6 +10,8 @@ import DialerScreen from './dialer/DialerScreen'
 import HistoryScreen from './history/HistoryScreen'
 import SettingsScreen from './settings/SettingsScreen'
 
+
+/*
 class AppViewport extends React.Component {
 
   onTabSelect(tab) {
@@ -80,23 +82,37 @@ AppViewport.propTypes = {
   onTabSelect: PropTypes.func,
   navigator: PropTypes.object
 }
+*/
 
 function mapStateToProps(store) {
-  return {
-    tab: store.navigation.current.name
-  }
+    return {
+        tab: store.navigation.current.name
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    onTabSelect: (tab) => {
-      //if (tab == 'dialer') {
-      //    dispatch(Navigation.goTo({name: tab}))
-      //} else {
-      dispatch(Navigation.goAndReplace({name: tab}))
-      //}
+    return {
+        onTabSelect: (tab) => {
+            //if (tab == 'dialer') {
+            //    dispatch(Navigation.goTo({name: tab}))
+            //} else {
+            dispatch(Navigation.goAndReplace({
+                    name: tab
+            }))
+                //}
+        }
     }
-  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppViewport)
+
+const TabNavigator = createBottomTabNavigator({
+    Dialer: DialerScreen,
+    Conversations: ConversationsScreen,
+    History: HistoryScreen,
+    Settings: SettingsScreen,
+})
+
+const AppContainer = createAppContainer(TabNavigator)
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+// export default createAppContainer(TabNavigator);

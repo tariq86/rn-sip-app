@@ -126,7 +126,7 @@ export default class ViewPager extends Component {
 
 ViewPager.propTypes = {
   children: PropTypes.node,
-  style: View.propTypes.style,
+  style: PropTypes.style,
   count: PropTypes.number,
   selectedIndex: PropTypes.number,
   onSelectedIndexChange: PropTypes.func,

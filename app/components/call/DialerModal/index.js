@@ -34,10 +34,10 @@ const DialerModal = ({theme, visible, actions, onRequestClose}) => {
 }
 
 DialerModal.propTypes = {
-  visible: Modal.propTypes.visible,
+  visible: PropTypes.bool,
   theme: PropTypes.string,
   actions: PropTypes.array.isRequired,
-  onRequestClose: Modal.propTypes.onRequestClose
+  onRequestClose: PropTypes.func
 }
 
 export default DialerModal

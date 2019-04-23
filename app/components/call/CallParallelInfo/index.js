@@ -69,7 +69,7 @@ export default class CallParallelInfo extends Component {
 }
 
 CallParallelInfo.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.style,
   call: PropTypes.object.isRequired,
   onPress: PropTypes.func
 }

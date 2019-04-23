@@ -103,8 +103,8 @@ export default class Keypad extends Component {
 }
 
 Keypad.propTypes = {
-  style: View.propTypes.style,
-  keyStyle: View.propTypes.style,
+  style: PropTypes.style,
+  keyStyle: PropTypes.style,
   keyUnderlayColor: PropTypes.any,
   keyTextStyle: Text.propTypes.style,
   onKeyPress: PropTypes.func,

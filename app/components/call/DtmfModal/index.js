@@ -51,7 +51,7 @@ export default class DtmfModal extends Component {
 }
 
 DtmfModal.propTypes = {
-  visible: Modal.propTypes.visible,
+  visible: PropTypes.bool,
   onPress: PropTypes.func,
-  onRequestClose: Modal.propTypes.onRequestClose
+  onRequestClose: PropTypes.func
 }

@@ -28,7 +28,7 @@ const ListConfigurationInfo = ({style, icon, title, description, onPress}) => {
 }
 
 ListConfigurationInfo.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.style,
   icon: Image.propTypes.source,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

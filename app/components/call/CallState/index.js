@@ -79,7 +79,7 @@ export default class CallState extends Component {
 }
 
 CallState.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.style,
   call: PropTypes.object.isRequired,
   onBackspacePress: PropTypes.func,
   onClearPress: PropTypes.func

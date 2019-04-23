@@ -38,7 +38,7 @@ const ListAccountInfo = ({style, account, connectivity, onPress}) => {
 }
 
 ListAccountInfo.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.style,
   account: PropTypes.object,
   connectivity: PropTypes.bool,
   onPress: PropTypes.func

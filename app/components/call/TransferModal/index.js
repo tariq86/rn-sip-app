@@ -125,8 +125,8 @@ export default class TransferModal extends Component {
 TransferModal.propTypes = {
   call: PropTypes.object.isRequired,
   calls: PropTypes.object.isRequired,
-  visible: Modal.propTypes.visible,
-  onRequestClose: Modal.propTypes.onRequestClose,
+  visible: PropTypes.bool,
+  onRequestClose: PropTypes.func,
   onBlindTransferPress: PropTypes.func,
   onAttendantTransferPress: PropTypes.func
 }

@@ -55,7 +55,7 @@ export default class ListCheckbox extends Component {
 
 ListCheckbox.propTypes = {
   value: PropTypes.bool.isRequired,
-  style: View.propTypes.style,
+  style: PropTypes.style,
   title: PropTypes.string,
   disabled: PropTypes.bool,
   description: PropTypes.string,
