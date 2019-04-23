@@ -1,4 +1,4 @@
-package com.pjapp;
+package com.tariq86.pjsip;
 
 import com.facebook.react.ReactActivity;
 import android.view.Window;

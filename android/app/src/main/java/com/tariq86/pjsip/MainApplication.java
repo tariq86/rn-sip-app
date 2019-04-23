@@ -1,8 +1,9 @@
-package com.pjapp;
+package com.tariq86.pjsip;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.carusto.ReactNativePjSip.PjSipModulePackage;
 import com.carusto.ReactNativePjSip.PjSipModulePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PjSipModulePackage(),
             new PjSipModulePackage(),
             new LinearGradientPackage()
       );
