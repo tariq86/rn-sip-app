@@ -68,7 +68,7 @@ ListTextField.propTypes = {
   valueType: PropTypes.string,
   placeholder: PropTypes.string,
   title: PropTypes.string,
-  style: PropTypes.style,
+  style: PropTypes.object,
   inputProps: PropTypes.object,
   onChange: PropTypes.func
 }

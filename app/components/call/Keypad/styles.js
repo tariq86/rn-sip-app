@@ -3,7 +3,7 @@ import {correctFontSizeForScreen} from '../../../utils/scale'
 
 export default styles = StyleSheet.create({
   row: {
-    flex: 0.127,
+    flex: 0.2,
     flexDirection: "row"
   },
   outerLineOffset: {

@@ -52,6 +52,12 @@ export default StyleSheet.create({
   },
   actionDarkText: {
     color: "#FFF"
+  },
+  defaultAction: {
+    flex: 0.202,
+  },
+  defaultKeypad: {
+    flex: 0.75
   }
 })
 

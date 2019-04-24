@@ -80,7 +80,7 @@ export default class KeypadWithActions extends Component {
 
     if (!this.state.actionSize) {
       return (
-        <View key={"action" + type} style={{flex: 0.202}}/>
+        <View key={`action${type}`} style={s.defaultAction}/>
       )
     }
 
@@ -94,7 +94,7 @@ export default class KeypadWithActions extends Component {
     }
 
     return (
-      <View key={"action" + type} style={s.action}>
+      <View key={`action${type}`} style={s.action}>
         <TouchableOpacity onPress={() => {callback(this.state.value)}} style={touchableStyles}>
           <Image source={icon}/>
         </TouchableOpacity>
@@ -133,7 +133,7 @@ export default class KeypadWithActions extends Component {
           onClearPress={this._onClearPress}
         />
         <View style={{flex: 0.02 * this.state.heightRatio}}/>
-        <Keypad style={{flex: 0.75}}
+        <Keypad style={s.defaultKeypad}
                 keyUnderlayColor={keyUnderlayColor(theme)}
                 keyTextStyle={textStyle(theme)}
                 onKeyPress={this._onKeyPress}
@@ -150,7 +150,7 @@ export default class KeypadWithActions extends Component {
 }
 
 KeypadWithActions.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.object,
   actions: PropTypes.array,
   theme: PropTypes.string
 }
