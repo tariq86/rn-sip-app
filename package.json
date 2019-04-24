@@ -22,7 +22,7 @@
         "react-native-pjsip": "^2.7.4",
         "react-native-viewpager": "^0.2.11",
         "react-native-voip-push-notification": "^1.1.4",
-        "react-navigation": "^3.8.1",
+        "react-navigation": "^3.9.0",
         "react-redux": "^5.1.1",
         "redux": "^4.0.1",
         "redux-devtools": "^3.5.0",
