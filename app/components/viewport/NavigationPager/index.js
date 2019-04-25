@@ -1,8 +1,7 @@
 import React, {Component}  from 'react'
 import PropTypes from 'prop-types'
-import {View, Text, Animated} from 'react-native'
-import Touchable from '../../common/Touchable'
-import autobind from 'autobind-decorator'
+import {View} from 'react-native'
+import {NavigationItem} from '../NavigationItem/index'
 
 import s, {calculateItemsOffset} from './styles'
 
@@ -26,61 +25,16 @@ export function getNameOfTab (tab) {
   }
 }
 
-// TODO: Move to dedicated file.
-class NavigationItem extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      offsetValue: new Animated.Value(props.offset),
-      opacityValue: new Animated.Value(props.selected ? 1 : 0)
-    }
-
-    // this.onPress = this.onPress.bind(this)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.selected !== nextProps.selected) {
-      Animated.timing(this.state.opacityValue, {toValue: nextProps.selected ? 1 : 0, duration: 300}).start()
-    }
-    if (this.props.offset !== nextProps.offset) {
-      Animated.timing(this.state.offsetValue, {toValue: nextProps.offset, duration: 300}).start()
-    }
-  }
-
-  @autobind
-  onPress() {
-    const {tab, onPress} = this.props
-    onPress && onPress(tab)
-  }
-
-  render() {
-    const {tab, onTextLayout} = this.props
-
-    return (
-      <Animated.View style={{position: 'absolute', top: 7, right: this.state.offsetValue, flexDirection: 'row', height: 36}}>
-        <Touchable onPress={this.onPress} style={{width: 36, height: 36, borderRadius: 18, backgroundColor: "#FFF"}} />
-        <Animated.Text style={{paddingLeft: 8, paddingTop: 8, fontSize: 14, fontWeight: 'bold', color: "#FFF", opacity: this.state.opacityValue}} onLayout={onTextLayout} pointerEvents="none" numberOfLines={1}>{getNameOfTab(tab)}</Animated.Text>
-      </Animated.View>
-    )
-  }
-}
-
-NavigationItem.propTypes = {
-  tab: PropTypes.string,
-  selected: PropTypes.bool,
-  offset: PropTypes.number,
-  onTextLayout: PropTypes.func,
-  onPress: PropTypes.func
-}
-
+/*
+Not referenced anywhere...
 const NavigationSeparator = () => {
   return (
-    <View style={{position: 'absolute', right: 36 * 2 + 8 * 2 + 16, bottom: 0, overflow: 'hidden', flexDirection: 'row'}}>
-      <View style={{width: 36, height: 2, borderRadius: 18, backgroundColor: "#FFF"}} />
+    <View style={s.separatorOuter}>
+      <View style={s.separatorInner} />
     </View>
   )
 }
+*/
 
 class NavigationPager extends Component {
 
@@ -102,7 +56,7 @@ class NavigationPager extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidUpdate (nextProps) {
     if (this.state.ready && this.props.selection !== nextProps.selection) {
       const tabsState = calculateItemsOffset(NAVIGATION_TABS, this.state.tabs, nextProps.selection)
       this.setState({tabs: tabsState})
@@ -142,7 +96,7 @@ class NavigationPager extends Component {
     const {tabs} = this.state
 
     return (
-      <View style={{height: 50, flex: 1, flexDirection: 'row'}}>
+      <View style={s.container}>
         {
           NAVIGATION_TABS.map((name) => {
             const {offset, onTextLayout} = tabs[name]

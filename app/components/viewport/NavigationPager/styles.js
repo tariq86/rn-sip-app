@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-color-literals */
 import {StyleSheet} from 'react-native'
 
 export const SPACE_WIDTH = 8
@@ -32,6 +33,21 @@ export function calculateItemsOffset(tabs, state, selection) {
 
 export default StyleSheet.create({
   container: {
-
+    height: 50,
+    flex: 1,
+    flexDirection: 'row'
+  },
+  separatorOuter: {
+    position: 'absolute',
+    right: (ICON_WIDTH * 2) + (SPACE_WIDTH * 2) + INITIAL_OFFSET,
+    bottom: 0,
+    overflow: 'hidden',
+    flexDirection: 'row'
+  },
+  separatorInner: {
+    width: ICON_WIDTH, 
+    height: 2,
+    borderRadius: 18,
+    backgroundColor: "#FFFFFF"
   }
 })
