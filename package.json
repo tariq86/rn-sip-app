@@ -1,5 +1,5 @@
 {
-    "name": "PjApp",
+    "name": "@tariq86/rn-sip-app",
     "version": "0.0.2",
     "private": true,
     "scripts": {
