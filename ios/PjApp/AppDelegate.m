@@ -10,9 +10,10 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-// Add PushKit + react-native-voip-push-notification
+// Add PushKit + react-native-voip-push-notification + react-native-callkit
 #import <PushKit/PushKit.h>
 #import "RNVoipPushNotificationManager.h"
+#import "RNCallKit.h"
 
 @implementation AppDelegate
 
