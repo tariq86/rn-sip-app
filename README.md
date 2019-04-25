@@ -9,8 +9,8 @@ Based on [React Native](https://github.com/facebook/react-native) and [ReactNati
 ## 1. Clone the repo:
 
   ```
-  $ git clone https://github.com/tariq86/react-native-pjsip-app
-  $ cd react-native-pjsip-app
+  $ git clone https://github.com/tariq86/rn-sip-app
+  $ cd rn-sip-app
   ```
 
 ## 2. Install dependencies:
