@@ -67,7 +67,7 @@ const CallAction = ({type, description, onPress}) => {
 }
 
 CallAction.propTypes = {
-  style: PropTypes.style,
+  style: PropTypes.object,
   type: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onPress: PropTypes.func

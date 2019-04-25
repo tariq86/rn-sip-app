@@ -13,8 +13,8 @@ const Touchable = (props) => {
 }
 
 Touchable.propTypes = {
-  style: View.propTypes.style,
+  style: PropTypes.object,
   children: PropTypes.node
 }
 
-export default Touchable;
+export default Touchable

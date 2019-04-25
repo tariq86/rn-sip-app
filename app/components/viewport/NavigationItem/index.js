@@ -1,7 +1,21 @@
 import React, {Component} from 'react'
 import {Animated} from 'react-native'
 import Touchable from '../../common/Touchable'
-import styles from './styles'
+import PropTypes from 'prop-types'
+import s from './styles'
+
+function getNameOfTab (tab) {
+  switch (tab) {
+    case 'dialer':
+      return 'Dialer'
+    case 'conversations':
+      return 'Conversations'
+    case 'history':
+      return 'History'
+    case 'settings':
+      return 'Settings'
+  }
+}
 
 class NavigationItem extends Component {
     constructor(props) {
@@ -50,3 +64,5 @@ class NavigationItem extends Component {
     onTextLayout: PropTypes.func,
     onPress: PropTypes.func
   }
+
+  export default NavigationItem

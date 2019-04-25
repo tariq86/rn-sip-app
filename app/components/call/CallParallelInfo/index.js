@@ -1,12 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  TextInput,
-  Image
-} from 'react-native'
+import {TouchableOpacity, Text, TextInput, Image} from 'react-native'
 import s from './styles'
 
 export default class CallParallelInfo extends Component {
@@ -69,7 +63,7 @@ export default class CallParallelInfo extends Component {
 }
 
 CallParallelInfo.propTypes = {
-  style: PropTypes.style,
+  style: PropTypes.object,
   call: PropTypes.object.isRequired,
   onPress: PropTypes.func
 }

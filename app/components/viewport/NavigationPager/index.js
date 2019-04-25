@@ -1,7 +1,7 @@
 import React, {Component}  from 'react'
 import PropTypes from 'prop-types'
 import {View} from 'react-native'
-import {NavigationItem} from '../NavigationItem/index'
+import NavigationItem from '../NavigationItem'
 
 import s, {calculateItemsOffset} from './styles'
 
@@ -12,29 +12,13 @@ export const NAVIGATION_TABS = [
   'settings'
 ]
 
-export function getNameOfTab (tab) {
-  switch (tab) {
-    case 'dialer':
-      return 'Dialer'
-    case 'conversations':
-      return 'Conversations'
-    case 'history':
-      return 'History'
-    case 'settings':
-      return 'Settings'
-  }
-}
-
-/*
-Not referenced anywhere...
-const NavigationSeparator = () => {
+export const NavigationSeparator = () => {
   return (
     <View style={s.separatorOuter}>
       <View style={s.separatorInner} />
     </View>
   )
 }
-*/
 
 class NavigationPager extends Component {
 

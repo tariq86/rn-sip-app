@@ -156,7 +156,7 @@ export default class CallActions extends Component {
 }
 
 CallActions.propTypes = {
-  style: PropTypes.style,
+  style: PropTypes.object,
   call: PropTypes.object.isRequired,
   onAddPress: PropTypes.func,
   onChatPress: PropTypes.func,
