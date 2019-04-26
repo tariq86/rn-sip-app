@@ -1,4 +1,4 @@
-package com.tariq86.pjsip;
+package com.tariq86.rnsip;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "PjApp";
+        return "RNSIP";
     }
 
     @Override

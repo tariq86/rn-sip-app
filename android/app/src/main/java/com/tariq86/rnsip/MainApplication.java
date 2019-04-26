@@ -1,10 +1,9 @@
-package com.tariq86.pjsip;
+package com.tariq86.rnsip;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.carusto.ReactNativePjSip.PjSipModulePackage;
 import com.carusto.ReactNativePjSip.PjSipModulePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
