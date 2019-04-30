@@ -32,12 +32,7 @@ If you want to fix the yellow warnings that pop up when first opening the app, y
 }
  ```
 
-#### RTCPjSip Module
- 1. In the Project Navigator, open `Libraries` > `RTCPjSip.xcodeproj` > `RTCPjSip` > `PjSipModule.m`
- 1. Add the same code as above after the same `(instancetype)init` function's closing bracket (around line 27)
-
-##### Note 1: Newer versions of these libraries fix these issues, but cause "Module Not Found" issues...I will try to update these dependencies when I can
-##### Note 2: This requires a full recompile of the app, so you will need to re-run the following commands if the app is already running
+##### Note: This change requires a full recompile of the app, so you will need to re-run the `npm run ios` command if the app is already running
 
 ## 3. Running on Android:
 To run on Android, you can run either `npm run android` (recommended) _or_ `react-native run-android` from the project root directory.
