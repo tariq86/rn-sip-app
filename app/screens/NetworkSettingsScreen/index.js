@@ -179,6 +179,13 @@ NetworkSettingsScreen.propTypes = {
   onSavePress: PropTypes.func
 }
 
+NetworkSettingsScreen.defaultProps = {
+  settings: {
+    network: {},
+    service: { foreground: false }
+  }
+}
+
 function select(store) {
   return {
     settings: store.app.endpointSettings
