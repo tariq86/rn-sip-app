@@ -11,7 +11,7 @@ import ListCheckbox from '../../components/common/ListCheckbox'
 
 import cs from '../../assets/styles/containers'
 
-class MediaSettingsScreen extends Component {
+class NetworkSettingsScreen extends Component {
 
   constructor(props) {
     super(props)
@@ -168,7 +168,7 @@ class MediaSettingsScreen extends Component {
   }
 }
 
-MediaSettingsScreen.propTypes = {
+NetworkSettingsScreen.propTypes = {
   settings: PropTypes.shape({
     network: PropTypes.object,
     service: PropTypes.shape({
@@ -196,4 +196,4 @@ function actions(dispatch) {
   }
 }
 
-export default connect(select, actions)(MediaSettingsScreen)
+export default connect(select, actions)(NetworkSettingsScreen)
