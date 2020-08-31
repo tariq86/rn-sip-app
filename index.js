@@ -1,4 +1,5 @@
-import React, {AppRegistry} from 'react-native'
+import { AppRegistry } from 'react-native'
 import App from './app/index'
+import { name as appName } from './app.json';
 
-AppRegistry.registerComponent('RNSIP', () => App);
+AppRegistry.registerComponent(appName, () => App);
